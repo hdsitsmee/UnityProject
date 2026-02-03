@@ -16,5 +16,8 @@ public class SceneChanger : MonoBehaviour
     }
 
     // 던전 화면으로 이동
-    
+    public void ChangeToDungeon()
+    {
+        SceneManager.LoadScene("DungeonScene");
+    }
 }
