@@ -355,9 +355,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f13625bc6c400ba4b8e2bdf61082c58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  areaLevel: 2
-  monsterPrefab: {fileID: 5079081855787195801, guid: 726c36e11108146499badf44e6b776fd, type: 3}
-  maxCount: 1
+  spawnArea:
+    maxSpawnCount: 3
+    monsterPrefab: {fileID: 5079081855787195801, guid: 726c36e11108146499badf44e6b776fd, type: 3}
+    monsterData:
+      level: 2
+      maxHealth: 20
+      speed: 2.5
+      changeDirIntervalMin: 0.3
+      changeDirIntervalMax: 0.7
+      dropMaterials: []
   monstersParent: {fileID: 2108631514}
   wallLayerMask:
     serializedVersion: 2
@@ -3664,9 +3671,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f13625bc6c400ba4b8e2bdf61082c58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  areaLevel: 1
-  monsterPrefab: {fileID: 1099374701884733046, guid: a67b8a184bae4b74288e24ce589ef3b5, type: 3}
-  maxCount: 2
+  spawnArea:
+    maxSpawnCount: 5
+    monsterPrefab: {fileID: 1099374701884733046, guid: a67b8a184bae4b74288e24ce589ef3b5, type: 3}
+    monsterData:
+      level: 1
+      maxHealth: 10
+      speed: 1.5
+      changeDirIntervalMin: 0.5
+      changeDirIntervalMax: 0.9
+      dropMaterials: []
   monstersParent: {fileID: 1079554266}
   wallLayerMask:
     serializedVersion: 2
@@ -3718,9 +3732,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f13625bc6c400ba4b8e2bdf61082c58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  areaLevel: 3
-  monsterPrefab: {fileID: 5079081855787195801, guid: 8334b7f395889ce4b99e66b3526741e6, type: 3}
-  maxCount: 1
+  spawnArea:
+    maxSpawnCount: 2
+    monsterPrefab: {fileID: 5079081855787195801, guid: 8334b7f395889ce4b99e66b3526741e6, type: 3}
+    monsterData:
+      level: 3
+      maxHealth: 30
+      speed: 3
+      changeDirIntervalMin: 0.1
+      changeDirIntervalMax: 0.3
+      dropMaterials: []
   monstersParent: {fileID: 337478571}
   wallLayerMask:
     serializedVersion: 2

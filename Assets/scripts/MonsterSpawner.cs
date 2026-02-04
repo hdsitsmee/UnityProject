@@ -1,20 +1,15 @@
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class MonsterSpawner : MonoBehaviour
 {
-    [Header("스폰 구역(=몬스터 레벨)")]
-    public int areaLevel = 1; // 예: 1이면 1레벨 구역
-
-    [Header("스폰할 몬스터 지정 및 최대 마릿수")]
-    public GameObject monsterPrefab;
-    public int maxCount = 5;
+    [Header("스폰 구역 설정(Serializable)")]
+    public SpawnAreaInfo spawnArea;
 
     [Header("몬스터 부모 오브젝트")]
-    public Transform monstersParent; 
+    public Transform monstersParent;
 
     [Header("기타")]
-    public LayerMask wallLayerMask; 
+    public LayerMask wallLayerMask;
     public float overlapCheckRadius = 0.2f;
     public int maxTriesPerMonster = 50;
 
@@ -33,12 +28,30 @@ public class MonsterSpawner : MonoBehaviour
 
     public void SpawnUpToMax()
     {
-        for (int i = 0; i < maxCount; i++)
+        if (spawnArea == null || spawnArea.monsterPrefab == null)
+        {
+            Debug.LogWarning($"[{name}] spawnArea/monsterPrefab이 비어있음");
+            return;
+        }
+        if (monstersParent == null)
+        {
+            Debug.LogWarning($"[{name}] monstersParent가 비어있음");
+            return;
+        }
+
+        for (int i = 0; i < spawnArea.maxSpawnCount; i++)
         {
             if (TryGetSpawnPosition(out Vector3 pos))
             {
-                var obj = Instantiate(monsterPrefab, pos, Quaternion.identity, monstersParent);
-            }   
+                var obj = Instantiate(spawnArea.monsterPrefab, pos, Quaternion.identity, monstersParent);
+
+                // 몬스터 스탯 주입
+                var m = obj.GetComponent<Monster>();
+                if (m != null)
+                {
+                    m.ApplyMonsterInfo(spawnArea.monsterData);
+                }
+            }
         }
     }
 
@@ -52,7 +65,6 @@ public class MonsterSpawner : MonoBehaviour
             float y = Random.Range(b.min.y, b.max.y);
             Vector3 p = new Vector3(x, y, 0f);
 
-            // 벽과 겹치면 다시 위치 잡기
             if (wallLayerMask.value != 0)
             {
                 if (Physics2D.OverlapCircle(p, overlapCheckRadius, wallLayerMask) != null)
@@ -67,4 +79,3 @@ public class MonsterSpawner : MonoBehaviour
         return false;
     }
 }
-
