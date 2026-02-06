@@ -6,13 +6,16 @@ public class GameManager : MonoBehaviour
     public static int level = 1; //초기 레벨
     public static int money = 2500; //초기 돈
 
-    [Header("게임 데이터")]
+    [Header("# 게임 데이터")]
     public List<IngredientData> allIngredients;//모든 재료 목록
     public List<DrinkRecipe> allRecipes;//모든 음료 레시피 목록
     public List<GuestData> allGuests;//모든 손님 목록
     public string currentOrderName = "";//주문한 음료를 저장할 변수
     public static GameManager instance;
 
+    [Header("# 게임 오브젝트")]
+    public AchiveManager achive;
+    
     void Awake()
     {
         if (instance == null) {
