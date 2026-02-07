@@ -161,7 +161,7 @@ public class GuestManager : MonoBehaviour
 
         if (ghostPrefabs == null || ghostPrefabs.Length == 0)
         {
-            Debug.LogError("[GuestManager] ghostPrefabs가 비어있습니다.");
+            //Debug.LogError("[GuestManager] ghostPrefabs가 비어있습니다.");
             return;
         }
 
@@ -191,11 +191,10 @@ public class GuestManager : MonoBehaviour
     {
         if (pool.Count == 0)
         {
-            Debug.LogError("[GuestManager] 풀(당구)이 비어있습니다.");
+            //Debug.LogError("[GuestManager] 풀(당구)이 비어있습니다.");
             return;
         }
 
-        // ✅ 후보 인덱스 생성: 직전 유령(인덱스) 제외
         List<int> candidates = new List<int>();
         for (int i = 0; i < pool.Count; i++)
         {
@@ -203,7 +202,6 @@ public class GuestManager : MonoBehaviour
             if (pool[i] != null) candidates.Add(i);
         }
 
-        // ✅ 안전장치: 후보가 없다면(풀 1개뿐인 경우 등) 그냥 0번
         if (candidates.Count == 0)
             candidates.Add(0);
 
@@ -227,7 +225,7 @@ public class GuestManager : MonoBehaviour
         List<DrinkRecipe> recipes = GameManager.instance.allRecipes;
         if (recipes == null || recipes.Count == 0)
         {
-            Debug.LogError("메뉴판(Recipes)이 비어있습니다! GameManager를 확인하세요.");
+            //Debug.LogError("메뉴판(Recipes)이 비어있습니다! GameManager를 확인하세요.");
             // 주문 생성 실패면 손님을 보내버리고 다음으로 넘김
             evaluateLocked = true;
             EnterEvaluate(submitted: false, madeDrinkName: null);
