@@ -6,6 +6,7 @@ public class MainUI : MonoBehaviour
 {
     public TMP_Text levelText;
     public TMP_Text moneyText;
+    public Slider expSlider;
 
     void Start()
     {
@@ -22,6 +23,11 @@ public class MainUI : MonoBehaviour
             UpdateUI();
         }
         */
+
+        if (expSlider != null) 
+        {
+            expSlider.value = (float)GameManager.currentExp / (float)GameManager.maxExp;
+        }
        
     }
 

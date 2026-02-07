@@ -10,39 +10,82 @@ public class GuestManager : MonoBehaviour
 
     public Button makeButton;
 
+    [Header("손님 등장 설정")]
+    public float spawnDelay = 3.0f;//손님이 없을 때 대기 시간 (3초)
+    private float currentTimer = 0f;//타이머 계산용 변수
+
     void Start()
     {
-        //게임 시작할 때는 손님이 없으니 버튼을 끈다
-        makeButton.interactable = false; 
+        CheckGuestStatus();
         
-        //유령 그림도 숨긴다
-        guestImage.SetActive(false);
+    }
+    void Update()
+    {
+        //현재 손님이 없는 경우에만 타이머가 돌아가게
+        if (GameManager.instance.currentOrderName == "")
+        {
+            currentTimer += Time.deltaTime; //시간을 흐르게 함
+
+            //시간이 다 되면 손님
+            if (currentTimer >= spawnDelay)
+            {
+                CallGuest();
+                currentTimer = 0f;//타이머 초기화
+            }
+        }
+    }
+    void CheckGuestStatus()
+    {
+        // 만약 이미 손님 있다면
+        if (GameManager.instance.currentOrderName != "")
+        {
+            guestImage.SetActive(true);
+            makeButton.interactable = true;
+        }
+        else
+        {
+            //손님이 없으면 다 끄고 대기
+            guestImage.SetActive(false);
+            makeButton.interactable = false;
+        }
     }
     //손님 부르기
     public void CallGuest()
     {
-        //GameManager에 등록된 모든 레시피를 가져온다
-        List<DrinkRecipe> recipes = GameManager.instance.allRecipes;
+        //등록된 손님 리스트 가져오기
+        List<GuestData> guests = GameManager.instance.allGuests;
 
-        if (recipes.Count > 0)
+        if (guests.Count > 0)
         {
-            //랜덤으로 하나
-            int randomIndex = Random.Range(0, recipes.Count);
-            DrinkRecipe selectedMenu = recipes[randomIndex];
+            //랜덤으로 손님 한 명 선택한다
+            int randomIndex = Random.Range(0, guests.Count);
+            GuestData selectedGuest = guests[randomIndex];
 
-            //주문 내용을 GameManager에 저장
-            GameManager.instance.currentOrderName = selectedMenu.drinkName;
+            //현재 손님을 GameManager에 등록(현재 게스트)
+            GameManager.instance.currentGuest = selectedGuest;
+            GameManager.instance.currentOrderName = selectedGuest.orderDrinkName;
 
-            //화면에 손님과 말풍선
-            guestImage.SetActive(true); //유령 등장
-            speechBubbleText.text = selectedMenu.drinkName;
+            Image characterImg = guestImage.GetComponent<Image>();
+            if (selectedGuest.guestIcon != null)
+            {
+                characterImg.sprite = selectedGuest.guestIcon;
+                
+                characterImg.SetNativeSize(); 
+            }
 
-            Debug.Log(selectedMenu.drinkName);
-            makeButton.interactable = true;//버튼 활성화
+            //연출-대사 출력 등...
+            
+
+            speechBubbleText.text = selectedGuest.dialogue + "\n<color=yellow>(order: " + selectedGuest.orderDrinkName + ")</color>";//손님 고유 대사 출력
+            
+            //성불하면 대사 달라질수도...
+            guestImage.SetActive(true);
+            makeButton.interactable = true;
+            Debug.Log("손님 등장: " + selectedGuest.guestName + " / 주문: " + selectedGuest.orderDrinkName);
         }
         else
         {
-            Debug.LogError("메뉴판(Recipes)이 비어있습니다! GameManager를 확인하세요.");
+            Debug.LogError("손님 데이터가 비어있음");
         }
     }
 }
