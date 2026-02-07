@@ -12,9 +12,6 @@ public class GameManager : MonoBehaviour
     public List<GuestData> allGuests;//모든 손님 목록
     public string currentOrderName = "";//주문한 음료를 저장할 변수
     public static GameManager instance;
-
-    [Header("# 게임 오브젝트")]
-    public AchiveManager achive;
     
     void Awake()
     {
