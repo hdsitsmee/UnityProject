@@ -18,6 +18,8 @@ public class MonsterInfo
     [Header("몬스터 스탯")]
     public int level;
     public float maxHealth;
+    public float monsterDamage;
+
     [Header("몬스터 이동 관련")]
     public float speed;
     public float changeDirIntervalMin; 

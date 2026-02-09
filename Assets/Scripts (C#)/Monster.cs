@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -6,7 +7,7 @@ public class Monster : MonoBehaviour
     [Header("몬스터 정보")]
     public int level;
     public float maxHealth;
-
+    public float monsterDamage; 
     [Header("몬스터 개별 체력(런타임)")]
     public float health;
 
@@ -19,13 +20,17 @@ public class Monster : MonoBehaviour
     private float changeDirIntervalMax;
 
     Rigidbody2D rigidbody;
+    
+
     Vector2 dir;
     float timer;
 
     void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
+        
         health = maxHealth; // ApplyMonsterInfo가 Start 전에 호출되면 이 값이 덮어써짐
+        
     }
 
     void OnEnable()
@@ -69,6 +74,24 @@ public class Monster : MonoBehaviour
 
         // 임시: 벽에 부딪히면 체력 감소
         health -= 0.1f;
+
+        
+    
+       
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!collision.CompareTag("Weapon"))
+            return;
+        health -= collision.GetComponent<Player>().playerDamage;
+        if (health > 0)
+            return;
+
+        else
+        {
+            Die();
+        }
     }
 
     void RandomDirection()
@@ -93,10 +116,16 @@ public class Monster : MonoBehaviour
         level = info.level;
         maxHealth = info.maxHealth;
         health = info.maxHealth;
-
+        monsterDamage = info.monsterDamage;
         speed = info.speed;
         changeDirIntervalMax = info.changeDirIntervalMax;
         changeDirIntervalMin = info.changeDirIntervalMin;
         floorTilemap = info.moveAreaTilemap;
+    }
+
+    
+    void Die()
+    {
+        gameObject.SetActive(false);
     }
 }
