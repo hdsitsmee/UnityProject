@@ -266,7 +266,11 @@ public class GuestManager : MonoBehaviour
                 GameManager.instance.allGuests.Add(data);
                 Debug.Log($"새로운 손님 데이터 생성: {guestID}");
             }
-
+            if (data.hasMet == false)
+            {
+                data.hasMet = true;
+                Debug.Log($"📖 도감 업데이트: [{guestID}] 손님을 발견했습니다!");
+            }
             // ★ GameManager에게 "지금 와있는 손님이 이 사람이야!"라고 알려줌
             GameManager.instance.currentGuest = data;
         }

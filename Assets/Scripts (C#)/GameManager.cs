@@ -118,21 +118,21 @@ public class DrinkRecipe
     public int unlockLevel;
     public string[] requiredIngredients;
     public bool hasMade = false;
+    public Sprite drinkIcon;
 }
 
-// ★ [수정됨] 손님 설계도 (변수 분리)
 [System.Serializable]
 public class GuestData
 {
     public string guestName; // 손님 이름
     public int unlockLevel; // 등장 레벨
     public string orderDrinkName; // 주문할 음료
-    
-    // ★ 헷갈리지 않게 분리했습니다.
     public int currentSatisfaction = 0; // 현재 만족도 (0부터 시작)
     public int maxSatisfaction = 100;   // 목표 만족도 (성불 기준, 기본 100)
     
     public bool isAscended = false; // 성불 여부
+    public bool hasMet = false;
+    public Sprite guestIcon;
     [TextArea]
     public string dialogue; // 대사
 }
