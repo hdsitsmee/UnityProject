@@ -31,6 +31,7 @@ public class MakeManager : MonoBehaviour
     [Header("Nirvana System")]
     public Slider nirvanaSlider; 
     public GameObject resultPopup; 
+    public TMP_Text resultText;
 
     [Header("Data")]
     public List<string> currentIngredients = new List<string>();
@@ -192,6 +193,7 @@ public class MakeManager : MonoBehaviour
     {
         int matchCount = 0;
         int score = 0; 
+        string message = "";
 
         foreach (string required in recipe.requiredIngredients)
         {
@@ -218,20 +220,32 @@ public class MakeManager : MonoBehaviour
             Debug.Log($"필요: {recipe.requiredIngredients.Length} / 맞춤: {matchCount}");
         }
 
-        if (GameManager.instance != null && GameManager.instance.currentGuest != null)
+      if (resultPopup != null)
         {
-            GuestData guest = GameManager.instance.currentGuest;
-            GameManager.instance.UpdateGuestSatisfaction(guest.guestName, score); 
+            // 1. 일단 팝업창을 무조건 띄운다
+            resultPopup.transform.SetAsLastSibling(); // 맨 앞으로 가져오기
+            resultPopup.SetActive(true); 
+            
+            // 2. 텍스트 표시
+            if (resultText != null) resultText.text = message;
 
-            if (resultPopup != null && nirvanaSlider != null)
+            // 3. 슬라이더 데이터 반영 (손님 정보가 있을 때만)
+            if (GameManager.instance != null && GameManager.instance.currentGuest != null)
             {
-                resultPopup.SetActive(true);
-                nirvanaSlider.maxValue = guest.maxSatisfaction; 
-                GuestData originalGuest = GameManager.instance.allGuests.Find(g => g.guestName == guest.guestName);
-                if (originalGuest != null) 
-                    nirvanaSlider.value = originalGuest.currentSatisfaction; // 수정: currentSatisfaction 표시
-                else
+                GuestData guest = GameManager.instance.currentGuest;
+                GameManager.instance.UpdateGuestSatisfaction(guest.guestName, score); 
+                
+                if (nirvanaSlider != null)
+                {
+                    nirvanaSlider.maxValue = guest.maxSatisfaction;
                     nirvanaSlider.value = guest.currentSatisfaction;
+                }
+            }
+            else
+            {
+                // 손님 정보가 없으면 슬라이더를 0으로 두거나 숨김 처리
+                Debug.LogWarning("손님 데이터(currentGuest)가 없어서 성불 수치를 반영하지 못했습니다.");
+                if (nirvanaSlider != null) nirvanaSlider.value = 0;
             }
         }
 
