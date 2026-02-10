@@ -2,128 +2,266 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using TMPro; // ★ TextMeshPro 사용을 위해 필수!
+
+// 버튼과 재료 이름을 연결해주는 구조체
+[System.Serializable]
+public struct IngredientButtonMapping
+{
+    public string ingredientName; // 재료 이름 (예: "Milk")
+    public Image buttonImage;     // 버튼의 이미지 컴포넌트
+}
 
 public class MakeManager : MonoBehaviour
 {
-    public List<string> currentIngredients = new List<string>();
+    public static MakeManager instance;
 
+    [Header("UI & Buttons")]
     public Button finishButton;
-    //선택되었을 때 바뀔 색깔
-    public Color selectedColor = Color.gray; 
-    //원래 버튼 색깔
-    public Color normalColor = Color.white;
+    public TMP_Text moneyText; // ★ [추가] 돈 표시할 텍스트
+    public List<IngredientButtonMapping> ingredientButtons; 
 
+    [Header("Colors")]
+    public Color selectedColor = Color.green;      
+    public Color normalColor = Color.white;        
+    [Header("Tutorial Colors")]
+    public Color tutorialHighlightColor = new Color(1f, 1f, 0.5f); 
+    public Color tutorialDimColor = new Color(0.5f, 0.5f, 0.5f, 1f); 
 
-    //테스트용 주문
-    [Header("테스트용 주문 입력")]
-    public string testOrderName = "great water";
+    [Header("Nirvana System")]
+    public Slider nirvanaSlider; 
+    public GameObject resultPopup; 
 
+    [Header("Data")]
+    public List<string> currentIngredients = new List<string>();
+    public string currentOrderName = ""; 
 
+    private bool isTutorialMode = false;
+    private DrinkRecipe targetRecipe; 
+
+    void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
-        if (GameManager.instance.currentOrderName != "")
+        // 1. 주문 확인
+        if (GameManager.instance != null && GameManager.instance.currentOrderName != "")
         {
-            testOrderName = GameManager.instance.currentOrderName;
-            Debug.Log("메뉴는 " + testOrderName);
+            currentOrderName = GameManager.instance.currentOrderName;
         }
         else
         {
-            Debug.Log("x");
+            currentOrderName = "great water"; 
+        }
+        Debug.Log("제조 시작! 목표 메뉴: " + currentOrderName);
+
+        // 2. 목표 레시피 가져오기
+        if (GameManager.instance != null)
+        {
+            targetRecipe = GameManager.instance.GetRecipeByName(currentOrderName);
         }
 
+        // 3. UI 초기화
+        UpdateMoneyUI(); // ★ 시작할 때 현재 돈 표시
+        CheckAndShowTutorial();
         CheckFinishCondition();
+        
+        if(resultPopup != null) resultPopup.SetActive(false); 
+    }
+
+    // ★ 돈 UI 갱신 함수
+    void UpdateMoneyUI()
+    {
+        if (moneyText != null)
+        {
+            // GameManager의 정적 변수 money를 가져와서 표시
+            moneyText.text = "Money: " + GameManager.money;
+        }
+    }
+
+    // ... (중간 ToggleIngredient 등 코드는 그대로 유지) ...
+    // 아래 CheckAndShowTutorial, ToggleIngredient 등의 함수는 
+    // 기존에 작성해드린 것과 동일하므로 생략하지 않고 그대로 두시면 됩니다.
+    // (이전 답변의 코드를 그대로 쓰되, UpdateMoneyUI 함수만 추가되었다고 보시면 됩니다.)
+    
+    // 편의를 위해 수정이 필요한 부분만 다시 적어드리는 게 아니라 전체를 드립니다.
+    // -------------------------------------------------------------
+
+    void CheckAndShowTutorial()
+    {
+        if (targetRecipe == null) return;
+
+        if (!targetRecipe.hasMade)
+        {
+            isTutorialMode = true;
+            Debug.Log($"🔰 튜토리얼 모드: {targetRecipe.drinkName}");
+
+            foreach (var mapping in ingredientButtons)
+            {
+                bool isRequired = false;
+                foreach (string req in targetRecipe.requiredIngredients)
+                {
+                    if (req == mapping.ingredientName)
+                    {
+                        isRequired = true;
+                        break;
+                    }
+                }
+
+                if (isRequired)
+                    mapping.buttonImage.color = tutorialHighlightColor; 
+                else
+                    mapping.buttonImage.color = tutorialDimColor;       
+            }
+        }
+        else
+        {
+            isTutorialMode = false;
+            ResetAllButtonColors(); 
+        }
     }
 
     public void ToggleIngredient(GameObject btnObj)
     {
-        //버튼 오브젝트의 이름(Hierarchy 창의 이름)을 가져온다
-        string name = btnObj.name; 
-        
-        //버튼에 붙어있는 이미지 컴포넌트를 찾아냅니다.
-        Image buttonImage = btnObj.GetComponent<Image>();
+        string name = btnObj.name;
+        IngredientButtonMapping mapping = ingredientButtons.Find(x => x.ingredientName == name);
+        Image buttonImage = (mapping.buttonImage != null) ? mapping.buttonImage : btnObj.GetComponent<Image>();
 
         if (currentIngredients.Contains(name))
         {
             currentIngredients.Remove(name);
-            buttonImage.color = normalColor;
             Debug.Log(name + " 취소됨");
+
+            if (isTutorialMode)
+            {
+                bool isRequired = IsIngredientRequired(name);
+                buttonImage.color = isRequired ? tutorialHighlightColor : tutorialDimColor;
+            }
+            else
+            {
+                buttonImage.color = normalColor;
+            }
         }
         else
         {
             currentIngredients.Add(name);
-            buttonImage.color = selectedColor;
+            buttonImage.color = selectedColor; 
             Debug.Log(name + " 선택됨");
         }
 
         PrintCurrentStatus();
-        CheckFinishCondition();//재료 넣고 뺄때마다 다시 검사
+        CheckFinishCondition();
+    }
+
+    bool IsIngredientRequired(string ingredientName)
+    {
+        if (targetRecipe == null) return false;
+        foreach (string req in targetRecipe.requiredIngredients)
+        {
+            if (req == ingredientName) return true;
+        }
+        return false;
     }
 
     void PrintCurrentStatus()
     {
-        string listString = "";
-        foreach(string ing in currentIngredients) listString += ing + ", ";
-        Debug.Log("현재 믹스: [ " + listString + " ]");
+        Debug.Log("현재 믹스: [ " + string.Join(", ", currentIngredients) + " ]");
     }
 
     void CheckFinishCondition()
     {
-        //재료 리스트의 개수가 0보다 크면 true 아니면 false
-        if (currentIngredients.Count > 0)
-        {
-            finishButton.interactable = true; //버튼 활성
-        }
-        else
-        {
-            finishButton.interactable = false; //버튼 비활성화
-        }
+        finishButton.interactable = (currentIngredients.Count > 0);
     }
 
     public void OnClickFinish()
     {
-        // 게임매니저에게 레시피 정보 획득
-        DrinkRecipe recipe = GameManager.instance.GetRecipeByName(testOrderName);
-
-        if (recipe != null)
+        if (targetRecipe != null)
         {
-            //채점
-            CheckResult(recipe);
+            CheckResult(targetRecipe);
         }
         else
         {
-            Debug.LogError("주문한 음료의 레시피를 찾을 수 없습니다!");
+            Debug.LogError("레시피 정보가 없어 채점할 수 없습니다.");
+            StartCoroutine(WaitAndGoMain());
         }
     }
 
-    //채점 로직
     void CheckResult(DrinkRecipe recipe)
     {
         int matchCount = 0;
+        int score = 0; 
 
-        //레시피에 있는 재료가 내 컵에 몇 개나 들어있나 확인
         foreach (string required in recipe.requiredIngredients)
         {
-            if (currentIngredients.Contains(required))
-            {
-                matchCount++;
-            }
+            if (currentIngredients.Contains(required)) matchCount++;
         }
 
-        //간단한 판정 로직- 필요한 재료를 모두 넣었으면 성공
-        if (matchCount == recipe.requiredIngredients.Length && currentIngredients.Count == recipe.requiredIngredients.Length)
+        bool isSuccess = (matchCount == recipe.requiredIngredients.Length && currentIngredients.Count == recipe.requiredIngredients.Length);
+
+        if (isSuccess)
         {
-            Debug.Log("성공");
-            GameManager.AddMoney(500); //500원
+            Debug.Log("성공! 완벽한 음료입니다.");
+            
+            GameManager.AddMoney(500); // 돈 증가
+            UpdateMoneyUI(); // ★ [추가] 돈이 올랐으니 화면도 갱신!
+
+            if (GameManager.instance != null) GameManager.instance.GainExp(10); 
+
+            score = 30; 
+            recipe.hasMade = true; 
         }
         else
         {
-            Debug.Log("실패");
-            Debug.Log("필요한 재료 수: " + recipe.requiredIngredients.Length + " / 맞춘 개수: " + matchCount);
+            Debug.Log("실패...");
+            Debug.Log($"필요: {recipe.requiredIngredients.Length} / 맞춤: {matchCount}");
         }
-        GameManager.instance.currentOrderName = "";
 
-        //메인 화면으로 돌아가기
+        if (GameManager.instance != null && GameManager.instance.currentGuest != null)
+        {
+            GuestData guest = GameManager.instance.currentGuest;
+            GameManager.instance.UpdateGuestSatisfaction(guest.guestName, score); 
+
+            if (resultPopup != null && nirvanaSlider != null)
+            {
+                resultPopup.SetActive(true);
+                nirvanaSlider.maxValue = guest.maxSatisfaction; 
+                GuestData originalGuest = GameManager.instance.allGuests.Find(g => g.guestName == guest.guestName);
+                if (originalGuest != null) 
+                    nirvanaSlider.value = originalGuest.currentSatisfaction; // 수정: currentSatisfaction 표시
+                else
+                    nirvanaSlider.value = guest.currentSatisfaction;
+            }
+        }
+
+        StartCoroutine(WaitAndGoMain());
+    }
+
+    void ResetAllButtonColors()
+    {
+        foreach (var mapping in ingredientButtons)
+        {
+            if (mapping.buttonImage != null)
+                mapping.buttonImage.color = normalColor;
+        }
+    }
+
+    void GoToMain()
+    {
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.currentOrderName = "";
+            GameManager.instance.currentGuest = null; 
+        }
         SceneManager.LoadScene("MainScene");
+    }
+
+    System.Collections.IEnumerator WaitAndGoMain()
+    {
+        Debug.Log("4초 뒤 메인으로 이동");
+        yield return new WaitForSecondsRealtime(4.0f);
+        Debug.Log("메인으로 이동");
+        GoToMain();
     }
 }

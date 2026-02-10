@@ -584,6 +584,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d8f1b5aaf5e2f44d9f8c64b5ffcd821, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentExp: 0
+  maxExp: 100
   allIngredients:
   - ingredientName: water
     unlockLevel: 0
@@ -597,21 +599,37 @@ MonoBehaviour:
     requiredIngredients:
     - water
     - milk
+    hasMade: 0
   - drinkName: best water
-    unlockLevel: 1
+    unlockLevel: 0
     requiredIngredients:
     - water
     - milk
     - dust
+    hasMade: 0
   allGuests:
   - guestName: mini ghost
     unlockLevel: 0
     orderDrinkName: great water
+    currentSatisfaction: 0
+    maxSatisfaction: 0
+    isAscended: 0
     dialogue: hi
   - guestName: cute ghost
-    unlockLevel: 1
+    unlockLevel: 0
     orderDrinkName: best water
+    currentSatisfaction: 0
+    maxSatisfaction: 0
+    isAscended: 0
     dialogue: hi
+  currentGuest:
+    guestName: 
+    unlockLevel: 0
+    orderDrinkName: 
+    currentSatisfaction: 0
+    maxSatisfaction: 100
+    isAscended: 0
+    dialogue: 
   currentOrderName: 
 --- !u!4 &479382597
 Transform:
@@ -1808,8 +1826,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speechBubbleText: {fileID: 1546801973}
-  guestImage: {fileID: 1008618530}
   makeButton: {fileID: 238188720}
+  patienceSlider: {fileID: 0}
+  ghostPrefabs: []
+  spawnPoint: {fileID: 0}
+  firstGuestDelay: 3
+  nextGuestDelay: 3
+  arriveDuration: 0.5
+  reactDuration: 1.2
+  leaveDuration: 0.6
+  patienceTime: 10
 --- !u!4 &1812139827
 Transform:
   m_ObjectHideFlags: 0

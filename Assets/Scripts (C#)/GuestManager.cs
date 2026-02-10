@@ -219,32 +219,68 @@ public class GuestManager : MonoBehaviour
     // Order / Evaluate / React / Leave
     // =========================
 
-    private void BeginOrder()
+   private void BeginOrder()
     {
-        // 주문 생성(레시피 랜덤)
+        // 1. 주문 생성 (레시피 랜덤 선택)
         List<DrinkRecipe> recipes = GameManager.instance.allRecipes;
+        
+        // 안전 장치: 레시피가 없으면 에러 방지
         if (recipes == null || recipes.Count == 0)
         {
-            //Debug.LogError("메뉴판(Recipes)이 비어있습니다! GameManager를 확인하세요.");
-            // 주문 생성 실패면 손님을 보내버리고 다음으로 넘김
+            Debug.LogError("메뉴판(Recipes)이 비어있습니다! GameManager를 확인하세요.");
+            // 주문 실패 처리 후 넘어감
             evaluateLocked = true;
             EnterEvaluate(submitted: false, madeDrinkName: null);
             return;
         }
 
+        // 랜덤 메뉴 선택
         int randomIndex = Random.Range(0, recipes.Count);
         DrinkRecipe selectedMenu = recipes[randomIndex];
         currentOrderName = selectedMenu.drinkName;
 
-        // GameManager에 저장(네 기존 구조 유지)
+        // 2. GameManager에 주문 정보 저장 (MakeManager가 알 수 있게)
         GameManager.instance.currentOrderName = currentOrderName;
 
-        // UI
+
+        // 3. ★ [핵심 추가] GameManager에 '현재 손님(currentGuest)' 정보 등록
+        if (currentGuest != null)
+        {
+            // 유령 오브젝트 이름에서 "(Clone)" 글자 제거 (예: "Ghost_Girl(Clone)" -> "Ghost_Girl")
+            // 공백 제거(.Trim)까지 해서 깔끔한 ID 생성
+            string guestID = currentGuest.name.Replace("(Clone)", "").Trim();
+
+            // GameManager의 전체 손님 명부에서 이 이름(ID)을 가진 데이터를 찾음
+            GuestData data = GameManager.instance.allGuests.Find(g => g.guestName == guestID);
+
+            // 만약 처음 등장한 손님이라 데이터가 없다면? -> 새로 만들어서 등록!
+            if (data == null)
+            {
+                data = new GuestData();
+                data.guestName = guestID;
+                data.maxSatisfaction = 100; // 성불 목표치 (기본 100)
+                data.currentSatisfaction = 0; // 현재 만족도 0
+                data.isAscended = false;
+                
+                // 명부에 추가
+                GameManager.instance.allGuests.Add(data);
+                Debug.Log($"새로운 손님 데이터 생성: {guestID}");
+            }
+
+            // ★ GameManager에게 "지금 와있는 손님이 이 사람이야!"라고 알려줌
+            GameManager.instance.currentGuest = data;
+        }
+
+
+        // 4. UI 업데이트 (말풍선, 버튼 활성화)
         if (speechBubbleText != null) speechBubbleText.text = currentOrderName;
         if (makeButton != null) makeButton.interactable = true;
 
-        // 인내심 시작
+        // 5. 인내심 타이머 시작
         StartPatience();
+        
+        // (참고) 튜토리얼 로직은 MakeScene으로 넘어갔을 때 MakeManager가 
+        // GameManager.currentOrderName을 보고 알아서 판단하므로 여기선 호출 안 해도 됩니다.
     }
     //인내심 로직
     private void StartPatience()
@@ -288,7 +324,7 @@ public class GuestManager : MonoBehaviour
     {
         state = State.Evaluate;
 
-        // 인내심 종료
+        // 1. 인내심 타이머 정지 및 숨기기
         if (patienceRoutine != null)
         {
             StopCoroutine(patienceRoutine);
@@ -296,29 +332,46 @@ public class GuestManager : MonoBehaviour
         }
         if (patienceSlider != null) patienceSlider.gameObject.SetActive(false);
 
-        // 판정
+        // 2. 성공 여부 판정
         bool success = false;
-        /*
+        
         if (submitted && !string.IsNullOrEmpty(madeDrinkName))
         {
+            // 주문한 음료 이름과 만든 음료 이름이 같은지 확인
             success = (madeDrinkName == currentOrderName);
         }
         else
         {
-            success = false; // 타임아웃/미제출은 실패
+            success = false; // 시간 초과 또는 미제출
         }
 
-        lastResultSuccess = success;
-        
+        lastResultSuccess = success; // 결과 저장 (React에서 씀)
 
-        // 성불도/성공횟수 업데이트는 성공 확정 순간(여기)에서만
-        lastAscensionUp = false;
-        if (success && currentProgress != null)
+        // 3. ★ 핵심 로직 추가 (경험치, 성불 수치) ★
+        if (success)
         {
-            lastAscensionUp = currentProgress.OnOrderSuccess();
+            Debug.Log("제조 성공!");
+            
+            // A. 경험치 획득 (예: 10점)
+            GameManager.instance.GainExp(10); 
+
+            // B. 현재 손님의 만족도(성불 수치) 증가 (예: 34점)
+            // currentGuest.name은 "Ghost_Girl(Clone)" 처럼 나올 수 있으니 
+            // 실제 데이터 ID 관리를 위해선 프리팹 이름이나 별도 ID가 필요하지만, 
+            // 일단 화면에 떠있는 유령 이름으로 매칭한다고 가정합니다.
+            
+            // 주의: 프리팹 이름이 정확히 데이터와 일치해야 함. 
+            // 팀원이 만든 프리팹 이름 규칙을 확인 필요. 여기선 currentGuest.name을 사용.
+            string guestID = currentGuest.name.Replace("(Clone)", "").Trim(); 
+            GameManager.instance.UpdateGuestSatisfaction(guestID, 34); 
         }
-        */
-        // React로 넘어가기
+        else
+        {
+            Debug.Log("제조 실패...");
+            // 실패 시 패널티가 있다면 여기에 추가
+        }
+
+        // 반응 단계로 이동
         EnterReact();
     }
     //이후 성불도 로직과 연결
@@ -326,21 +379,21 @@ public class GuestManager : MonoBehaviour
     {
         state = State.React;
 
-        // React는 "보여주기"만: 데이터 변경 X
         if (speechBubbleText != null)
         {
             if (lastResultSuccess)
             {
-                //성불도 상승 및 애니메이터
+                speechBubbleText.text = "맛있어! (성불 수치 UP)";
+                // 여기에 하트 이모티콘이나 성공 효과음 재생 코드 추가 가능
             }
             else
             {
-                //성불도 하강
+                speechBubbleText.text = "이게 아니야... (실망)";
+                // 여기에 실패 효과음 재생 코드 추가 가능
             }
         }
-
-        // React 끝나면 FlowRoutine에서 leave로 넘어감
-    }
+    }  
+        // React 시간이 지나면 FlowRoutine에서 자동으로 Leave(퇴장)로 넘어감
     
     private void EnterLeave()
     {
