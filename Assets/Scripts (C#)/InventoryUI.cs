@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class InventoryUI : MonoBehaviour
 {
-    public GameObject inventoryPanel; // InventoryUI 자기 자신 또는 내부 패널
+    public GameObject inventoryPanel; 
     bool activeInventory = false; // 현재 인벤토리가 켜져 있는지 확인
 
     void Start()
