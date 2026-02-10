@@ -1,9 +1,10 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     public GameObject attackArea; // 공격 범위
-    
+    public GameObject weapon;
     [Header("데이터 에셋")]
     public PlayerInfo info;
 
@@ -15,12 +16,11 @@ public class Player : MonoBehaviour
     public float health;
 
 
-    //bool canAttack; //공격 가능 상태 판단
-    //bool isAttack; // 공격 중인 상태 판단
-    //public float attackTimer;//공격 시간 계산
-    //public float cooltimeTimer; // 공격 쿨타임
-    public Vector2 inputVec;
     
+    public float attackTimer;//weapon 휘두르는 시간
+    public float cooltimeTimer; // 공격 쿨타임
+    public Vector2 inputVec;
+    bool canAttack;
     public float maxHealth;
     public Transform spawnPoint;
     void Init()
@@ -30,17 +30,20 @@ public class Player : MonoBehaviour
         transform.position = spawnPoint.position; // 리스폰포인트에서 시작
         health = maxHealth; // 체력 최대치로 조정
         rigid.linearVelocity = Vector2.zero; // 속도 조절
-        //cooltimeTimer = 1.5f; //공격 쿨타임 설정
-        //attackTimer = 0.5f; //공격 시간 -> 사실 필요한지 잘 모르겠음
         gameObject.SetActive(true); 
     }
     Rigidbody2D rigid;
     SpriteRenderer spriter;
-    Monster monster;
+    
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
+    }
+
+    private void Start()
+    {
+        Init(); 
     }
     private void FixedUpdate() //기본 이동
     {
@@ -50,20 +53,17 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-        //if(cooltimeTimer > 0f) // 공격 쿨타임이 남았다면
-        //{
-        //    cooltimeTimer -= Time.deltaTime; // 쿨타임 감소
-        //}
-        //if(isAttack) // 공격 가능한 상태라면 
-        //{
-        //    attackTimer -= Time.deltaTime; //공격지속시간
-        //    if(attackTimer <= 0)
-        //    {
-        //        attackArea.SetActive(false);
-        //        isAttack = false;
-
-        //    }
-        //}
+        if (cooltimeTimer > 0f) // 공격 쿨타임이 남았다면
+        {
+            cooltimeTimer -= Time.deltaTime; // 쿨타임 감소
+        }
+        else
+        {
+            canAttack = true;
+            
+        }
+            
+        
     }
     private void LateUpdate()
     {
@@ -76,21 +76,16 @@ public class Player : MonoBehaviour
     {
         inputVec = value.Get<Vector2>();
     }
-    //void OnAttack(InputValue value)
-    //{
-    //    canAttack = !(cooltimeTimer > 0f) || !(isAttack);
-    //    if (value.isPressed && canAttack)
-    //    {
-    //        monster.TakeDamage(10f); // 임시값
-    //    }
-    //}
+  
+
 
     private void OnTriggerEnter2D(Collider2D collision) // 몬스터에 의한 체력 감소 및 사망
     {
-        if (!collision.CompareTag("Monster")) //아직 태그 없어서 추가해야함
+        if (!collision.CompareTag("Monster")) 
             return;
-        
+        var monster = collision.GetComponentInParent<Monster>();
         health -= monster.monsterDamage; //<- 데미지 선언하고서
+        Debug.Log("플레이어가공격받음");
 
         if (health > 0)
         {// 살아있음
@@ -112,6 +107,38 @@ public class Player : MonoBehaviour
         playerDamage = info.playerDamage;
         speed = info.speed;
         maxHealth = info.maxHealth;
-}
+        attackTimer = info.attackTimer;
+        cooltimeTimer = info.cooltimeTimer;
+    }
+
+
+    IEnumerator Attack()
+    {
+        weapon.SetActive(true);
+        Debug.Log("무기 활성화");
+        yield return new WaitForSeconds(attackTimer);
+        weapon.SetActive(false);
+        Debug.Log("무기비활성화");
+    }
+    void OnAttack(InputValue value)
+    {
+       
+        if (value.isPressed)
+        {
+            if (!canAttack)
+                return;
+            else
+            {
+                Debug.Log("공격");
+                StartCoroutine(Attack());
+                canAttack = false;
+                Debug.Log("쿨타임시작");
+            }
+            
+            
+           
+        }
+
+    }
 }
 
