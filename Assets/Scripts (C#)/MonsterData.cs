@@ -15,12 +15,12 @@ public class DropMaterialInfo
 [Serializable]
 public class MonsterInfo
 {
-    [Header("몬스터 스탯")]
+    [Header("레벨 체력 대미지")]
     public int level;
     public float maxHealth;
     public float monsterDamage;
 
-    [Header("몬스터 이동 관련")]
+    [Header("이동 관련")]
     public float speed;
     public float changeDirIntervalMin; 
     public float changeDirIntervalMax; //다음 이동까지 걸리는 시간을 최대~최소 사이 랜덤으로! 
@@ -28,15 +28,18 @@ public class MonsterInfo
 
     [Header("드랍 재료 리스트")]
     public List<DropMaterialInfo> dropMaterials = new List<DropMaterialInfo>();
+    
 }
 
 [Serializable]
 public class SpawnAreaInfo
-{
-    [Header("스폰 Area")]
+{   
+    [Header("스폰 수")]
     public int maxSpawnCount;
-
-    [Header("몬스터 프리팹")]
+    [Header("하이라이키 부모")]
+    public Transform monstersParent;
+    
+    [Header("프리팹")]
     public GameObject monsterPrefab;
 
     [Header("몬스터 데이터")]

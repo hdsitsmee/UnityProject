@@ -1,4 +1,3 @@
-using System.Threading;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -7,34 +6,37 @@ public class Monster : MonoBehaviour
     [Header("몬스터 정보")]
     public int level;
     public float maxHealth;
-    public float monsterDamage; 
+    public float monsterDamage;
+
     [Header("몬스터 개별 체력(런타임)")]
     public float health;
 
     [Header("바닥 타일맵(이동 구역)")]
     public Tilemap floorTilemap;
-    // 몬스터마다 이동 구역 Tilemap_Floor 지정함
+
+    [HideInInspector] public MonsterSpawner spawner;
 
     private float speed;
     private float changeDirIntervalMin;
     private float changeDirIntervalMax;
 
     Rigidbody2D rigidbody;
-    
 
     Vector2 dir;
     float timer;
 
+    // "게임플레이로 죽어서" 비활성화되는 경우만 리스폰 예약
+    bool diedByGameplay;
+
     void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
-        
-        health = maxHealth; // ApplyMonsterInfo가 Start 전에 호출되면 이 값이 덮어써짐
-        
+        health = maxHealth;
     }
 
     void OnEnable()
     {
+        diedByGameplay = false; // 재사용될 때 초기화
         RandomDirection();
         ResetTimer();
     }
@@ -44,13 +46,11 @@ public class Monster : MonoBehaviour
         Vector2 current = rigidbody.position;
         Vector2 nextPos = current + dir * speed * Time.fixedDeltaTime;
 
-        //바닥 타일맵이 지정되어 있으면: 다음 위치가 바닥 위인지 검사
         if (floorTilemap != null)
         {
-            Vector3Int cell = floorTilemap.WorldToCell(nextPos); //다음 이동 자리
+            Vector3Int cell = floorTilemap.WorldToCell(nextPos);
             if (!floorTilemap.HasTile(cell))
             {
-                //바닥이 아니면 이동하지 말고 방향만 바꾸기
                 RandomDirection();
                 ResetTimer();
                 return;
@@ -72,26 +72,24 @@ public class Monster : MonoBehaviour
         RandomDirection();
         ResetTimer();
 
-        // 임시: 벽에 부딪히면 체력 감소
-        health -= 0.1f;
+        // 임시: 부딪히면 체력 감소
+        health --;
 
+        if (health <= 0)
+        {
+            Die();    
+        }
         
-    
-       
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag("Weapon"))
             return;
-        health -= collision.GetComponent<Player>().playerDamage;
-        if (health > 0)
-            return;
 
-        else
-        {
+        health -= collision.GetComponent<Player>().playerDamage;
+        if (health <= 0f)
             Die();
-        }
     }
 
     void RandomDirection()
@@ -123,9 +121,18 @@ public class Monster : MonoBehaviour
         floorTilemap = info.moveAreaTilemap;
     }
 
-    
     void Die()
     {
+        if (!gameObject.activeSelf) return; // 중복 호출 방지
+
+        diedByGameplay = true;             // "죽음" 표시
+
+        // 여기서 바로 리스폰 예약을 걸고
+        if (spawner != null)
+            spawner.RequestRespawnOne();
+
+        // 풀로 반환
         gameObject.SetActive(false);
     }
+
 }
