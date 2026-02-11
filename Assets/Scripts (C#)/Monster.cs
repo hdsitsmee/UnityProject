@@ -84,9 +84,8 @@ public class Monster : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-<<<<<<< Updated upstream
-        if (!collision.CompareTag("Weapon"))
-=======
+
+
         if (collision.CompareTag("Weapon"))
         {
             var player = collision.GetComponentInParent<Player>();
@@ -97,11 +96,8 @@ public class Monster : MonoBehaviour
         }
         
 
-        if (health > 0)
->>>>>>> Stashed changes
-            return;
 
-        health -= collision.GetComponent<Player>().playerDamage;
+       
         if (health <= 0f)
             Die();
     }
