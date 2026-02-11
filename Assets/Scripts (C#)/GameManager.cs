@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     // ★ [추가됨] 현재 주문 중인 손님 정보를 담을 변수
     public GuestData currentGuest; 
     public string currentOrderName = ""; // 주문한 음료 이름
+    // ★ [추가됨] 인내심 게이지 및 말풍선을 붙이기 위한 위치 변수
+    public GameObject SpawnPoint;
     
     public static GameManager instance;
 
