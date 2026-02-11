@@ -14,6 +14,10 @@ public class Monster : MonoBehaviour
     [Header("바닥 타일맵(이동 구역)")]
     public Tilemap floorTilemap;
 
+    [Header("아이템 드롭 설정 (선영)")]
+    public ItemDatabase itemDatabase; 
+    public InventoryData playerInventory; 
+
     [HideInInspector] public MonsterSpawner spawner;
 
     private float speed;
@@ -136,6 +140,31 @@ public class Monster : MonoBehaviour
         if (!gameObject.activeSelf) return; // 중복 호출 방지
 
         diedByGameplay = true;             // "죽음" 표시
+
+        if (itemDatabase != null && playerInventory != null)
+        {
+            Item droppedItem = itemDatabase.GetRandomItemByLevel(this.level);
+
+            // droppedItem이 null이 아닐 때만 아래 코드 실행!
+            if (droppedItem != null)
+            {
+                playerInventory.AddItem(droppedItem);
+
+                // 팝업 인스턴스도 비어있는지 꼭 확인
+                if (AcquisitionPopup.instance != null)
+                {
+                    AcquisitionPopup.instance.ShowMessage(droppedItem.itemName);
+                }
+                else
+                {
+                    Debug.LogError("AcquisitionPopup 인스턴스가 씬에 없습니다!");
+                }
+            }
+            else
+            {
+                Debug.LogWarning(this.level + "레벨에 해당하는 아이템을 DB에서 찾을 수 없습니다.");
+            }
+        }
 
         // 여기서 바로 리스폰 예약을 걸고
         if (spawner != null)

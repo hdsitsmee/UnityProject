@@ -172,6 +172,8 @@ MonoBehaviour:
   monsterDamage: 0
   health: 0
   floorTilemap: {fileID: 0}
+  itemDatabase: {fileID: 11400000, guid: fa76393e083479f448cdb75441feb4ac, type: 2}
+  playerInventory: {fileID: 11400000, guid: 9d1b37d10fe5abe4496d2ce65f59ea44, type: 2}
   spawner: {fileID: 0}
 --- !u!1 &3445322813870152835
 GameObject:
