@@ -103,6 +103,8 @@ public class GuestManager : MonoBehaviour
     {
         // BOOT 게임 시작 
         state = State.Boot;
+        Debug.Log("State: Boot");
+
         ResetUI();
         DeactivateAllGhosts();
         currentGuest = null;
@@ -110,6 +112,7 @@ public class GuestManager : MonoBehaviour
 
         // WAIT_FIRST 첫손님 대기 3초
         state = State.WaitFirst;
+        Debug.Log("State: WaitFirst");
         yield return new WaitForSeconds(firstGuestDelay);
 
         // 2번째 손님부터는 계속 다음 손님 이후 3초 텀이므로 while에서 로직 진행
@@ -117,14 +120,18 @@ public class GuestManager : MonoBehaviour
         {
             // SPAWN 유령 랜덤 선택
             state = State.Spawn;
+            Debug.Log("State: Spawn");
+            evaluateLocked = false;
             SpawnNextGuest();
 
             // ARRIVE 유령 등장(=활성화)
             state = State.Arrive;
+            Debug.Log("State: Arrive");
             yield return new WaitForSeconds(arriveDuration);
 
             // ORDER 주문 생성(인내심 생성)
             state = State.Order;
+            Debug.Log("State: Order");
             BeginOrder();
 
             // ORDER 상태는 (1) SubmitDrink 호출 or (2) 인내심 타임아웃에서 Evaluate (유령 데이터 업뎃) 로 넘어감
@@ -195,6 +202,7 @@ public class GuestManager : MonoBehaviour
             return;
         }
 
+        //1. 다음 호출 후보 유령 저장 (직전 호출 유령 제외)
         List<int> candidates = new List<int>();
         for (int i = 0; i < pool.Count; i++)
         {
@@ -202,12 +210,15 @@ public class GuestManager : MonoBehaviour
             if (pool[i] != null) candidates.Add(i);
         }
 
+        //2. 후보 유령 없을 시 첫번째 유령 저장
         if (candidates.Count == 0)
             candidates.Add(0);
 
+        //3. 선택할 유령의 번호 랜덤 저장
         int picked = candidates[Random.Range(0, candidates.Count)];
         lastGuestId = picked;
 
+        //4. 랜덤 유령 활성화
         currentGuest = pool[picked];
         currentGuest.transform.position = spawnPoint.position;
         currentGuest.transform.rotation = spawnPoint.rotation;
@@ -221,6 +232,8 @@ public class GuestManager : MonoBehaviour
 
    private void BeginOrder()
     {
+        // 0. 인내심 게이지 테스트용
+        StartPatience();
         // 1. 주문 생성 (레시피 랜덤 선택)
         List<DrinkRecipe> recipes = GameManager.instance.allRecipes;
         
@@ -289,25 +302,39 @@ public class GuestManager : MonoBehaviour
     //인내심 로직
     private void StartPatience()
     {
-        if (patienceRoutine != null) 
+        Debug.Log($"[StartPatience] called. state={state}, timeScale={Time.timeScale}, patienceTime={patienceTime}");
+
+        if (patienceRoutine != null)
+        {
+            Debug.Log("[StartPatience] stop previous routine");
             StopCoroutine(patienceRoutine);
-        if (patienceSlider == null) 
+        }
+
+        if (patienceSlider == null)
+        {
+            Debug.LogError("[StartPatience] patienceSlider is NULL");
             return;
+        }
 
         patienceSlider.value = 1f;
         patienceSlider.gameObject.SetActive(true);
+        Debug.Log($"[StartPatience] slider activeInHierarchy={patienceSlider.gameObject.activeInHierarchy}, value={patienceSlider.value}");
 
         patienceRoutine = StartCoroutine(PatienceRoutine());
     }
 
     private IEnumerator PatienceRoutine()
     {
-        float t = 0f;
+        Debug.Log($"[PatienceRoutine] start frame. state={state}");
 
+        float t = 0f;
         while (t < patienceTime)
         {
-            // ORDER 상태가 아니면 종료
-            if (state != State.Order) yield break;
+            if (state != State.Order)
+            {
+                Debug.LogWarning($"[PatienceRoutine] yield break! state={state}");
+                yield break;
+            }
 
             t += Time.deltaTime;
             float normalized = 1f - (t / patienceTime);
@@ -316,7 +343,8 @@ public class GuestManager : MonoBehaviour
             yield return null;
         }
 
-        // 타임아웃 → Evaluate(자동 실패)
+        Debug.Log("[PatienceRoutine] timeout reached");
+
         if (state == State.Order && !evaluateLocked)
         {
             evaluateLocked = true;
