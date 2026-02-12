@@ -38,7 +38,7 @@ public class MakeManager : MonoBehaviour
     public string currentOrderName = ""; 
 
     private bool isTutorialMode = false;
-    private DrinkRecipe targetRecipe; 
+    private DrinkData targetRecipe; //[변경] 변수 형식 DrinkRecipe -> DrinkData
 
     void Awake()
     {
@@ -189,7 +189,7 @@ public class MakeManager : MonoBehaviour
         }
     }
 
-    void CheckResult(DrinkRecipe recipe)
+    void CheckResult(DrinkData recipe)
     {
         int matchCount = 0;
         int score = 0; 
