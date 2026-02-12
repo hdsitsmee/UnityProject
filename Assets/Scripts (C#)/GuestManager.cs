@@ -250,7 +250,7 @@ public class GuestManager : MonoBehaviour
         }
 
         // 랜덤 메뉴 선택
-        //[변경] DrinkRecipe -> DrinkData
+        //[🥨변경] DrinkRecipe -> DrinkData
         int randomIndex = Random.Range(0, recipes.Count);
         DrinkData selectedMenu = recipes[randomIndex];
         currentOrderName = selectedMenu.drinkName;
@@ -269,7 +269,6 @@ public class GuestManager : MonoBehaviour
 
             // GameManager의 전체 손님 명부에서 이 이름(ID)을 가진 데이터를 찾음
             GuestData data = GameManager.instance.allGuests.Find(g => g.guestName == guestID);
-
             // 만약 처음 등장한 손님이라 데이터가 없다면? -> 새로 만들어서 등록!
             if (data == null)
             {
@@ -311,19 +310,19 @@ public class GuestManager : MonoBehaviour
 
         if (patienceRoutine != null)
         {
-            Debug.Log("[StartPatience] stop previous routine");
+            //Debug.Log("[StartPatience] stop previous routine");
             StopCoroutine(patienceRoutine);
         }
 
         if (patienceSlider == null)
         {
-            Debug.LogError("[StartPatience] patienceSlider is NULL");
+            //Debug.LogError("[StartPatience] patienceSlider is NULL");
             return;
         }
 
         patienceSlider.value = 1f;
         patienceSlider.gameObject.SetActive(true);
-        Debug.Log($"[StartPatience] slider activeInHierarchy={patienceSlider.gameObject.activeInHierarchy}, value={patienceSlider.value}");
+        //Debug.Log($"[StartPatience] slider activeInHierarchy={patienceSlider.gameObject.activeInHierarchy}, value={patienceSlider.value}");
 
         patienceRoutine = StartCoroutine(PatienceRoutine());
     }
@@ -337,7 +336,7 @@ public class GuestManager : MonoBehaviour
         {
             if (state != State.Order)
             {
-                Debug.LogWarning($"[PatienceRoutine] yield break! state={state}");
+                //Debug.LogWarning($"[PatienceRoutine] yield break! state={state}");
                 yield break;
             }
 
@@ -348,7 +347,7 @@ public class GuestManager : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log("[PatienceRoutine] timeout reached");
+        //Debug.Log("[PatienceRoutine] timeout reached");
 
         if (state == State.Order && !evaluateLocked)
         {

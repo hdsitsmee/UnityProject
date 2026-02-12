@@ -905,25 +905,12 @@ MonoBehaviour:
     unlockLevel: 1
   recipebook: {fileID: 11400000, guid: 08ea9df2a4fb1e6468d0c190deb087c8, type: 2}
   allGuests:
-  - guestName: mini ghost
-    unlockLevel: 0
-    orderDrinkName: great water
-    currentSatisfaction: 0
-    maxSatisfaction: 0
-    isAscended: 0
-    hasMet: 0
-    guestIcon: {fileID: 4545883749223828353, guid: 35e1fa00577b6d04ba6d81dbf519521b, type: 3}
-    dialogue: hi
-  - guestName: cute ghost
-    unlockLevel: 0
-    orderDrinkName: best water
-    currentSatisfaction: 0
-    maxSatisfaction: 0
-    isAscended: 0
-    hasMet: 0
-    guestIcon: {fileID: 6027182998302029754, guid: 35e1fa00577b6d04ba6d81dbf519521b, type: 3}
-    dialogue: hi
-  currentGuest:
+  - {fileID: 11400000, guid: 9d8455934bb77e748ac43e2f8e259d0a, type: 2}
+  - {fileID: 11400000, guid: 26664023838df82438608b5f08d76ae3, type: 2}
+  - {fileID: 11400000, guid: f4e67ae6f1ba986499e030e85b92e318, type: 2}
+  - {fileID: 11400000, guid: 293dbb3b5646ded4789c6ed9b8bc906e, type: 2}
+  - {fileID: 11400000, guid: 1875f6763cf0be14a8cff750064b8026, type: 2}
+  CurrentGuest:
     guestName: 
     unlockLevel: 0
     orderDrinkName: 
@@ -933,6 +920,7 @@ MonoBehaviour:
     hasMet: 0
     guestIcon: {fileID: 0}
     dialogue: 
+  currentGuest: {fileID: 0}
   currentDrink: {fileID: 0}
   currentOrderName: 
   SpawnPoint: {fileID: 1540838711}
