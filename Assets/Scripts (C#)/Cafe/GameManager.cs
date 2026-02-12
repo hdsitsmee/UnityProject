@@ -7,15 +7,17 @@ public class GameManager : MonoBehaviour
     public static int money = 2500; // 초기 돈
     public int currentExp = 0;
     public int maxExp = 100;
-
-    [Header("# 게임 데이터")]
+    
+    [Header("# 게임 데이터")] //[전체 변경]
     public List<IngredientData> allIngredients; // 모든 재료 목록
-    public List<DrinkRecipe> allRecipes; // 모든 음료 레시피 목록
+    public DrinkRecipeBook recipebook; //[변경] 기존 public List<DrinkRecipe> allRecipe, 여기서 레시피 리스트 호출 : recipebook.allRecipes
     public List<GuestData> allGuests; // 모든 손님 목록
     
     // ★ [추가됨] 현재 주문 중인 손님 정보를 담을 변수
-    public GuestData currentGuest; 
+    public GuestData currentGuest;
+    public DrinkData currentDrink; //[변경] DrinkRecipe -> DrinkData
     public string currentOrderName = ""; // 주문한 음료 이름
+    
     // ★ [추가됨] 인내심 게이지 및 말풍선을 붙이기 위한 위치 변수
     public GameObject SpawnPoint;
     
@@ -60,15 +62,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 음료 이름 -> 레시피 반환 함수
-    public DrinkRecipe GetRecipeByName(string searchName)
+    //[변경]
+    //기존 allRecipe -> recipebook.allRecipes / 기존 DrinkRecipe -> DrinkData
+    //음료 이름 -> 레시피 반환 함수
+    public DrinkData GetRecipeByName(string searchName)
     {
-        foreach (DrinkRecipe recipe in allRecipes)
+        foreach (DrinkData recipe in recipebook.allRecipes)
         {
             if (recipe.drinkName == searchName)
-            {
                 return recipe;
-            }
         }
         // 오류 로그는 필요시 주석 해제
         // Debug.LogError("오류: " + searchName + " 레시피를 찾을 수 없습니다.");
@@ -104,15 +106,25 @@ public class GameManager : MonoBehaviour
     }
 }
 
-// 재료 설계도
+/// 재료 설계도
 [System.Serializable]
 public class IngredientData
 {
     public string ingredientName;
     public int unlockLevel;
 }
+/// <summary>
+// DrinkRecipe를 DrinkData로 변경 (DrinkRecipe 사용 x)
+// 기존 List<DrinkRecipe> allRecipe -> DrinkRecipeBook recipebook
+// 모든 레시피 호출은 recipebook.allRecipes로 호출, 이렇게 호출한 객체 = List
+// 사용 형태: List<DrinkData> recipes = GameManager.instance.recipebook.allRecipes;
+//------------------------------------------------------------------------
+// 기존 음료 레시피 -> DrinkData로 개별저장
+// 호출 시 DrinkData 변수로 호출 
+// Drink Data 내부 변수는 기존 클래스 그대로 유지
+// 데이터 내부 호출 시 DrinkData.drinkName, Drink.drinkIcon... 이런식
+/// </summary>
 
-// 음료 레시피
 [System.Serializable]
 public class DrinkRecipe
 {

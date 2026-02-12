@@ -235,10 +235,9 @@ public class GuestManager : MonoBehaviour
 
    private void BeginOrder()
     {
-        // 0. 인내심 게이지 테스트용
-        StartPatience();
         // 1. 주문 생성 (레시피 랜덤 선택)
-        List<DrinkRecipe> recipes = GameManager.instance.allRecipes;
+        //[변경] DrinkRecipe -> DrinkData, allRecipes -> recipebook.allRecipes
+        List<DrinkData> recipes = GameManager.instance.recipebook.allRecipes;
         
         // 안전 장치: 레시피가 없으면 에러 방지
         if (recipes == null || recipes.Count == 0)
@@ -251,11 +250,13 @@ public class GuestManager : MonoBehaviour
         }
 
         // 랜덤 메뉴 선택
+        //[변경] DrinkRecipe -> DrinkData
         int randomIndex = Random.Range(0, recipes.Count);
-        DrinkRecipe selectedMenu = recipes[randomIndex];
+        DrinkData selectedMenu = recipes[randomIndex];
         currentOrderName = selectedMenu.drinkName;
 
         // 2. GameManager에 주문 정보 저장 (MakeManager가 알 수 있게)
+        GameManager.instance.currentDrink = selectedMenu;
         GameManager.instance.currentOrderName = currentOrderName;
 
 

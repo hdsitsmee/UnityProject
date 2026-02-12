@@ -903,22 +903,7 @@ MonoBehaviour:
     unlockLevel: 0
   - ingredientName: dust
     unlockLevel: 1
-  allRecipes:
-  - drinkName: great water
-    unlockLevel: 0
-    requiredIngredients:
-    - water
-    - milk
-    hasMade: 0
-    drinkIcon: {fileID: 2812367099848127440, guid: 1500086ef7727a04083f485a5908569e, type: 3}
-  - drinkName: best water
-    unlockLevel: 0
-    requiredIngredients:
-    - water
-    - milk
-    - dust
-    hasMade: 0
-    drinkIcon: {fileID: 8771601579022747989, guid: 1500086ef7727a04083f485a5908569e, type: 3}
+  recipebook: {fileID: 11400000, guid: 08ea9df2a4fb1e6468d0c190deb087c8, type: 2}
   allGuests:
   - guestName: mini ghost
     unlockLevel: 0
@@ -948,6 +933,7 @@ MonoBehaviour:
     hasMet: 0
     guestIcon: {fileID: 0}
     dialogue: 
+  currentDrink: {fileID: 0}
   currentOrderName: 
   SpawnPoint: {fileID: 1540838711}
 --- !u!4 &479382597
@@ -1191,8 +1177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46276bf868c821f4996af2044df1293a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  screenOffset: {x: 120, y: 130}
-  useLateUpdate: 1
+  guestManager: {fileID: 1812139826}
+  screenOffset: {x: 120, y: 130, z: 0}
 --- !u!1 &547953301
 GameObject:
   m_ObjectHideFlags: 0
@@ -1617,8 +1603,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46276bf868c821f4996af2044df1293a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  screenOffset: {x: 10, y: 90}
-  useLateUpdate: 1
+  guestManager: {fileID: 1812139826}
+  screenOffset: {x: 10, y: 90, z: 0}
 --- !u!1 &617021002
 GameObject:
   m_ObjectHideFlags: 0
@@ -3660,12 +3646,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1540838711}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -350, y: -200, z: 2.275019}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1812139827}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1546801971
 GameObject:
@@ -4236,7 +4222,8 @@ Transform:
   m_LocalPosition: {x: 350, y: 200, z: -2.275019}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1540838712}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1829176622
@@ -4711,5 +4698,4 @@ SceneRoots:
   - {fileID: 1729518411}
   - {fileID: 479382597}
   - {fileID: 1812139827}
-  - {fileID: 1540838712}
   - {fileID: 1043855305}
