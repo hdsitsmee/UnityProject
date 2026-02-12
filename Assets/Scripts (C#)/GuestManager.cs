@@ -27,6 +27,13 @@ public class GuestManager : MonoBehaviour
     [Header("Patience")]
     public float patienceTime = 10f;
 
+    //[🍞 추가] 도감 활성화 -> 텍스트,인내심,말풍선 비활성화 조절
+    [Header("UI Gate Target")]
+    public GameObject uiGateTarget; // 이 오브젝트가 켜지면 UI를 강제로 숨김
+    public bool useUiGate = true;
+
+    private bool prevGateOn;
+
     //상태 열거 : 게임 시작, 첫손님 대기 3초, 유령 랜덤 선택, 유령 등장(=활성화), 주문 생성(인내심 생성), 유령 데이터 업뎃, 반응 (성공,실패), 퇴장(=비활성화), 다음손님 대기 3초
     private enum State
     {
@@ -64,10 +71,17 @@ public class GuestManager : MonoBehaviour
             OrderBullon.gameObject.SetActive(false);
         if (makeButton != null) 
             makeButton.interactable = false;
-        if (speechBubbleText != null) 
+        if (speechBubbleText != null)
+        {
+            speechBubbleText.gameObject.SetActive(false);
             speechBubbleText.text = "";
+        }
         if (patienceSlider != null) //인내심 게이지
             patienceSlider.gameObject.SetActive(false);
+
+        //[🍞 추가] 도감 활성화 -> 텍스트,인내심,말풍선 비활성화 조절 : 초기 상태 저장
+        prevGateOn = IsGateOn();
+        ApplyUiGate(prevGateOn);
     }
 
     void Start()
@@ -75,7 +89,17 @@ public class GuestManager : MonoBehaviour
         BuildPool();
         StartFlow();
     }
+    //[🍞 추가] 도감 활성화 -> 텍스트,인내심,말풍선 비활성화 조절 : 도감 활성화/비활성화 상태 감지
+    void Update()
+    {
+        if (!useUiGate) return;
 
+        bool gateOn = IsGateOn();
+        if (gateOn == prevGateOn) return;
+
+        prevGateOn = gateOn;
+        ApplyUiGate(gateOn);
+    }
     void OnDisable() //오브젝트 비활성화 시 호출
     {
         StopAllCoroutines(); //유령 퇴장(=비활성화) -> 코루틴 중단 (다음 유령 
@@ -294,7 +318,11 @@ public class GuestManager : MonoBehaviour
 
         // 4. UI 업데이트 (말풍선, 버튼 활성화)
         if (OrderBullon != null) OrderBullon.gameObject.SetActive(true); // [추가] 말풍선 활성화
-        if (speechBubbleText != null) speechBubbleText.text = currentOrderName;
+        if (speechBubbleText != null)
+        {
+            speechBubbleText.gameObject.SetActive(true);
+            speechBubbleText.text = currentOrderName;
+        }
         if (makeButton != null) makeButton.interactable = true;
 
         // 5. 인내심 타이머 시작
@@ -419,11 +447,13 @@ public class GuestManager : MonoBehaviour
         {
             if (lastResultSuccess)
             {
+                speechBubbleText.gameObject.SetActive(true);
                 speechBubbleText.text = "맛있어! (성불 수치 UP)";
                 // 여기에 하트 이모티콘이나 성공 효과음 재생 코드 추가 가능
             }
             else
             {
+                speechBubbleText.gameObject.SetActive(true);
                 speechBubbleText.text = "이게 아니야... (실망)";
                 // 여기에 실패 효과음 재생 코드 추가 가능
             }
@@ -456,8 +486,11 @@ public class GuestManager : MonoBehaviour
         // UI 정리
         if (OrderBullon !=  null)
             OrderBullon.gameObject.SetActive(false); // [추가] 말풍선 비활성화
-        if (speechBubbleText != null) 
+        if (speechBubbleText != null)
+        {
+            speechBubbleText.gameObject.SetActive(false);
             speechBubbleText.text = "";
+        }
         if (patienceSlider != null) 
             patienceSlider.gameObject.SetActive(false);
 
@@ -467,8 +500,102 @@ public class GuestManager : MonoBehaviour
     private void ResetUI()
     {
         if (OrderBullon != null) OrderBullon.gameObject.SetActive(false); // [추가] 말풍선 비활성화
-        if (speechBubbleText != null) speechBubbleText.text = "";
+        if (speechBubbleText != null)
+        {
+            speechBubbleText.gameObject.SetActive(true);
+            speechBubbleText.text = "";
+        }
         if (makeButton != null) makeButton.interactable = false;
         if (patienceSlider != null) patienceSlider.gameObject.SetActive(false);
+    }
+
+    //[🍞 추가] 도감 활성화 -> 텍스트,인내심,말풍선 비활성화 조절
+    //1. 도감 panal 활성화 여부 return
+    private bool IsGateOn()
+    {
+        // 타겟이 없으면 OFF로 간주(원래 UI 로직 그대로)
+        if (uiGateTarget == null) return false;
+        return uiGateTarget.activeInHierarchy;
+    }
+    //2. 도감 panal 활성화 -> ui 정리
+    private void ApplyUiGate(bool gateOn)
+    {
+        if (gateOn)
+        {
+            // 도감 ON -> 강제 비활성화(숨김)
+            if (OrderBullon != null) OrderBullon.SetActive(false);
+
+            if (speechBubbleText != null)
+            {
+                speechBubbleText.text = "";
+                speechBubbleText.gameObject.SetActive(false);
+            }
+
+            if (patienceSlider != null)
+                patienceSlider.gameObject.SetActive(false);
+
+            if (makeButton != null)
+                makeButton.interactable = false;
+
+            return;
+        }
+
+        // 도감 OFF -> 원상복구(현재 state 기준으로 복원)
+        RestoreUIForCurrentState();
+    }
+    // 도감 OFF -> 원상복구(현재 state 기준으로 복원)
+    private void RestoreUIForCurrentState()
+    {
+
+        switch (state)
+        {
+            case State.Order:
+                if (OrderBullon != null) OrderBullon.SetActive(true);
+
+                if (speechBubbleText != null)
+                {
+                    speechBubbleText.gameObject.SetActive(true);
+                    speechBubbleText.text = currentOrderName; // 주문명 복원
+                }
+
+                if (makeButton != null) makeButton.interactable = true;
+
+                if (patienceSlider != null)
+                    patienceSlider.gameObject.SetActive(true); // Order 중이면 인내심 표시
+                break;
+
+            case State.React:
+
+                if (OrderBullon != null) OrderBullon.SetActive(true);
+
+                if (speechBubbleText != null)
+                {
+                    speechBubbleText.gameObject.SetActive(true);
+                    // text 복원
+                    speechBubbleText.text = lastResultSuccess ? "맛있어! (성불 수치 UP)" : "이게 아니야... (실망)";
+                }
+
+                if (makeButton != null) makeButton.interactable = false;
+
+                if (patienceSlider != null)
+                    patienceSlider.gameObject.SetActive(false);
+                break;
+
+            default:
+                // 그 외 상태는 기본적으로 UI 숨김
+                if (OrderBullon != null) OrderBullon.SetActive(false);
+
+                if (speechBubbleText != null)
+                {
+                    speechBubbleText.text = "";
+                    speechBubbleText.gameObject.SetActive(false);
+                }
+
+                if (makeButton != null) makeButton.interactable = false;
+
+                if (patienceSlider != null)
+                    patienceSlider.gameObject.SetActive(false);
+                break;
+        }
     }
 }

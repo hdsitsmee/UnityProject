@@ -1,20 +1,20 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 [CreateAssetMenu(fileName = "GuestData", menuName = "Data_Cafe/GuestData")]
 public class GuestData : ScriptableObject
 {
     [Header("# Main Info")]
-    public GameObject ghostPrefab; //[Ãß°¡] ÇÁ¸®Æé ÀúÀå º¯¼ö
-    public string guestName; // ¼Õ´Ô ÀÌ¸§
+    public GameObject ghostPrefab; //[ğŸ¥¨ì¶”ê°€] í”„ë¦¬í© ì €ì¥ ë³€ìˆ˜
+    public string guestName; // ì†ë‹˜ ì´ë¦„
     public Sprite guestIcon;
-    public int currentSatisfaction = 0; // ÇöÀç ¸¸Á·µµ (0ºÎÅÍ ½ÃÀÛ)
-    public int maxSatisfaction = 100;   // ¸ñÇ¥ ¸¸Á·µµ (¼ººÒ ±âÁØ, ±âº» 100)
-    public string orderDrinkName; // ÁÖ¹®ÇÒ À½·á
+    public int currentSatisfaction = 0; // í˜„ì¬ ë§Œì¡±ë„ (0ë¶€í„° ì‹œì‘)
+    public int maxSatisfaction = 100;   // ëª©í‘œ ë§Œì¡±ë„ (ì„±ë¶ˆ ê¸°ì¤€, ê¸°ë³¸ 100)
+    public string orderDrinkName; // ì£¼ë¬¸í•  ìŒë£Œ
     [Header("# Level Info")]
-    public int unlockLevel; // µîÀå ·¹º§
+    public int unlockLevel; // ë“±ì¥ ë ˆë²¨
     [Header("# Ascended/hasMet Info")]
-    public bool isAscended = false; // ¼ººÒ ¿©ºÎ
+    public bool isAscended = false; // ì„±ë¶ˆ ì—¬ë¶€
     public bool hasMet = false;
     [TextArea]
-    public string dialogue; // ´ë»ç
+    public string dialogue; // ëŒ€ì‚¬
 }
