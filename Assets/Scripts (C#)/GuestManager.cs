@@ -8,6 +8,7 @@ public class GuestManager : MonoBehaviour
 {
     [Header("UI")]
     public TMP_Text speechBubbleText;
+    public GameObject OrderBullon; // [추가] 말풍선 UI
     public Button makeButton;
     public Slider patienceSlider;
 
@@ -59,6 +60,8 @@ public class GuestManager : MonoBehaviour
             spawnPoint = transform;
 
         // UI 기본 정리
+        if (OrderBullon != null) // [추가] 말풍선 UI 비활성화
+            OrderBullon.gameObject.SetActive(false);
         if (makeButton != null) 
             makeButton.interactable = false;
         if (speechBubbleText != null) 
@@ -290,6 +293,7 @@ public class GuestManager : MonoBehaviour
 
 
         // 4. UI 업데이트 (말풍선, 버튼 활성화)
+        if (OrderBullon != null) OrderBullon.gameObject.SetActive(true); // [추가] 말풍선 활성화
         if (speechBubbleText != null) speechBubbleText.text = currentOrderName;
         if (makeButton != null) makeButton.interactable = true;
 
@@ -450,6 +454,8 @@ public class GuestManager : MonoBehaviour
         currentGuest = null;
 
         // UI 정리
+        if (OrderBullon !=  null)
+            OrderBullon.gameObject.SetActive(false); // [추가] 말풍선 비활성화
         if (speechBubbleText != null) 
             speechBubbleText.text = "";
         if (patienceSlider != null) 
@@ -460,6 +466,7 @@ public class GuestManager : MonoBehaviour
 
     private void ResetUI()
     {
+        if (OrderBullon != null) OrderBullon.gameObject.SetActive(false); // [추가] 말풍선 비활성화
         if (speechBubbleText != null) speechBubbleText.text = "";
         if (makeButton != null) makeButton.interactable = false;
         if (patienceSlider != null) patienceSlider.gameObject.SetActive(false);
