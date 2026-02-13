@@ -1,48 +1,51 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
-    public GameObject attackArea; // °ø°Ý ¹üÀ§
-    
-    [Header("µ¥ÀÌÅÍ ¿¡¼Â")]
+    public GameObject attackArea; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public GameObject weapon;
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     public PlayerInfo info;
 
    
 
-    [Header("·±Å¸ÀÓ ½ºÅÈ(½ÇÁ¦·Î »ç¿ëÇÏ´Â °ª)")]
+    [Header("ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½)")]
     public float playerDamage;
     public float speed;
     public float health;
 
 
-    //bool canAttack; //°ø°Ý °¡´É »óÅÂ ÆÇ´Ü
-    //bool isAttack; // °ø°Ý ÁßÀÎ »óÅÂ ÆÇ´Ü
-    //public float attackTimer;//°ø°Ý ½Ã°£ °è»ê
-    //public float cooltimeTimer; // °ø°Ý ÄðÅ¸ÀÓ
-    public Vector2 inputVec;
     
+    public float attackTimer;//weapon ï¿½ÖµÎ¸ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
+    public float cooltimeTimer; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½
+    public Vector2 inputVec;
+    bool canAttack;
     public float maxHealth;
     public Transform spawnPoint;
     void Init()
     {
         ApplyPlayerInfo(info);
      
-        transform.position = spawnPoint.position; // ¸®½ºÆùÆ÷ÀÎÆ®¿¡¼­ ½ÃÀÛ
-        health = maxHealth; // Ã¼·Â ÃÖ´ëÄ¡·Î Á¶Á¤
-        rigid.linearVelocity = Vector2.zero; // ¼Óµµ Á¶Àý
-        //cooltimeTimer = 1.5f; //°ø°Ý ÄðÅ¸ÀÓ ¼³Á¤
-        //attackTimer = 0.5f; //°ø°Ý ½Ã°£ -> »ç½Ç ÇÊ¿äÇÑÁö Àß ¸ð¸£°ÚÀ½
+        transform.position = spawnPoint.position; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        health = maxHealth; // Ã¼ï¿½ï¿½ ï¿½Ö´ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        rigid.linearVelocity = Vector2.zero; // ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½
         gameObject.SetActive(true); 
     }
     Rigidbody2D rigid;
     SpriteRenderer spriter;
-    Monster monster;
+    
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
     }
-    private void FixedUpdate() //±âº» ÀÌµ¿
+
+    private void Start()
+    {
+        Init(); 
+    }
+    private void FixedUpdate() //ï¿½âº» ï¿½Ìµï¿½
     {
         if (Time.timeScale == 0f) return;
         Vector2 nextVec = inputVec * speed * Time.fixedDeltaTime;
@@ -51,13 +54,13 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-        //if(cooltimeTimer > 0f) // °ø°Ý ÄðÅ¸ÀÓÀÌ ³²¾Ò´Ù¸é
+        //if(cooltimeTimer > 0f) // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ò´Ù¸ï¿½
         //{
-        //    cooltimeTimer -= Time.deltaTime; // ÄðÅ¸ÀÓ °¨¼Ò
+        //    cooltimeTimer -= Time.deltaTime; // ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         //}
-        //if(isAttack) // °ø°Ý °¡´ÉÇÑ »óÅÂ¶ó¸é 
+        //if(isAttack) // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¶ï¿½ï¿½ 
         //{
-        //    attackTimer -= Time.deltaTime; //°ø°ÝÁö¼Ó½Ã°£
+        //    attackTimer -= Time.deltaTime; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó½Ã°ï¿½
         //    if(attackTimer <= 0)
         //    {
         //        attackArea.SetActive(false);
@@ -70,7 +73,7 @@ public class Player : MonoBehaviour
     private void LateUpdate()
     {
         if (Time.timeScale == 0f) return;
-        if (inputVec.x != 0) // °È±â
+        if (inputVec.x != 0) // ï¿½È±ï¿½
         {
             spriter.flipX = inputVec.x < 0;
         }
@@ -79,34 +82,29 @@ public class Player : MonoBehaviour
     {
         inputVec = value.Get<Vector2>();
     }
-    //void OnAttack(InputValue value)
-    //{
-    //    canAttack = !(cooltimeTimer > 0f) || !(isAttack);
-    //    if (value.isPressed && canAttack)
-    //    {
-    //        monster.TakeDamage(10f); // ÀÓ½Ã°ª
-    //    }
-    //}
+  
 
-    private void OnTriggerEnter2D(Collider2D collision) // ¸ó½ºÅÍ¿¡ ÀÇÇÑ Ã¼·Â °¨¼Ò ¹× »ç¸Á
+
+    private void OnTriggerEnter2D(Collider2D collision) // ï¿½ï¿½ï¿½Í¿ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½
     {
-        if (!collision.CompareTag("Monster")) //¾ÆÁ÷ ÅÂ±× ¾ø¾î¼­ Ãß°¡ÇØ¾ßÇÔ
+        if (!collision.CompareTag("Monster")) 
             return;
-        
-        health -= monster.monsterDamage; //<- µ¥¹ÌÁö ¼±¾ðÇÏ°í¼­
+        var monster = collision.GetComponentInParent<Monster>();
+        health -= monster.monsterDamage; //<- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ï¿½
+        Debug.Log("ï¿½Ã·ï¿½ï¿½Ì¾î°¡ï¿½ï¿½ï¿½Ý¹ï¿½ï¿½ï¿½");
 
         if (health > 0)
-        {// »ì¾ÆÀÖÀ½
+        {// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
         }
-        else // »ç¸ÁÃ³¸® ÈÄ ¸®½ºÆù
+        else // ï¿½ï¿½ï¿½Ã³ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
             Respawn();
         }
     }    
     void Respawn() 
     { 
-         Init(); // ÃÊ±â ½ºÅÝÀ¸·Î ¼³Á¤
+         Init(); // ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
 
@@ -115,6 +113,38 @@ public class Player : MonoBehaviour
         playerDamage = info.playerDamage;
         speed = info.speed;
         maxHealth = info.maxHealth;
-}
+        attackTimer = info.attackTimer;
+        cooltimeTimer = info.cooltimeTimer;
+    }
+
+
+    IEnumerator Attack()
+    {
+        weapon.SetActive(true);
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­");
+        yield return new WaitForSeconds(attackTimer);
+        weapon.SetActive(false);
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½È°ï¿½ï¿½È­");
+    }
+    void OnAttack(InputValue value)
+    {
+       
+        if (value.isPressed)
+        {
+            if (!canAttack)
+                return;
+            else
+            {
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½");
+                StartCoroutine(Attack());
+                canAttack = false;
+                Debug.Log("ï¿½ï¿½Å¸ï¿½Ó½ï¿½ï¿½ï¿½");
+            }
+            
+            
+           
+        }
+
+    }
 }
 

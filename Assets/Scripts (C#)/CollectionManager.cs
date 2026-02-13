@@ -38,7 +38,8 @@ public class CollectionManager : MonoBehaviour
         ClearSlots(); // 기존 목록 지우기
 
         // GameManager에 있는 모든 레시피를 가져옴
-        foreach (var recipe in GameManager.instance.allRecipes)
+        //[🥨변경] 기존 allRecipes -> recipebook.allRecipes
+        foreach (var recipe in GameManager.instance.recipebook.allRecipes)
         {
             GameObject go = Instantiate(slotPrefab, contentArea);
             CollectionSlot slot = go.GetComponent<CollectionSlot>();

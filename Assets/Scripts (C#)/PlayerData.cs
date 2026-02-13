@@ -20,8 +20,22 @@ public class PlayerInfo : ScriptableObject
     public float speed = 3;
 
     [Header("플레이어 공격 관련")]
-    public float temp;
+    public float attackTimer =0.5f;
+    public float cooltimeTimer = 0.1f;
 }
 
 
+[Serializable]
+public class WeaponInfo : ScriptableObject
+{
 
+    [Header("무기 레벨")]
+    public int weaponLevel;
+
+    [Header("무기 스탯")]
+
+    public float WeaponDamage = 5f;
+
+
+  
+}

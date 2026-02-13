@@ -88,10 +88,20 @@ public class Monster : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Weapon"))
-            return;
 
-        health -= collision.GetComponent<Player>().playerDamage;
+
+        if (collision.CompareTag("Weapon"))
+        {
+            var player = collision.GetComponentInParent<Player>();
+            if (player == null) return;
+
+            health -= player.playerDamage;
+            Debug.Log("몬스터가공격받음");
+        }
+        
+
+
+       
         if (health <= 0f)
             Die();
     }

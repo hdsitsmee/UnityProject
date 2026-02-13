@@ -8,6 +8,7 @@ public class GuestManager : MonoBehaviour
 {
     [Header("UI")]
     public TMP_Text speechBubbleText;
+    public GameObject OrderBullon; // [추가] 말풍선 UI
     public Button makeButton;
     public Slider patienceSlider;
 
@@ -25,6 +26,13 @@ public class GuestManager : MonoBehaviour
 
     [Header("Patience")]
     public float patienceTime = 10f;
+
+    //[🍞 추가] 도감 활성화 -> 텍스트,인내심,말풍선 비활성화 조절
+    [Header("UI Gate Target")]
+    public GameObject uiGateTarget; // 이 오브젝트가 켜지면 UI를 강제로 숨김
+    public bool useUiGate = true;
+
+    private bool prevGateOn;
 
     //상태 열거 : 게임 시작, 첫손님 대기 3초, 유령 랜덤 선택, 유령 등장(=활성화), 주문 생성(인내심 생성), 유령 데이터 업뎃, 반응 (성공,실패), 퇴장(=비활성화), 다음손님 대기 3초
     private enum State
@@ -59,12 +67,21 @@ public class GuestManager : MonoBehaviour
             spawnPoint = transform;
 
         // UI 기본 정리
+        if (OrderBullon != null) // [추가] 말풍선 UI 비활성화
+            OrderBullon.gameObject.SetActive(false);
         if (makeButton != null) 
             makeButton.interactable = false;
-        if (speechBubbleText != null) 
+        if (speechBubbleText != null)
+        {
+            speechBubbleText.gameObject.SetActive(false);
             speechBubbleText.text = "";
+        }
         if (patienceSlider != null) //인내심 게이지
             patienceSlider.gameObject.SetActive(false);
+
+        //[🍞 추가] 도감 활성화 -> 텍스트,인내심,말풍선 비활성화 조절 : 초기 상태 저장
+        prevGateOn = IsGateOn();
+        ApplyUiGate(prevGateOn);
     }
 
     void Start()
@@ -72,7 +89,17 @@ public class GuestManager : MonoBehaviour
         BuildPool();
         StartFlow();
     }
+    //[🍞 추가] 도감 활성화 -> 텍스트,인내심,말풍선 비활성화 조절 : 도감 활성화/비활성화 상태 감지
+    void Update()
+    {
+        if (!useUiGate) return;
 
+        bool gateOn = IsGateOn();
+        if (gateOn == prevGateOn) return;
+
+        prevGateOn = gateOn;
+        ApplyUiGate(gateOn);
+    }
     void OnDisable() //오브젝트 비활성화 시 호출
     {
         StopAllCoroutines(); //유령 퇴장(=비활성화) -> 코루틴 중단 (다음 유령 
@@ -103,6 +130,8 @@ public class GuestManager : MonoBehaviour
     {
         // BOOT 게임 시작 
         state = State.Boot;
+        Debug.Log("State: Boot");
+
         ResetUI();
         DeactivateAllGhosts();
         currentGuest = null;
@@ -110,6 +139,7 @@ public class GuestManager : MonoBehaviour
 
         // WAIT_FIRST 첫손님 대기 3초
         state = State.WaitFirst;
+        Debug.Log("State: WaitFirst");
         yield return new WaitForSeconds(firstGuestDelay);
 
         // 2번째 손님부터는 계속 다음 손님 이후 3초 텀이므로 while에서 로직 진행
@@ -117,14 +147,18 @@ public class GuestManager : MonoBehaviour
         {
             // SPAWN 유령 랜덤 선택
             state = State.Spawn;
+            Debug.Log("State: Spawn");
+            evaluateLocked = false;
             SpawnNextGuest();
 
             // ARRIVE 유령 등장(=활성화)
             state = State.Arrive;
+            Debug.Log("State: Arrive");
             yield return new WaitForSeconds(arriveDuration);
 
             // ORDER 주문 생성(인내심 생성)
             state = State.Order;
+            Debug.Log("State: Order");
             BeginOrder();
 
             // ORDER 상태는 (1) SubmitDrink 호출 or (2) 인내심 타임아웃에서 Evaluate (유령 데이터 업뎃) 로 넘어감
@@ -195,6 +229,7 @@ public class GuestManager : MonoBehaviour
             return;
         }
 
+        //1. 다음 호출 후보 유령 저장 (직전 호출 유령 제외)
         List<int> candidates = new List<int>();
         for (int i = 0; i < pool.Count; i++)
         {
@@ -202,12 +237,15 @@ public class GuestManager : MonoBehaviour
             if (pool[i] != null) candidates.Add(i);
         }
 
+        //2. 후보 유령 없을 시 첫번째 유령 저장
         if (candidates.Count == 0)
             candidates.Add(0);
 
+        //3. 선택할 유령의 번호 랜덤 저장
         int picked = candidates[Random.Range(0, candidates.Count)];
         lastGuestId = picked;
 
+        //4. 랜덤 유령 활성화
         currentGuest = pool[picked];
         currentGuest.transform.position = spawnPoint.position;
         currentGuest.transform.rotation = spawnPoint.rotation;
@@ -222,7 +260,8 @@ public class GuestManager : MonoBehaviour
    private void BeginOrder()
     {
         // 1. 주문 생성 (레시피 랜덤 선택)
-        List<DrinkRecipe> recipes = GameManager.instance.allRecipes;
+        //[변경] DrinkRecipe -> DrinkData, allRecipes -> recipebook.allRecipes
+        List<DrinkData> recipes = GameManager.instance.recipebook.allRecipes;
         
         // 안전 장치: 레시피가 없으면 에러 방지
         if (recipes == null || recipes.Count == 0)
@@ -235,11 +274,13 @@ public class GuestManager : MonoBehaviour
         }
 
         // 랜덤 메뉴 선택
+        //[🥨변경] DrinkRecipe -> DrinkData
         int randomIndex = Random.Range(0, recipes.Count);
-        DrinkRecipe selectedMenu = recipes[randomIndex];
+        DrinkData selectedMenu = recipes[randomIndex];
         currentOrderName = selectedMenu.drinkName;
 
         // 2. GameManager에 주문 정보 저장 (MakeManager가 알 수 있게)
+        GameManager.instance.currentDrink = selectedMenu;
         GameManager.instance.currentOrderName = currentOrderName;
 
 
@@ -252,7 +293,6 @@ public class GuestManager : MonoBehaviour
 
             // GameManager의 전체 손님 명부에서 이 이름(ID)을 가진 데이터를 찾음
             GuestData data = GameManager.instance.allGuests.Find(g => g.guestName == guestID);
-
             // 만약 처음 등장한 손님이라 데이터가 없다면? -> 새로 만들어서 등록!
             if (data == null)
             {
@@ -277,7 +317,12 @@ public class GuestManager : MonoBehaviour
 
 
         // 4. UI 업데이트 (말풍선, 버튼 활성화)
-        if (speechBubbleText != null) speechBubbleText.text = currentOrderName;
+        if (OrderBullon != null) OrderBullon.gameObject.SetActive(true); // [추가] 말풍선 활성화
+        if (speechBubbleText != null)
+        {
+            speechBubbleText.gameObject.SetActive(true);
+            speechBubbleText.text = currentOrderName;
+        }
         if (makeButton != null) makeButton.interactable = true;
 
         // 5. 인내심 타이머 시작
@@ -289,25 +334,39 @@ public class GuestManager : MonoBehaviour
     //인내심 로직
     private void StartPatience()
     {
-        if (patienceRoutine != null) 
+        Debug.Log($"[StartPatience] called. state={state}, timeScale={Time.timeScale}, patienceTime={patienceTime}");
+
+        if (patienceRoutine != null)
+        {
+            //Debug.Log("[StartPatience] stop previous routine");
             StopCoroutine(patienceRoutine);
-        if (patienceSlider == null) 
+        }
+
+        if (patienceSlider == null)
+        {
+            //Debug.LogError("[StartPatience] patienceSlider is NULL");
             return;
+        }
 
         patienceSlider.value = 1f;
         patienceSlider.gameObject.SetActive(true);
+        //Debug.Log($"[StartPatience] slider activeInHierarchy={patienceSlider.gameObject.activeInHierarchy}, value={patienceSlider.value}");
 
         patienceRoutine = StartCoroutine(PatienceRoutine());
     }
 
     private IEnumerator PatienceRoutine()
     {
-        float t = 0f;
+        Debug.Log($"[PatienceRoutine] start frame. state={state}");
 
+        float t = 0f;
         while (t < patienceTime)
         {
-            // ORDER 상태가 아니면 종료
-            if (state != State.Order) yield break;
+            if (state != State.Order)
+            {
+                //Debug.LogWarning($"[PatienceRoutine] yield break! state={state}");
+                yield break;
+            }
 
             t += Time.deltaTime;
             float normalized = 1f - (t / patienceTime);
@@ -316,7 +375,8 @@ public class GuestManager : MonoBehaviour
             yield return null;
         }
 
-        // 타임아웃 → Evaluate(자동 실패)
+        //Debug.Log("[PatienceRoutine] timeout reached");
+
         if (state == State.Order && !evaluateLocked)
         {
             evaluateLocked = true;
@@ -387,11 +447,13 @@ public class GuestManager : MonoBehaviour
         {
             if (lastResultSuccess)
             {
+                speechBubbleText.gameObject.SetActive(true);
                 speechBubbleText.text = "맛있어! (성불 수치 UP)";
                 // 여기에 하트 이모티콘이나 성공 효과음 재생 코드 추가 가능
             }
             else
             {
+                speechBubbleText.gameObject.SetActive(true);
                 speechBubbleText.text = "이게 아니야... (실망)";
                 // 여기에 실패 효과음 재생 코드 추가 가능
             }
@@ -422,8 +484,13 @@ public class GuestManager : MonoBehaviour
         currentGuest = null;
 
         // UI 정리
-        if (speechBubbleText != null) 
+        if (OrderBullon !=  null)
+            OrderBullon.gameObject.SetActive(false); // [추가] 말풍선 비활성화
+        if (speechBubbleText != null)
+        {
+            speechBubbleText.gameObject.SetActive(false);
             speechBubbleText.text = "";
+        }
         if (patienceSlider != null) 
             patienceSlider.gameObject.SetActive(false);
 
@@ -432,8 +499,103 @@ public class GuestManager : MonoBehaviour
 
     private void ResetUI()
     {
-        if (speechBubbleText != null) speechBubbleText.text = "";
+        if (OrderBullon != null) OrderBullon.gameObject.SetActive(false); // [추가] 말풍선 비활성화
+        if (speechBubbleText != null)
+        {
+            speechBubbleText.gameObject.SetActive(true);
+            speechBubbleText.text = "";
+        }
         if (makeButton != null) makeButton.interactable = false;
         if (patienceSlider != null) patienceSlider.gameObject.SetActive(false);
+    }
+
+    //[🍞 추가] 도감 활성화 -> 텍스트,인내심,말풍선 비활성화 조절
+    //1. 도감 panal 활성화 여부 return
+    private bool IsGateOn()
+    {
+        // 타겟이 없으면 OFF로 간주(원래 UI 로직 그대로)
+        if (uiGateTarget == null) return false;
+        return uiGateTarget.activeInHierarchy;
+    }
+    //2. 도감 panal 활성화 -> ui 정리
+    private void ApplyUiGate(bool gateOn)
+    {
+        if (gateOn)
+        {
+            // 도감 ON -> 강제 비활성화(숨김)
+            if (OrderBullon != null) OrderBullon.SetActive(false);
+
+            if (speechBubbleText != null)
+            {
+                speechBubbleText.text = "";
+                speechBubbleText.gameObject.SetActive(false);
+            }
+
+            if (patienceSlider != null)
+                patienceSlider.gameObject.SetActive(false);
+
+            if (makeButton != null)
+                makeButton.interactable = false;
+
+            return;
+        }
+
+        // 도감 OFF -> 원상복구(현재 state 기준으로 복원)
+        RestoreUIForCurrentState();
+    }
+    // 도감 OFF -> 원상복구(현재 state 기준으로 복원)
+    private void RestoreUIForCurrentState()
+    {
+
+        switch (state)
+        {
+            case State.Order:
+                if (OrderBullon != null) OrderBullon.SetActive(true);
+
+                if (speechBubbleText != null)
+                {
+                    speechBubbleText.gameObject.SetActive(true);
+                    speechBubbleText.text = currentOrderName; // 주문명 복원
+                }
+
+                if (makeButton != null) makeButton.interactable = true;
+
+                if (patienceSlider != null)
+                    patienceSlider.gameObject.SetActive(true); // Order 중이면 인내심 표시
+                break;
+
+            case State.React:
+
+                if (OrderBullon != null) OrderBullon.SetActive(true);
+
+                if (speechBubbleText != null)
+                {
+                    speechBubbleText.gameObject.SetActive(true);
+                    // text 복원
+                    speechBubbleText.text = lastResultSuccess ? "맛있어! (성불 수치 UP)" : "이게 아니야... (실망)";
+                }
+
+                if (makeButton != null) makeButton.interactable = false;
+
+                if (patienceSlider != null)
+                    patienceSlider.gameObject.SetActive(false);
+                break;
+
+            default:
+                // 그 외 상태는 기본적으로 UI 숨김
+                if (OrderBullon != null) OrderBullon.SetActive(false);
+
+                if (speechBubbleText != null)
+                {
+                    speechBubbleText.text = "";
+                    speechBubbleText.gameObject.SetActive(false);
+                }
+
+                if (makeButton != null) makeButton.interactable = false;
+
+                if (patienceSlider != null)
+                    patienceSlider.gameObject.SetActive(false);
+                break;
+        }
     }
 }
