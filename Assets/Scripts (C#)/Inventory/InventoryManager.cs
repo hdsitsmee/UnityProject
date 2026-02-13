@@ -6,6 +6,14 @@ public class InventoryManager : MonoBehaviour
     public InventoryData inventoryData;
     public InventoryUI inventoryUI;
 
+    void Awake()
+    {
+        if (inventoryData != null)
+        {
+            inventoryData.items.Clear();
+        }
+    }
+
     public void AddItem(Item newItem)
     {
         if (inventoryData != null)

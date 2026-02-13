@@ -1,15 +1,23 @@
-using System.Collections.Generic;
+using System.Collections.Generic; 
 using UnityEngine;
 using System.Linq;
 
 [CreateAssetMenu(fileName = "ItemDatabase", menuName = "Inventory/Database")]
-public class ItemDatabase : ScriptableObject
+public class ItemDatabase : ScriptableObject 
 {
-    public List<Item> allItems; 
+    public List<Item> allItems; //
 
-    public Item GetRandomItemByLevel(int level)
+    public Item GetRandomItemByLevel(int level) //
     {
-        var filtered = allItems.Where(x => x.level == level).ToList();
-        return filtered[Random.Range(0, filtered.Count)];
+        if (allItems == null) return null;
+
+        var filtered = allItems.Where(x => x != null && x.level == level).ToList();
+
+        if (filtered.Count > 0)
+        {
+            return filtered[Random.Range(0, filtered.Count)];
+        }
+
+        return null;
     }
 }

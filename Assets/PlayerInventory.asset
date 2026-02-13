@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbdf1ab2c7ef82644b21ef0782cf364f, type: 3}
   m_Name: PlayerInventory
   m_EditorClassIdentifier: 
-  items: []
+  items:
+  - item: {fileID: 11400000, guid: 51bd1ea7cece38243b5ff7d5d3f69ead, type: 2}
+    count: 19
+  - item: {fileID: 11400000, guid: d7a0262271a62ec42978698acb4a0096, type: 2}
+    count: 2

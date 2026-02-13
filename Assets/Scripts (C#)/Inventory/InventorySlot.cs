@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
-public class InventorySlot : MonoBehaviour
+public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Image icon;                // 아이템 아이콘
     public TextMeshProUGUI countText; // 수량 표시 텍스트
+    public Item item;
 
     private Item currentItem;         // 현재 슬롯에 담긴 아이템
 
@@ -17,19 +19,12 @@ public class InventorySlot : MonoBehaviour
             return;
         }
 
-        currentItem = newItem;
+        item = newItem;
         icon.sprite = newItem.icon; //
         icon.enabled = true;
 
-        if (count > 1)
-        {
-            countText.text = count.ToString();
-            countText.gameObject.SetActive(true);
-        }
-        else
-        {
-            countText.gameObject.SetActive(false); // 1개일 땐 숨기기
-        }
+        countText.text = count.ToString();
+        countText.gameObject.SetActive(count > 1);
     }
 
     public void ClearSlot()
@@ -38,5 +33,19 @@ public class InventorySlot : MonoBehaviour
         icon.sprite = null;
         icon.enabled = false;
         countText.gameObject.SetActive(false);
+    }
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (item != null)
+        {
+            int currentCount = int.Parse(countText.text);
+            InventoryUI.Instance.ShowTooltip(item, currentCount);
+            
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        InventoryUI.Instance.HideTooltip();
     }
 }

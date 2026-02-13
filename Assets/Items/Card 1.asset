@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: 1
   level: 2
-  description: 
+  description: item 1
   icon: {fileID: 530383844, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}

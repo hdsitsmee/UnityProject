@@ -44,6 +44,7 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate() //기본 이동
     {
+        if (Time.timeScale == 0f) return;
         Vector2 nextVec = inputVec * speed * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
 
@@ -64,9 +65,11 @@ public class Player : MonoBehaviour
 
         //    }
         //}
+        if (Time.timeScale == 0f) return;
     }
     private void LateUpdate()
     {
+        if (Time.timeScale == 0f) return;
         if (inputVec.x != 0) // 걷기
         {
             spriter.flipX = inputVec.x < 0;
