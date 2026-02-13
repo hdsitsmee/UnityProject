@@ -11532,10 +11532,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackArea: {fileID: 1007336484}
+  weapon: {fileID: 0}
   info: {fileID: 11400000, guid: eaefbba7ce738c444a78907c5df0b958, type: 2}
   playerDamage: 1
   speed: 3
   health: 10
+  attackTimer: 0
+  cooltimeTimer: 0
   inputVec: {x: 0, y: 0}
   maxHealth: 10
   spawnPoint: {fileID: 387012441}
