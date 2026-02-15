@@ -75,7 +75,7 @@ public class MakeManager : MonoBehaviour
     }
     void SpawnIngredientButtons()
     {
-        if (GameManager.instance == null) return;
+        if (GameManager.instance == null || buttonContainer == null) return;
 
         // 기존에 있는 버튼들 싹 지우기 (초기화)
         foreach (Transform child in buttonContainer)
@@ -199,7 +199,8 @@ public class MakeManager : MonoBehaviour
 
     void CheckFinishCondition()
     {
-        finishButton.interactable = (currentIngredients.Count > 0);
+        if (finishButton != null)
+            finishButton.interactable = (currentIngredients.Count > 0);
     }
 
     public void OnClickFinish()
@@ -230,10 +231,11 @@ public class MakeManager : MonoBehaviour
 
         if (isSuccess)
         {
-            Debug.Log("성공! 완벽한 음료입니다.");
+            message = "성공! 완벽한 음료입니다.";
+            Debug.Log(message);
             
             GameManager.AddMoney(500); // 돈 증가
-            UpdateMoneyUI(); // ★ [추가] 돈이 올랐으니 화면도 갱신!
+            UpdateMoneyUI(); // 돈이 올랐으니 화면도 갱신
 
             if (GameManager.instance != null) GameManager.instance.GainExp(10); 
 
@@ -242,6 +244,7 @@ public class MakeManager : MonoBehaviour
         }
         else
         {
+            message = "실패... 필요한 재료를 다시 확인해 보세요.";
             Debug.Log("실패...");
             Debug.Log($"필요: {recipe.requiredIngredients.Length} / 맞춤: {matchCount}");
         }
