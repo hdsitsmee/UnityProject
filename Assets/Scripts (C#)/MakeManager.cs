@@ -220,7 +220,7 @@ public class MakeManager : MonoBehaviour
             Debug.Log($"필요: {recipe.requiredIngredients.Length} / 맞춤: {matchCount}");
         }
 
-      if (resultPopup != null)
+        if (resultPopup != null)
         {
             // 1. 일단 팝업창을 무조건 띄운다
             resultPopup.transform.SetAsLastSibling(); // 맨 앞으로 가져오기

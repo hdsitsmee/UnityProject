@@ -75,14 +75,12 @@ public class AchiveManager : MonoBehaviour
             case Achive.Unlock_3:
                 isAchive = true;
                 break;
-            /*
             case Achive.Unlock_4:
                 isAchive = true;
                 break;
             case Achive.Unlock_5:
                 isAchive = true;
                 break;
-            */
         }
         //업적 달성 시 PlayerPref를 0->1 로 변화
         if (isAchive && PlayerPrefs.GetInt(achive.ToString()) == 0)

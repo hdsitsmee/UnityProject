@@ -137,7 +137,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Stand0
+      name: Stand1
       rect:
         serializedVersion: 2
         x: 212
@@ -159,7 +159,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Happy0
+      name: Happy1
       rect:
         serializedVersion: 2
         x: 595
@@ -181,7 +181,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Budd0_0
+      name: Budd1_0
       rect:
         serializedVersion: 2
         x: 205
@@ -203,7 +203,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Budd0_1
+      name: Budd1_1
       rect:
         serializedVersion: 2
         x: 585
@@ -225,10 +225,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Budd0_3
+      name: Budd1_3
       rect:
         serializedVersion: 2
-        x: 951
+        x: 950
         y: 51
         width: 486
         height: 458
@@ -247,7 +247,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Angry0
+      name: Angry1
       rect:
         serializedVersion: 2
         x: 965
@@ -286,12 +286,12 @@ TextureImporter:
       746FAAF6-4F55-4428-B26F-934C3DA9FFAA (1)_3: -5364554085194623542
       746FAAF6-4F55-4428-B26F-934C3DA9FFAA (1)_4: 473585081891404734
       746FAAF6-4F55-4428-B26F-934C3DA9FFAA (1)_5: 485704386076907387
-      Angry0: -697782205
-      Budd0_0: 4789222888028278250
-      Budd0_1: -2898075903246435324
-      Budd0_3: 5841446972536941335
-      Happy0: 4771306295699890948
-      Stand0: -8453001098941420945
+      Angry1: -697782205
+      Budd1_0: 4789222888028278250
+      Budd1_1: -2898075903246435324
+      Budd1_3: 5841446972536941335
+      Happy1: 4771306295699890948
+      Stand1: -8453001098941420945
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
