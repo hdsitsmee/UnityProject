@@ -103,6 +103,10 @@ public class GameManager : MonoBehaviour
             Debug.Log($"✨ [{name}] 성불 완료! 도감 해금!");
         }
     }
+    public IngredientData GetIngredientData(string name)
+    {
+        return allIngredients.Find(x => x.ingredientName == name);
+    }//이름으로 재료 데이터 찾는 함수
 }
 
 // 재료 설계도
@@ -111,6 +115,8 @@ public class IngredientData
 {
     public string ingredientName;
     public int unlockLevel;
+    public Sprite icon;
+    public AudioClip soundEffect;
 }
 
 /// <summary>
