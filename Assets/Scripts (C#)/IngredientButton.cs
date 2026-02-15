@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class IngredientButton : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class IngredientButton : MonoBehaviour
     public Button btn;//버튼 컴포넌트
 
     private string myName;//내 재료 이름 (MakeManager에게 알려줄 용도)
+    private Coroutine animRoutine;
 
     //생성될 때 데이터를 받아서 세팅하는 함수
     public void Setup(IngredientData data)
@@ -29,7 +31,33 @@ public class IngredientButton : MonoBehaviour
             MakeManager.instance.OnIngredientClicked(myName, this);
         });
     }
-
+    IEnumerator BounceRoutine()
+    {
+        Vector3 originalScale = Vector3.one;
+        while (true)
+        {
+            float scale = 1.0f + Mathf.PingPong(Time.time * 0.1f, 0.1f);
+            
+            transform.localScale = originalScale * scale;
+            yield return null;
+        }
+    }
+    public void SetTutorialAnimation(bool play)
+    {
+        if (play)
+        {
+            // 이미 돌고 있으면 중복 실행 방지
+            if (animRoutine == null) 
+                animRoutine = StartCoroutine(BounceRoutine());
+        }
+        else
+        {
+            // 애니메이션 정지 및 원상복구
+            if (animRoutine != null) StopCoroutine(animRoutine);
+            animRoutine = null;
+            transform.localScale = Vector3.one; // 크기 초기화 (중요!)
+        }
+    }
     // 색깔 바꾸기 (선택됨/안됨/튜토리얼 강조 등)
     public void SetColor(Color color)
     {
