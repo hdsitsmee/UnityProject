@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c75c003cd879f44682c977616a5fdd2, type: 3}
   m_Name: Drink 1
   m_EditorClassIdentifier: 
-  drinkName: Drink1
+  drinkName: Lunar Frost Soda
   requiredIngredients:
-  - water
-  drinkIcon: {fileID: 0}
-  unlockLevel: 0
+  - Shine Mint
+  - Everforst Cubes
+  drinkIcon: {fileID: -1196436246370789517, guid: 9fc37f82f823f6248b36f9bd2a25f30b, type: 3}
+  unlockLevel: 2
   hasMade: 0

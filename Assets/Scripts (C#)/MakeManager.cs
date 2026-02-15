@@ -20,6 +20,8 @@ public class MakeManager : MonoBehaviour
     public Button finishButton;
     public TMP_Text moneyText; // ★ [추가] 돈 표시할 텍스트
     public List<IngredientButtonMapping> ingredientButtons; 
+    public Transform buttonContainer;
+    public GameObject buttonPrefab;
 
     [Header("Colors")]
     public Color selectedColor = Color.green;      
@@ -36,6 +38,8 @@ public class MakeManager : MonoBehaviour
     [Header("Data")]
     public List<string> currentIngredients = new List<string>();
     public string currentOrderName = ""; 
+
+    private Dictionary<string, IngredientButton> spawnedButtons = new Dictionary<string, IngredientButton>();
 
     private bool isTutorialMode = false;
     private DrinkData targetRecipe; //[변경] 변수 형식 DrinkRecipe -> DrinkData
@@ -65,11 +69,80 @@ public class MakeManager : MonoBehaviour
         }
 
         // 3. UI 초기화
+        SpawnIngredientButtons();
+
         UpdateMoneyUI(); // ★ 시작할 때 현재 돈 표시
         CheckAndShowTutorial();
         CheckFinishCondition();
         
         if(resultPopup != null) resultPopup.SetActive(false); 
+    }
+    void SpawnIngredientButtons()
+    {
+        if (GameManager.instance == null) return;
+
+        // 기존에 있는 버튼들 싹 지우기 (초기화)
+        foreach (Transform child in buttonContainer)
+        {
+            Destroy(child.gameObject);
+        }
+        spawnedButtons.Clear();
+
+        int myLevel = GameManager.level;
+
+        // 게임매니저에 등록된 모든 재료를 검사
+        foreach (var data in GameManager.instance.allIngredients)
+        {
+            // 해금 레벨이 되었는가? (내 레벨 >= 재료 해금 레벨)
+            if (myLevel >= data.unlockLevel)
+            {
+                // 버튼 생성!
+                GameObject go = Instantiate(buttonPrefab, buttonContainer);
+                IngredientButton btnScript = go.GetComponent<IngredientButton>();
+
+                // 데이터 주입
+                btnScript.Setup(data);
+
+                // 관리 목록에 등록 (나중에 색깔 바꾸려고)
+                spawnedButtons.Add(data.ingredientName, btnScript);
+            }
+        }
+    }
+    public void OnIngredientClicked(string ingredientName, IngredientButton btnScript)
+    {
+        // 1. 소리 재생
+        if (SoundManager.instance != null)
+        {
+            var data = GameManager.instance.GetIngredientData(ingredientName);
+            if (data != null && data.soundEffect != null)
+                SoundManager.instance.PlaySFX(data.soundEffect); // 고유 소리
+            else
+                SoundManager.instance.PlaySFX(null); // 혹은 기본 클릭음
+        }
+
+        // 2. 선택/해제 로직
+        if (currentIngredients.Contains(ingredientName))
+        {
+            currentIngredients.Remove(ingredientName);
+            
+            // 색상 복귀 (튜토리얼 중이면 튜토리얼 색상, 아니면 흰색)
+            if (isTutorialMode)
+            {
+                bool isRequired = IsIngredientRequired(ingredientName);
+                btnScript.SetColor(isRequired ? tutorialHighlightColor : tutorialDimColor);
+            }
+            else
+            {
+                btnScript.SetColor(normalColor);
+            }
+        }
+        else
+        {
+            currentIngredients.Add(ingredientName);
+            btnScript.SetColor(selectedColor);
+        }
+
+        CheckFinishCondition();
     }
 
     // ★ 돈 UI 갱신 함수

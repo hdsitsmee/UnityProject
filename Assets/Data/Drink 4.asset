@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c75c003cd879f44682c977616a5fdd2, type: 3}
   m_Name: Drink 4
   m_EditorClassIdentifier: 
-  drinkName: Drink4
+  drinkName: Sky High Smoothie
   requiredIngredients:
-  - milk
-  drinkIcon: {fileID: 0}
-  unlockLevel: 0
+  - Everforst Cubes
+  - Lunar Candy
+  - Star Essence
+  drinkIcon: {fileID: 752571578, guid: 9fc37f82f823f6248b36f9bd2a25f30b, type: 3}
+  unlockLevel: 4
   hasMade: 0

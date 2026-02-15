@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c75c003cd879f44682c977616a5fdd2, type: 3}
   m_Name: Drink 2
   m_EditorClassIdentifier: 
-  drinkName: Drink2
+  drinkName: Mystery Sip
   requiredIngredients:
-  - dust
-  drinkIcon: {fileID: 0}
-  unlockLevel: 0
+  - Star Essence
+  - Aurora Scent
+  drinkIcon: {fileID: -6246551551907217179, guid: 9fc37f82f823f6248b36f9bd2a25f30b, type: 3}
+  unlockLevel: 5
   hasMade: 0
