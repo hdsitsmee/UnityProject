@@ -119,6 +119,11 @@ public class GuestManager : MonoBehaviour
         while (true)
         {
             // SPAWN 유령 랜덤 선택 및 등장(=활성화)
+            if (isPaused)
+            {
+                yield return null;
+                continue;
+            }
             state = State.Spawn;
             Debug.Log("State: Spawn");
             evaluateLocked = false;
