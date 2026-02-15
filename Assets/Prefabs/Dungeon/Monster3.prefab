@@ -273,6 +273,7 @@ GameObject:
   - component: {fileID: 8710980782346803189}
   - component: {fileID: 3383717465330415208}
   - component: {fileID: 125117214678030348}
+  - component: {fileID: -6018407717645606576}
   m_Layer: 0
   m_Name: Monster3
   m_TagString: Monster
@@ -435,6 +436,28 @@ MonoBehaviour:
   itemDatabase: {fileID: 11400000, guid: fa76393e083479f448cdb75441feb4ac, type: 2}
   playerInventory: {fileID: 11400000, guid: 9d1b37d10fe5abe4496d2ce65f59ea44, type: 2}
   spawner: {fileID: 0}
+--- !u!95 &-6018407717645606576
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5079081855787195801}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8183143932000080213
 GameObject:
   m_ObjectHideFlags: 0

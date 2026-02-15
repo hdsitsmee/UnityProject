@@ -10,7 +10,7 @@ public class Monster : MonoBehaviour
 
     [Header("몬스터 개별 체력(런타임)")]
     public float health;
-
+    
     [Header("바닥 타일맵(이동 구역)")]
     public Tilemap floorTilemap;
 
@@ -25,16 +25,23 @@ public class Monster : MonoBehaviour
     private float changeDirIntervalMax;
 
     Rigidbody2D rigidbody;
-
+    Animator anim;
+    SpriteRenderer sr;
     Vector2 dir;
     float timer;
 
     // "게임플레이로 죽어서" 비활성화되는 경우만 리스폰 예약
     bool diedByGameplay;
+    int facing; //0 1 2 정면 후면 측면
+    bool isHitPlaying; //피격 
+
 
     void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        sr = GetComponent<SpriteRenderer>();
+
         health = maxHealth;
     }
 
@@ -97,9 +104,8 @@ public class Monster : MonoBehaviour
 
             health -= player.playerDamage;
             Debug.Log("몬스터가공격받음");
+            PlayHitAnim(); //Hit 애니메이션 
         }
-        
-
 
        
         if (health <= 0f)
@@ -116,6 +122,8 @@ public class Monster : MonoBehaviour
             2 => Vector2.left,
             _ => Vector2.right,
         };
+
+        UpdateFacingByDir();
     }
 
     void ResetTimer()
@@ -173,5 +181,36 @@ public class Monster : MonoBehaviour
         // 풀로 반환
         gameObject.SetActive(false);
     }
+
+    void UpdateFacingByDir()
+    {
+        // dir은 up/down/left/right 중 하나
+        if (dir.y > 0) facing = 1;          // Up = Back
+        else if (dir.y < 0) facing = 0;     // Down = Front
+        else facing = 2;                    // Left/Right = Side
+
+        if (anim != null) anim.SetInteger("Facing", facing);
+
+        // Side일 때만 좌우 플립
+        if (sr != null)
+        {
+            if (facing == 2) sr.flipX = (dir.x < 0);
+            else sr.flipX = false; // 앞/뒤는 flip 끔(원하면 유지해도 됨)
+        }
+    }
+
+    void PlayHitAnim()
+    {
+        if (anim == null) return;
+
+        // 너무 연타로 트리거가 계속 걸리면 정신없으니 짧게 잠금(선택)
+        if (isHitPlaying) return;
+        isHitPlaying = true;
+
+        anim.SetTrigger("Hit");
+        Invoke(nameof(UnlockHit), 0.1f); // 0.1~0.2 정도면 충분
+    }
+
+    void UnlockHit() => isHitPlaying = false;
 
 }
