@@ -25,14 +25,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        if (instance == null) {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+       instance = this;
     }
 
     // 돈 더하는 함수
