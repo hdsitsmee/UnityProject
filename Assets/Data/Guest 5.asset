@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Guest 5
   m_EditorClassIdentifier: 
   ghostPrefab: {fileID: 1315190047272948948, guid: 09caeed01a082534d97f5db67db6b065, type: 3}
-  guestName: Ghost5
+  guestName: Abyss
   guestIcon: {fileID: -1415061158698659907, guid: 3afe4c4fd3f6f6a4aa80729808ab125b, type: 3}
   currentSatisfaction: 0
   maxSatisfaction: 100
   orderDrinkName: 
-  unlockLevel: 0
+  unlockLevel: 5
   isAscended: 0
   hasMet: 0
   dialogue: 

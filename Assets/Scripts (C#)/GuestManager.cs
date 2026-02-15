@@ -42,7 +42,7 @@ public class GuestManager : MonoBehaviour
     //private GhostProgress currentProgress; //성불도 클래스 및 변수
 
     //직전 출현 유령id
-    private int lastGuestId = -1;
+    //private int lastGuestId = -1;
 
     private Coroutine patienceRoutine;
     private Coroutine flowRoutine;
@@ -108,7 +108,7 @@ public class GuestManager : MonoBehaviour
         ResetUI();
         DeactivateAllGhosts();
         currentGuest = null;
-        lastGuestId = -1;
+        //lastGuestId = -1;
 
         // WAIT_FIRST 첫손님 대기 3초
         state = State.WaitFirst;
@@ -216,33 +216,57 @@ public class GuestManager : MonoBehaviour
     //Spawn : 랜덤 출현 로직
     private void SpawnNextGuest()
     {
-        if (pool.Count == 0)
+       if (pool.Count == 0) return;
+
+        // 1. 현재 레벨에 등장 가능한 'GuestData' 후보군 뽑기
+        List<GuestData> candidates = new List<GuestData>();
+        int myLevel = GameManager.level;
+
+        foreach (var guest in GameManager.instance.allGuests)
         {
-            Debug.LogError("[GuestManager] 풀(당구)이 비어있습니다.");
+            if (guest.unlockLevel <= myLevel)
+            {
+                candidates.Add(guest);
+            }
+        }
+
+        // 안전장치: 없으면 에러 안나게 아무거나 혹은 리턴
+        if (candidates.Count == 0)
+        {
+            Debug.LogError("현재 레벨에 등장 가능한 유령 데이터가 없습니다!");
             return;
         }
 
-        //1. 다음 호출 후보 유령 저장 (직전 호출 유령 제외)
-        List<int> candidates = new List<int>();
-        for (int i = 0; i < pool.Count; i++)
+        // 2. 후보 중 하나 랜덤 선택 (GuestData)
+        GuestData selectedData = candidates[Random.Range(0, candidates.Count)];
+
+        // 3. 선택된 Data에 맞는 유령 오브젝트를 'Pool'에서 찾기
+        // (GuestData의 ghostPrefab 이름과 Pool에 있는 오브젝트 이름이 포함관계인지 확인)
+        GameObject targetObj = null;
+        if (selectedData.ghostPrefab != null)
         {
-            if (i == lastGuestId) continue;
-            if (pool[i] != null) candidates.Add(i);
+            string prefabName = selectedData.ghostPrefab.name;
+            targetObj = pool.Find(g => g.name.Contains(prefabName));
         }
 
-        //2. 후보 유령 없을 시 첫번째 유령 저장
-        if (candidates.Count == 0)
-            candidates.Add(0);
+        // 못 찾았으면 임시로 0번 (에러 방지)
+        if (targetObj == null) targetObj = pool[0];
 
-        //3. 선택할 유령의 번호 랜덤 저장
-        int picked = candidates[Random.Range(0, candidates.Count)];
-        lastGuestId = picked;
-
-        //4. 랜덤 유령 활성화
-        currentGuest = pool[picked];
+        // 4. 활성화
+        currentGuest = targetObj;
         currentGuest.transform.position = spawnPoint.position;
         currentGuest.transform.rotation = spawnPoint.rotation;
         currentGuest.SetActive(true);
+
+        // 5. [🔥중요] GameManager에 현재 손님 정보 등록 (주문 단계 전에 미리 등록)
+        GameManager.instance.currentGuest = selectedData;
+        
+        // 도감 해금 처리
+        if (!selectedData.hasMet)
+        {
+            selectedData.hasMet = true;
+            Debug.Log($"📖 새로운 손님 발견: {selectedData.guestName}");
+        }
 
     }
 
@@ -252,66 +276,39 @@ public class GuestManager : MonoBehaviour
 
    private void BeginOrder()
    {
-        // 1. 주문 생성 (레시피 랜덤 선택)
-        //[🥨변경] DrinkRecipe -> DrinkData, allRecipes -> recipebook.allRecipes
-        List<DrinkData> recipes = GameManager.instance.recipebook.allRecipes;
-        
-        // 안전 장치: 레시피가 없으면 에러 방지
-        if (recipes == null || recipes.Count == 0)
+       // 1. 현재 레벨에 주문 가능한 'DrinkData' 후보군 뽑기
+        List<DrinkData> possibleDrinks = new List<DrinkData>();
+        int myLevel = GameManager.level;
+
+        foreach (var drink in GameManager.instance.recipebook.allRecipes)
         {
-            Debug.LogError("메뉴판(Recipes)이 비어있습니다! GameManager를 확인하세요.");
-            // 주문 실패 처리 후 넘어감
-            evaluateLocked = true;
-            EnterEvaluate(submitted: false, madeDrinkName: null);
+            if (drink.unlockLevel <= myLevel)
+            {
+                possibleDrinks.Add(drink);
+            }
+        }
+
+        // 안전장치
+        if (possibleDrinks.Count == 0)
+        {
+            Debug.LogError("주문 가능한 음료가 없습니다!");
+            evaluateLocked = true; // 강제 실패 처리
             return;
         }
 
-        // 랜덤 메뉴 선택
-        //[🥨변경] DrinkRecipe -> DrinkData
-        int randomIndex = Random.Range(0, recipes.Count);
-        DrinkData selectedMenu = recipes[randomIndex];
+        // 2. 랜덤 선택
+        DrinkData selectedMenu = possibleDrinks[Random.Range(0, possibleDrinks.Count)];
         currentOrderName = selectedMenu.drinkName;
 
-        // 2. GameManager에 주문 정보 저장 (MakeManager가 알 수 있게)
+        // 3. GameManager 업데이트
         GameManager.instance.currentDrink = selectedMenu;
         GameManager.instance.currentOrderName = currentOrderName;
 
+        // [🔥참고] 손님 데이터 등록 로직은 SpawnNextGuest로 이동했습니다.
+        // 여기서 중복으로 할 필요 없음.
 
-        // 3. ★ [핵심 추가] GameManager에 '현재 손님(currentGuest)' 정보 등록
-        if (currentGuest != null)
-        {
-            // 유령 오브젝트 이름에서 "(Clone)" 글자 제거 (예: "Ghost_Girl(Clone)" -> "Ghost_Girl")
-            // 공백 제거(.Trim)까지 해서 깔끔한 ID 생성
-            string guestID = currentGuest.name.Replace("(Clone)", "").Trim();
-
-            // GameManager의 전체 손님 명부에서 이 이름(ID)을 가진 데이터를 찾음
-            GuestData data = GameManager.instance.allGuests.Find(g => g.guestName == guestID);
-            // 만약 처음 등장한 손님이라 데이터가 없다면? -> 새로 만들어서 등록!
-            if (data == null)
-            {
-                data = new GuestData();
-                data.guestName = guestID;
-                data.maxSatisfaction = 100; // 성불 목표치 (기본 100)
-                data.currentSatisfaction = 0; // 현재 만족도 0
-                data.isAscended = false;
-                
-                // 명부에 추가
-                GameManager.instance.allGuests.Add(data);
-                Debug.Log($"새로운 손님 데이터 생성: {guestID}");
-            }
-            //도감 업데이트: 처음 만난 손님이라면 hasMet = false -> true로 바꿔주고, "새로운 손님 발견!" 로그 출력
-            if (data.hasMet == false)
-            {
-                data.hasMet = true;
-                Debug.Log($"📖 도감 업데이트: [{guestID}] 손님을 발견했습니다!");
-            }
-            // ★ GameManager에게 "지금 와있는 손님이 이 사람이야!"라고 알려줌
-            GameManager.instance.currentGuest = data;
-        }
-
-
-        // 4. UI 업데이트 (말풍선, 버튼 활성화)
-        if (OrderBullon != null) OrderBullon.gameObject.SetActive(true); // [추가] 말풍선 활성화
+        // 4. UI 업데이트
+        if (OrderBullon != null) OrderBullon.gameObject.SetActive(true); 
         if (speechBubbleText != null)
         {
             speechBubbleText.gameObject.SetActive(true);
@@ -319,11 +316,8 @@ public class GuestManager : MonoBehaviour
         }
         if (makeButton != null) makeButton.interactable = true;
 
-        // 5. 인내심 타이머 시작
+        // 5. 인내심 시작
         StartPatience();
-        
-        // (참고) 튜토리얼 로직은 MakeScene으로 넘어갔을 때 MakeManager가 
-        // GameManager.currentOrderName을 보고 알아서 판단하므로 여기선 호출 안 해도 됩니다.
    }
     //인내심 로직
    private void StartPatience()
@@ -428,24 +422,18 @@ public class GuestManager : MonoBehaviour
         if (success)
         {
             Debug.Log("제조 성공!");
-            
-            // A. 경험치 획득 (예: 10점)
             GameManager.instance.GainExp(10); 
 
-            // B. 현재 손님의 만족도(성불 수치) 증가 (예: 34점)
-            // currentGuest.name은 "Ghost_Girl(Clone)" 처럼 나올 수 있으니 
-            // 실제 데이터 ID 관리를 위해선 프리팹 이름이나 별도 ID가 필요하지만, 
-            // 일단 화면에 떠있는 유령 이름으로 매칭한다고 가정합니다.
-            
-            // 주의: 프리팹 이름이 정확히 데이터와 일치해야 함. 
-            // 팀원이 만든 프리팹 이름 규칙을 확인 필요. 여기선 currentGuest.name을 사용.
-            string guestID = currentGuest.name.Replace("(Clone)", "").Trim(); 
-            GameManager.instance.UpdateGuestSatisfaction(guestID, 34); 
+            //현재 손님(currentGuest)에게 점수 반영
+            if (GameManager.instance.currentGuest != null)
+            {
+                string guestID = GameManager.instance.currentGuest.guestName;
+                GameManager.instance.UpdateGuestSatisfaction(guestID, 34); 
+            }
         }
         else
         {
             Debug.Log("제조 실패...");
-            // 실패 시 패널티가 있다면 여기에 추가
         }
 
         // 반응 단계로 이동
@@ -485,6 +473,11 @@ public class GuestManager : MonoBehaviour
         // 주문 초기화
         currentOrderName = "";
         GameManager.instance.currentOrderName = "";
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.currentOrderName = "";
+            GameManager.instance.currentDrink = null; // 이것도 비워주는 게 안전함
+        }
     }
 
     //성불도 로직 구현 시 여기에 성불도 호출
@@ -495,6 +488,7 @@ public class GuestManager : MonoBehaviour
             currentGuest.SetActive(false);
 
         currentGuest = null;
+        GameManager.instance.currentGuest = null;
 
         // UI 정리
         if (OrderBullon !=  null)

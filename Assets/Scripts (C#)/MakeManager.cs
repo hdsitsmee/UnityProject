@@ -19,16 +19,12 @@ public class MakeManager : MonoBehaviour
     [Header("UI & Buttons")]
     public Button finishButton;
     public TMP_Text moneyText; // ★ [추가] 돈 표시할 텍스트
-    public List<IngredientButtonMapping> ingredientButtons; 
     public Transform buttonContainer;
     public GameObject buttonPrefab;
 
     [Header("Colors")]
     public Color selectedColor = Color.green;      
     public Color normalColor = Color.white;        
-    [Header("Tutorial Colors")]
-    public Color tutorialHighlightColor = new Color(1f, 1f, 0.5f); 
-    public Color tutorialDimColor = new Color(0.5f, 0.5f, 0.5f, 1f); 
 
     [Header("Nirvana System")]
     public Slider nirvanaSlider; 
@@ -129,7 +125,8 @@ public class MakeManager : MonoBehaviour
             if (isTutorialMode)
             {
                 bool isRequired = IsIngredientRequired(ingredientName);
-                btnScript.SetColor(isRequired ? tutorialHighlightColor : tutorialDimColor);
+                btnScript.SetTutorialAnimation(isRequired); 
+                btnScript.SetColor(normalColor);
             }
             else
             {
@@ -139,6 +136,7 @@ public class MakeManager : MonoBehaviour
         else
         {
             currentIngredients.Add(ingredientName);
+            btnScript.SetTutorialAnimation(false); 
             btnScript.SetColor(selectedColor);
         }
 
@@ -155,14 +153,6 @@ public class MakeManager : MonoBehaviour
         }
     }
 
-    // ... (중간 ToggleIngredient 등 코드는 그대로 유지) ...
-    // 아래 CheckAndShowTutorial, ToggleIngredient 등의 함수는 
-    // 기존에 작성해드린 것과 동일하므로 생략하지 않고 그대로 두시면 됩니다.
-    // (이전 답변의 코드를 그대로 쓰되, UpdateMoneyUI 함수만 추가되었다고 보시면 됩니다.)
-    
-    // 편의를 위해 수정이 필요한 부분만 다시 적어드리는 게 아니라 전체를 드립니다.
-    // -------------------------------------------------------------
-
     void CheckAndShowTutorial()
     {
         if (targetRecipe == null) return;
@@ -170,63 +160,26 @@ public class MakeManager : MonoBehaviour
         if (!targetRecipe.hasMade)
         {
             isTutorialMode = true;
-            Debug.Log($"🔰 튜토리얼 모드: {targetRecipe.drinkName}");
-
-            foreach (var mapping in ingredientButtons)
+            
+            foreach (var pair in spawnedButtons)
             {
-                bool isRequired = false;
-                foreach (string req in targetRecipe.requiredIngredients)
-                {
-                    if (req == mapping.ingredientName)
-                    {
-                        isRequired = true;
-                        break;
-                    }
-                }
+                string name = pair.Key;
+                IngredientButton btn = pair.Value;
 
-                if (isRequired)
-                    mapping.buttonImage.color = tutorialHighlightColor; 
-                else
-                    mapping.buttonImage.color = tutorialDimColor;       
+                bool isRequired = IsIngredientRequired(name);
+                
+                btn.SetTutorialAnimation(isRequired);
             }
         }
         else
         {
             isTutorialMode = false;
-            ResetAllButtonColors(); 
-        }
-    }
-
-    public void ToggleIngredient(GameObject btnObj)
-    {
-        string name = btnObj.name;
-        IngredientButtonMapping mapping = ingredientButtons.Find(x => x.ingredientName == name);
-        Image buttonImage = (mapping.buttonImage != null) ? mapping.buttonImage : btnObj.GetComponent<Image>();
-
-        if (currentIngredients.Contains(name))
-        {
-            currentIngredients.Remove(name);
-            Debug.Log(name + " 취소됨");
-
-            if (isTutorialMode)
+            foreach(var btn in spawnedButtons.Values)
             {
-                bool isRequired = IsIngredientRequired(name);
-                buttonImage.color = isRequired ? tutorialHighlightColor : tutorialDimColor;
-            }
-            else
-            {
-                buttonImage.color = normalColor;
+                btn.SetTutorialAnimation(false);
+                btn.SetColor(normalColor); 
             }
         }
-        else
-        {
-            currentIngredients.Add(name);
-            buttonImage.color = selectedColor; 
-            Debug.Log(name + " 선택됨");
-        }
-
-        PrintCurrentStatus();
-        CheckFinishCondition();
     }
 
     bool IsIngredientRequired(string ingredientName)
@@ -327,10 +280,10 @@ public class MakeManager : MonoBehaviour
 
     void ResetAllButtonColors()
     {
-        foreach (var mapping in ingredientButtons)
+        foreach (var btn in spawnedButtons.Values)
         {
-            if (mapping.buttonImage != null)
-                mapping.buttonImage.color = normalColor;
+            btn.SetColor(normalColor);
+            btn.SetTutorialAnimation(false);
         }
     }
 

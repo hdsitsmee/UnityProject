@@ -1061,12 +1061,34 @@ MonoBehaviour:
   currentExp: 0
   maxExp: 100
   allIngredients:
-  - ingredientName: water
-    unlockLevel: 0
-  - ingredientName: milk
-    unlockLevel: 0
-  - ingredientName: dust
+  - ingredientName: Neon Lime
     unlockLevel: 1
+    icon: {fileID: 530383844, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
+    soundEffect: {fileID: 8300000, guid: 8866908ad8135e943804c8eaa80cb2f2, type: 3}
+  - ingredientName: Shine Mint
+    unlockLevel: 1
+    icon: {fileID: -1047059572, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
+    soundEffect: {fileID: 8300000, guid: 8866908ad8135e943804c8eaa80cb2f2, type: 3}
+  - ingredientName: Everforst Cubes
+    unlockLevel: 2
+    icon: {fileID: -3671793498807880231, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
+    soundEffect: {fileID: 8300000, guid: 8866908ad8135e943804c8eaa80cb2f2, type: 3}
+  - ingredientName: Lunar Candy
+    unlockLevel: 3
+    icon: {fileID: -926637460, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
+    soundEffect: {fileID: 8300000, guid: 8866908ad8135e943804c8eaa80cb2f2, type: 3}
+  - ingredientName: Dreaming Cloud
+    unlockLevel: 3
+    icon: {fileID: -1132889399, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
+    soundEffect: {fileID: 8300000, guid: 8866908ad8135e943804c8eaa80cb2f2, type: 3}
+  - ingredientName: Star Essence
+    unlockLevel: 4
+    icon: {fileID: 25098223, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
+    soundEffect: {fileID: 8300000, guid: 8866908ad8135e943804c8eaa80cb2f2, type: 3}
+  - ingredientName: Star Essence
+    unlockLevel: 5
+    icon: {fileID: 25098223, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
+    soundEffect: {fileID: 8300000, guid: 8866908ad8135e943804c8eaa80cb2f2, type: 3}
   recipebook: {fileID: 11400000, guid: 08ea9df2a4fb1e6468d0c190deb087c8, type: 2}
   allGuests:
   - {fileID: 11400000, guid: 9d8455934bb77e748ac43e2f8e259d0a, type: 2}
@@ -1077,7 +1099,7 @@ MonoBehaviour:
   currentGuest: {fileID: 0}
   currentDrink: {fileID: 0}
   currentOrderName: 
-  SpawnPoint: {fileID: 1540838711}
+  SpawnPoint: {fileID: 0}
 --- !u!4 &479382597
 Transform:
   m_ObjectHideFlags: 0
