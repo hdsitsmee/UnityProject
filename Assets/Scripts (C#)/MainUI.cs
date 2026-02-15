@@ -9,22 +9,25 @@ public class MainUI : MonoBehaviour
     [Header("Gauge UI")]
     public Slider expSlider;
 
+    const float UI_UPDATE_INTERVAL = 0.3f; // 초당 약 3회 갱신 (매 프레임 대비 성능 개선)
+
     void Start()
     {
-        UpdateUI();//게임 시작 시 정보를 갱신
+        UpdateUI(); // 게임 시작 시 즉시 갱신
+        InvokeRepeating(nameof(UpdateUI), UI_UPDATE_INTERVAL, UI_UPDATE_INTERVAL); // 주기적 갱신
     }
 
-    void Update() 
+    void OnDisable()
     {
-        UpdateUI();//실시간으로 정보 갱신
-       
+        CancelInvoke(nameof(UpdateUI)); // 비활성화 시 반복 호출 취소
     }
 
     public void UpdateUI()
     {
-        //텍스트 상자에 게임 메니저의 정보를 넣음
-        levelText.text = "LV." + GameManager.level;
-        moneyText.text = "Money: " + GameManager.money;
+        if (levelText != null)
+            levelText.text = "LV." + GameManager.level;
+        if (moneyText != null)
+            moneyText.text = "Money: " + GameManager.money;
         if (expSlider != null && GameManager.instance != null)
         {
             // 슬라이더의 최대값을 '다음 레벨업에 필요한 경험치'로 설정
