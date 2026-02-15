@@ -7324,9 +7324,9 @@ MonoBehaviour:
       level: 2
       maxHealth: 30
       monsterDamage: 2
-      speed: 2.5
-      changeDirIntervalMin: 0.3
-      changeDirIntervalMax: 0.7
+      speed: 1.5
+      changeDirIntervalMin: 0.7
+      changeDirIntervalMax: 1.4
       moveAreaTilemap: {fileID: 335036145}
       dropMaterials: []
   pool: {fileID: 998146269}
@@ -27750,16 +27750,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c91ffc45bd418241b0ef8e9c9846d2e, type: 3}
---- !u!224 &2080301730 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1234754835767967813, guid: 1c91ffc45bd418241b0ef8e9c9846d2e, type: 3}
-  m_PrefabInstance: {fileID: 1477544756}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &2082075841 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1234754835767967813, guid: 1c91ffc45bd418241b0ef8e9c9846d2e, type: 3}
-  m_PrefabInstance: {fileID: 921033680}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2071557003
 GameObject:
   m_ObjectHideFlags: 0
@@ -27835,6 +27825,16 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2071557003}
   m_CullTransparentMesh: 1
+--- !u!224 &2080301730 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1234754835767967813, guid: 1c91ffc45bd418241b0ef8e9c9846d2e, type: 3}
+  m_PrefabInstance: {fileID: 1477544756}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &2082075841 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1234754835767967813, guid: 1c91ffc45bd418241b0ef8e9c9846d2e, type: 3}
+  m_PrefabInstance: {fileID: 921033680}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2100176053
 GameObject:
   m_ObjectHideFlags: 0
