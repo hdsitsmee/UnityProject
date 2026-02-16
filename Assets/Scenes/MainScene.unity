@@ -1176,6 +1176,12 @@ MonoBehaviour:
   currentDrink: {fileID: 0}
   currentOrderName: 
   SpawnPoint: {fileID: 0}
+  orderActive: 0
+  patienceTotal: 0
+  patienceRemaining: 0
+  reactPending: 0
+  lastResultSuccess: 0
+  reactText: 
   isLevelUpPending: 0
 --- !u!4 &479382597
 Transform:
@@ -1342,7 +1348,6 @@ GameObject:
   - component: {fileID: 540800860}
   - component: {fileID: 540800859}
   - component: {fileID: 540800861}
-  - component: {fileID: 540800862}
   m_Layer: 5
   m_Name: OrderBullon
   m_TagString: Untagged
@@ -1422,18 +1427,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guestManager: {fileID: 1812139826}
   viewportOffset: {x: 0.15, y: 0.27}
---- !u!114 &540800862
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 540800857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6da5e9fbdc9461c45bd12f38be2fddc0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &547953301
 GameObject:
   m_ObjectHideFlags: 0
@@ -1768,7 +1761,6 @@ GameObject:
   - component: {fileID: 596983070}
   - component: {fileID: 596983069}
   - component: {fileID: 596983071}
-  - component: {fileID: 596983072}
   m_Layer: 5
   m_Name: TimeSlider
   m_TagString: Untagged
@@ -1862,18 +1854,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guestManager: {fileID: 1812139826}
   viewportOffset: {x: 0.01, y: 0.15}
---- !u!114 &596983072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 596983068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6da5e9fbdc9461c45bd12f38be2fddc0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &617021002
 GameObject:
   m_ObjectHideFlags: 0
@@ -4902,7 +4882,7 @@ MonoBehaviour:
   arriveDuration: 0.5
   reactDuration: 1.2
   leaveDuration: 0.6
-  patienceTime: 10
+  patienceTime: 20
   state: 0
   currentGuest: {fileID: 0}
   isPaused: 0

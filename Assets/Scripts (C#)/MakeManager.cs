@@ -231,7 +231,7 @@ public class MakeManager : MonoBehaviour
 
         if (isSuccess)
         {
-            message = "성공! 완벽한 음료입니다.";
+            message = "Great!"; // 한글쓰면 팝업창이 깨지는 현상 있어서 일단 영어로 바꿨습니다 ㅠㅠ
             Debug.Log(message);
             
             GameManager.AddMoney(500); // 돈 증가
@@ -244,7 +244,7 @@ public class MakeManager : MonoBehaviour
         }
         else
         {
-            message = "실패... 필요한 재료를 다시 확인해 보세요.";
+            message = "No : Check Recipe";
             Debug.Log("실패...");
             Debug.Log($"필요: {recipe.requiredIngredients.Length} / 맞춤: {matchCount}");
         }
@@ -276,8 +276,18 @@ public class MakeManager : MonoBehaviour
                 Debug.LogWarning("손님 데이터(currentGuest)가 없어서 성불 수치를 반영하지 못했습니다.");
                 if (nirvanaSlider != null) nirvanaSlider.value = 0;
             }
+            
         }
-
+        // 4. 게임 매니저에 결과 전달
+        // 🥨 [중요] 게스트 매니저에서 채점, 결과 반영 중복 로직 삭제
+        // (제조 씬에서 채점 후 결과 전달 -> 결과 씬에서 게스트 매니저가 받아서 메인 화면 반응 로직 수행)
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.lastResultSuccess = isSuccess; // 게임 매니저에 성공 여부 전달
+            GameManager.instance.reactText = isSuccess ? "Delicioius! (UP)" : "No....)"; // 게임 매니저에 반응 텍스트 전달
+            GameManager.instance.reactPending = true; // 씬 돌아왔을 때 React 진입 플래그
+            GameManager.instance.StopOrderTimer();
+        }
         StartCoroutine(WaitAndGoMain());
     }
 
@@ -292,11 +302,13 @@ public class MakeManager : MonoBehaviour
 
     void GoToMain()
     {
-        if (GameManager.instance != null)
+        // 🥨 [중요] 주문 데이터 초기화 x
+        // (제조 -> 메인 이동 시 주문 데이터 유지하면서 결과 화면에서 반영하기 위해)
+        /*if (GameManager.instance != null)
         {
             GameManager.instance.currentOrderName = "";
             GameManager.instance.currentGuest = null; 
-        }
+        }*/
         SceneManager.LoadScene("MainScene");
     }
 

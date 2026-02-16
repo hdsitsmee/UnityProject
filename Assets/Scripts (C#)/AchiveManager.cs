@@ -47,8 +47,8 @@ public class AchiveManager : MonoBehaviour
         {
             string achiveName = achives[i].ToString();
             bool isUnlock = PlayerPrefs.GetInt(achiveName) == 1; //해금 조건 isUnlock 0 -> 1
-            lockGhost[i].SetActive(!isUnlock);
-            unlockGhost[i].SetActive(isUnlock);
+            //lockGhost[i].SetActive(!isUnlock);
+            //unlockGhost[i].SetActive(isUnlock);
         }
     }
     // Update is called once per frame
