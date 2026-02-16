@@ -237,7 +237,7 @@ public class MakeManager : MonoBehaviour
             GameManager.AddMoney(500); // 돈 증가
             UpdateMoneyUI(); // 돈이 올랐으니 화면도 갱신
 
-            if (GameManager.instance != null) GameManager.instance.GainExp(10); 
+            if (GameManager.instance != null) GameManager.instance.GainExp(100); 
 
             score = 30; 
             recipe.hasMade = true; 
