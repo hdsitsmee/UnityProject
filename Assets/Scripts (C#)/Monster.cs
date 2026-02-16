@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Collections;
 
 public class Monster : MonoBehaviour
 {
@@ -34,7 +35,9 @@ public class Monster : MonoBehaviour
     bool diedByGameplay;
     int facing; //0 1 2 정면 후면 측면
     bool isHitPlaying; //피격 
+    float hitEffectTime=0.12f;
 
+    Coroutine co;
 
     void Awake()
     {
@@ -85,6 +88,7 @@ public class Monster : MonoBehaviour
 
         // 임시: 부딪히면 체력 감소
         health --;
+        HitEffectPlay(); //피격 효과. 이것도 임시!
 
         if (health <= 0)
         {
@@ -104,7 +108,9 @@ public class Monster : MonoBehaviour
 
             health -= player.playerDamage;
             Debug.Log("몬스터가공격받음");
-            PlayHitAnim(); //Hit 애니메이션 
+
+            //PlayHitAnim(); //Hit 애니메이션
+            HitEffectPlay(); 
         }
 
        
@@ -199,6 +205,7 @@ public class Monster : MonoBehaviour
         }
     }
 
+    /*
     void PlayHitAnim()
     {
         if (anim == null) return;
@@ -212,5 +219,19 @@ public class Monster : MonoBehaviour
     }
 
     void UnlockHit() => isHitPlaying = false;
+    */
 
+     public void HitEffectPlay()
+    {
+        if (co != null) StopCoroutine(co);
+        co = StartCoroutine(Flash());
+    }
+    IEnumerator Flash()
+    {
+        var prev = new Color(1f,1f,1f,1f);
+        sr.color = new Color(1f, 0.3f, 0.3f, 1f);
+        yield return new WaitForSeconds(hitEffectTime);
+        sr.color = prev;
+        co = null;
+    }
 }

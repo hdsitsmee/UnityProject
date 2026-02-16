@@ -1916,9 +1916,9 @@ MonoBehaviour:
       level: 5
       maxHealth: 300
       monsterDamage: 5
-      speed: 3
-      changeDirIntervalMin: 0.1
-      changeDirIntervalMax: 0.3
+      speed: 1.5
+      changeDirIntervalMin: 0.5
+      changeDirIntervalMax: 0.9
       moveAreaTilemap: {fileID: 1023662688}
       dropMaterials: []
   pool: {fileID: 998146269}
@@ -22679,8 +22679,8 @@ MonoBehaviour:
       maxHealth: 150
       monsterDamage: 4
       speed: 3
-      changeDirIntervalMin: 0.1
-      changeDirIntervalMax: 0.3
+      changeDirIntervalMin: 0.6
+      changeDirIntervalMax: 1
       moveAreaTilemap: {fileID: 1233730318}
       dropMaterials: []
   pool: {fileID: 998146269}
@@ -23815,9 +23815,9 @@ MonoBehaviour:
       level: 3
       maxHealth: 80
       monsterDamage: 3
-      speed: 3
-      changeDirIntervalMin: 0.1
-      changeDirIntervalMax: 0.3
+      speed: 2.5
+      changeDirIntervalMin: 1.2
+      changeDirIntervalMax: 1.5
       moveAreaTilemap: {fileID: 463204514}
       dropMaterials: []
   pool: {fileID: 998146269}

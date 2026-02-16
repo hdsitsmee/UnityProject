@@ -1,0 +1,380 @@
+fileFormatVersion: 2
+guid: ac543e8fddbf3e541b21a1e79a4bd962
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4017169769131801159
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_0"
+  - first:
+      213: 4503712796587798167
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_1"
+  - first:
+      213: 4492161031303926351
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_2"
+  - first:
+      213: 4267183411751445238
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_3"
+  - first:
+      213: 2000991443120666528
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_4"
+  - first:
+      213: 6709064262744408145
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_5"
+  - first:
+      213: 2737078620461039532
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_6"
+  - first:
+      213: 6056871195942813670
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_7"
+  - first:
+      213: 2069198839608853744
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_8"
+  - first:
+      213: -944111548982300319
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_9"
+  - first:
+      213: 596992665721523613
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_10"
+  - first:
+      213: -1538124591413858225
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_11"
+  - first:
+      213: 3319477801234708265
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_12"
+  - first:
+      213: 3801510106390127066
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_13"
+  - first:
+      213: -6006473275966553008
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_14"
+  - first:
+      213: -4236356904620129831
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_15"
+  - first:
+      213: 1167994762389971896
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_16"
+  - first:
+      213: 498874315083958916
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_17"
+  - first:
+      213: -4552524901115259835
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_18"
+  - first:
+      213: -4823378423759156645
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_19"
+  - first:
+      213: 5038152934540166842
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_20"
+  - first:
+      213: -3792486852048818532
+    second: "ChatGPT Image 2026\uB144 2\uC6D4 15\uC77C \uC624\uD6C4 06_09_22_21"
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 144
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: "Lv5\uC815\uBA74_0"
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 494
+        width: 315
+        height: 350
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8cfab3b76b33a24cba55e9cdf301252
+      internalID: -551766247
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Lv5\uC815\uBA74_1"
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 494
+        width: 315
+        height: 350
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 568d61cbf0ac4c94dbedcb15b79fad6c
+      internalID: -1943455852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Lv5\uC815\uBA74_2"
+      rect:
+        serializedVersion: 2
+        x: 755
+        y: 494
+        width: 315
+        height: 350
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94cd8b32a19d63b49b02861bdf23990a
+      internalID: -1534376593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Lv5\uC815\uBA74_3"
+      rect:
+        serializedVersion: 2
+        x: 1080
+        y: 494
+        width: 315
+        height: 350
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 048e2cc1f9c838e4bad566e466a2e3e4
+      internalID: -1251506818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Lv5\uC815\uBA74_4"
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 144
+        width: 315
+        height: 350
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b7cd5b175e01ebd468e52508b42990e2
+      internalID: 583414863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Lv5\uC815\uBA74_5"
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 144
+        width: 315
+        height: 350
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5dcab3735d02fd94ebff6e32cf627ee3
+      internalID: -766036354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Lv5\uC815\uBA74_6"
+      rect:
+        serializedVersion: 2
+        x: 755
+        y: 144
+        width: 315
+        height: 350
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c3673af6e24d0d42af19c0994d50153
+      internalID: -963195763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Lv5\uC815\uBA74_7"
+      rect:
+        serializedVersion: 2
+        x: 1080
+        y: 144
+        width: 315
+        height: 350
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: deb0b7ced6cd676458fedf7234092125
+      internalID: -1977127394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 6f3a4b177cd7bf7438058375b7538df1
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      "Lv5\uC815\uBA74_0": -551766247
+      "Lv5\uC815\uBA74_1": -1943455852
+      "Lv5\uC815\uBA74_2": -1534376593
+      "Lv5\uC815\uBA74_3": -1251506818
+      "Lv5\uC815\uBA74_4": 583414863
+      "Lv5\uC815\uBA74_5": -766036354
+      "Lv5\uC815\uBA74_6": -963195763
+      "Lv5\uC815\uBA74_7": -1977127394
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
