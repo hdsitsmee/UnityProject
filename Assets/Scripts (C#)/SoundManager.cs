@@ -10,6 +10,7 @@ public class SoundManager : MonoBehaviour
 
     [Header("배경음악 파일")]
     public AudioClip cafeBgm;//카페 배경음악
+    public AudioClip levelUpSound;//레벨업 효과음
 
     void Awake()
     {

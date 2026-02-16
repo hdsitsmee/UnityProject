@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public GameObject SpawnPoint;
     
     public static GameManager instance;
+    public bool isLevelUpPending = false;
 
     void Awake()
     {
@@ -41,26 +42,6 @@ public class GameManager : MonoBehaviour
         money += amount;
     }
 
-    // 레벨업 함수
-    public static void LevelUp()
-    {
-        level++;
-    }
-
-    public void GainExp(int amount)
-    {
-        currentExp += amount;
-        Debug.Log($"경험치 획득! 현재: {currentExp} / {maxExp}");
-
-        // 레벨업 로직
-        if (currentExp >= maxExp)
-        {
-            level++;
-            currentExp -= maxExp;
-            maxExp += 50; 
-            Debug.Log($" Lv.{level}");
-        }
-    }
 
     //[변경]
     //기존 allRecipe -> recipebook.allRecipes / 기존 DrinkRecipe -> DrinkData
@@ -107,6 +88,27 @@ public class GameManager : MonoBehaviour
     {
         return allIngredients.Find(x => x.ingredientName == name);
     }//이름으로 재료 데이터 찾는 함수
+    public void GainExp(int exp)
+    {
+        currentExp += exp;
+        
+        bool isLevelUp = false; // 레벨업 했는지 체크
+
+        while (currentExp >= maxExp)
+        {
+            currentExp -= maxExp;
+            level++;
+            maxExp += 100;
+            isLevelUp = true; // 레벨업 발생!
+        }
+
+        if (isLevelUp)
+        {
+            Debug.Log($"🎉 레벨업! 현재 레벨: {level}");
+            
+            isLevelUpPending = true;
+        }
+    }
 }
 
 // 재료 설계도

@@ -1,9 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class MainUI : MonoBehaviour
 {
+
+    public static MainUI instance;
+
+    [Header("Popups")]
+    public GameObject levelUpPopup;
+
     public TMP_Text levelText;
     public TMP_Text moneyText;
     [Header("Gauge UI")]
@@ -11,10 +18,21 @@ public class MainUI : MonoBehaviour
 
     const float UI_UPDATE_INTERVAL = 0.3f; // 초당 약 3회 갱신 (매 프레임 대비 성능 개선)
 
+    void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
+        if (levelUpPopup != null) levelUpPopup.SetActive(false);
         UpdateUI(); // 게임 시작 시 즉시 갱신
         InvokeRepeating(nameof(UpdateUI), UI_UPDATE_INTERVAL, UI_UPDATE_INTERVAL); // 주기적 갱신
+
+        if (GameManager.instance != null && GameManager.instance.isLevelUpPending)
+        {
+            ShowLevelUpNotification();
+            GameManager.instance.isLevelUpPending = false;
+        }
     }
 
     void OnDisable()
@@ -35,6 +53,25 @@ public class MainUI : MonoBehaviour
             
             // 슬라이더의 현재값을 '내 현재 경험치'로 설정
             expSlider.value = GameManager.instance.currentExp;
+        }
+    }
+    public void ShowLevelUpNotification()
+    {
+        
+        StopAllCoroutines(); 
+        StartCoroutine(LevelUpPopupRoutine());
+    }
+    IEnumerator LevelUpPopupRoutine()
+    {
+        if (levelUpPopup != null)
+        {
+            levelUpPopup.SetActive(true);
+            
+            if(SoundManager.instance != null) SoundManager.instance.PlaySFX(SoundManager.instance.levelUpSound);
+
+            yield return new WaitForSeconds(2.0f);
+
+            levelUpPopup.SetActive(false);
         }
     }
 }
