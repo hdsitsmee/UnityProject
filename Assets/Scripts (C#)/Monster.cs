@@ -157,26 +157,16 @@ public class Monster : MonoBehaviour
 
         if (itemDatabase != null && playerInventory != null)
         {
-            Item droppedItem = itemDatabase.GetRandomItemByLevel(this.level);
+            Item droppedItem = itemDatabase.GetItemByMonsterLevel(this.level); 
 
-            // droppedItem이 null이 아닐 때만 아래 코드 실행!
             if (droppedItem != null)
             {
                 playerInventory.AddItem(droppedItem);
 
-                // 팝업 인스턴스도 비어있는지 꼭 확인
                 if (AcquisitionPopup.instance != null)
                 {
-                    AcquisitionPopup.instance.ShowMessage(droppedItem.itemName);
+                    AcquisitionPopup.instance.ShowMessage(droppedItem.itemName); 
                 }
-                else
-                {
-                    Debug.LogError("AcquisitionPopup 인스턴스가 씬에 없습니다!");
-                }
-            }
-            else
-            {
-                Debug.LogWarning(this.level + "레벨에 해당하는 아이템을 DB에서 찾을 수 없습니다.");
             }
         }
 
