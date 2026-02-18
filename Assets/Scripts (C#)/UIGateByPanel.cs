@@ -4,22 +4,10 @@ using TMPro;
 
 public class UIGateByPanel : MonoBehaviour
 {
+    public GameObject guestManager;
     TMP_Text speechBubbleText;
     GameObject orderBullon;
     Slider patienceSlider;
-
-    // Snapshot data
-    // 도감 클릭 후 도감 닫힐 때까지 UI 상태를 저장하는 용도    
-    // 도감 열릴 때 UI 숨김 동시에 직전 상태 저장
-    bool hasSnapshot;
-
-    bool prevOrderBullonActive;
-
-    bool prevSpeechActive;
-    string prevSpeechText;
-
-    bool prevSliderActive;
-    float prevSliderValue;
 
     void Awake()
     {
@@ -31,73 +19,58 @@ public class UIGateByPanel : MonoBehaviour
 
     void OnEnable()
     {
-        GuestManager.instance.SetPause(true); // 도감 열리는 동안 게임 진행 멈춤
-        SaveSnapshot();      // 도감 열기 직전 상태 저장
-        ApplyGate(true);     // UI 숨김
+        GameManager.instance.SetPause(true); // 도감 열리는 동안 게임 진행 멈춤
+        guestManager.SetActive(false);
+        ApplyGate();     // UI 숨김
     }
 
     void OnDisable()
     {
-        GuestManager.instance.SetPause(false); // 도감 닫히면 게임 진행 재개
+        GameManager.instance.SetPause(false); // 도감 닫히면 게임 진행 재개
+        guestManager.SetActive(true);
         RestoreSnapshot();   // 직전 화면 저장한 그대로 복구
     }
 
-    void SaveSnapshot()
-    {
-        if (hasSnapshot) return; // 중복 저장 방지
-        hasSnapshot = true;
-
-        if (orderBullon != null)
-            prevOrderBullonActive = orderBullon.activeSelf;
-
-        if (speechBubbleText != null)
-        {
-            prevSpeechActive = speechBubbleText.gameObject.activeSelf;
-            prevSpeechText = speechBubbleText.text;
-        }
-
-        if (patienceSlider != null)
-        {
-            prevSliderActive = patienceSlider.gameObject.activeSelf;
-            prevSliderValue = patienceSlider.value;
-        }
-    }
 
     void RestoreSnapshot()
     {
-        if (!hasSnapshot) return;
-        hasSnapshot = false;
+        /*if (!hasSnapshot) return;
+        hasSnapshot = false;*/
 
         if (orderBullon != null)
-            orderBullon.SetActive(prevOrderBullonActive);
+            orderBullon.SetActive(true);
 
         if (speechBubbleText != null)
         {
-            speechBubbleText.text = prevSpeechText;
-            speechBubbleText.gameObject.SetActive(prevSpeechActive);
+            speechBubbleText.gameObject.SetActive(true);
         }
 
         if (patienceSlider != null)
         {
-            patienceSlider.value = prevSliderValue;
-            patienceSlider.gameObject.SetActive(prevSliderActive);
+            PatienceUI(true);
         }
     }
 
-    void ApplyGate(bool gateOn)
+    void ApplyGate()
     {
-        if (!gateOn) return;
-
         // 도감 ON -> 강제 숨김
         if (orderBullon != null) orderBullon.SetActive(false);
 
         if (speechBubbleText != null)
         {
-            speechBubbleText.text = "";
             speechBubbleText.gameObject.SetActive(false);
         }
 
         if (patienceSlider != null)
-            patienceSlider.gameObject.SetActive(false);
+            PatienceUI(false);
     }
+
+    void PatienceUI(bool flag)
+    {
+        foreach (Transform child in patienceSlider.transform)
+        {
+            child.gameObject.SetActive(flag);
+        }
+    }
+      
 }

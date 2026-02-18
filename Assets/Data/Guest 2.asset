@@ -21,4 +21,8 @@ MonoBehaviour:
   unlockLevel: 2
   isAscended: 0
   hasMet: 1
-  dialogue: 
+  orderDialogue: 
+  happyDialogue: "great\u2026! So amazing\u2026! this is real water\u2026!"
+  angryDialogue: Too slow! Are you waiting for me to evaporate completely?
+  ascendedDialogue: " I\u2019ve finally found it. My oasis... I don\u2019t feel the
+    heat anymore."

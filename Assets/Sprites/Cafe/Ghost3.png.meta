@@ -1,34 +1,85 @@
 fileFormatVersion: 2
-guid: f9ede6bfc1abd8d48848ed3e92414eeb
+guid: cdf04bd1e92abd844b7d7b88ce9ba599
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8453001098941420945
-    second: 746FAAF6-4F55-4428-B26F-934C3DA9FFAA (1)_0
+      213: 8031793678534222083
+    second: KakaoTalk_20260218_175658829_01_0
   - first:
-      213: 4771306295699890948
-    second: 746FAAF6-4F55-4428-B26F-934C3DA9FFAA (1)_1
+      213: 223512827308547435
+    second: KakaoTalk_20260218_175658829_01_1
   - first:
-      213: -1061279815252423941
-    second: 746FAAF6-4F55-4428-B26F-934C3DA9FFAA (1)_2
+      213: -3422779129667757124
+    second: KakaoTalk_20260218_175658829_01_2
   - first:
-      213: -5364554085194623542
-    second: 746FAAF6-4F55-4428-B26F-934C3DA9FFAA (1)_3
+      213: -7135365361254996994
+    second: KakaoTalk_20260218_175658829_01_3
   - first:
-      213: 473585081891404734
-    second: 746FAAF6-4F55-4428-B26F-934C3DA9FFAA (1)_4
+      213: 8547098980863424799
+    second: KakaoTalk_20260218_175658829_01_4
   - first:
-      213: 485704386076907387
-    second: 746FAAF6-4F55-4428-B26F-934C3DA9FFAA (1)_5
+      213: 7894862698245430964
+    second: KakaoTalk_20260218_175658829_01_5
   - first:
-      213: 4789222888028278250
-    second: 746FAAF6-4F55-4428-B26F-934C3DA9FFAA (1)_6
+      213: 4164230405526847738
+    second: KakaoTalk_20260218_175658829_01_6
   - first:
-      213: -2898075903246435324
-    second: 746FAAF6-4F55-4428-B26F-934C3DA9FFAA (1)_7
+      213: -6101952826284833064
+    second: KakaoTalk_20260218_175658829_01_7
   - first:
-      213: 5841446972536941335
-    second: 746FAAF6-4F55-4428-B26F-934C3DA9FFAA (1)_8
+      213: -1272703007249862381
+    second: KakaoTalk_20260218_175658829_01_8
+  - first:
+      213: 3477983391711926606
+    second: KakaoTalk_20260218_175658829_01_9
+  - first:
+      213: 671508137539669590
+    second: KakaoTalk_20260218_175658829_01_10
+  - first:
+      213: -8494366561761523691
+    second: KakaoTalk_20260218_175658829_01_11
+  - first:
+      213: 8071257557903215999
+    second: KakaoTalk_20260218_175658829_01_12
+  - first:
+      213: -8273778859604529922
+    second: KakaoTalk_20260218_175658829_01_13
+  - first:
+      213: -5668942577824815948
+    second: KakaoTalk_20260218_175658829_01_14
+  - first:
+      213: 4788022007035509344
+    second: KakaoTalk_20260218_175658829_01_15
+  - first:
+      213: 1174961577885812418
+    second: KakaoTalk_20260218_175658829_01_16
+  - first:
+      213: -7321330252729555529
+    second: KakaoTalk_20260218_175658829_01_17
+  - first:
+      213: -9152086107640229950
+    second: KakaoTalk_20260218_175658829_01_18
+  - first:
+      213: 4754020921243694553
+    second: KakaoTalk_20260218_175658829_01_19
+  - first:
+      213: -1413194648834230084
+    second: KakaoTalk_20260218_175658829_01_20
+  - first:
+      213: 8301625768962113185
+    second: KakaoTalk_20260218_175658829_01_21
+  - first:
+      213: 7664381155123267943
+    second: KakaoTalk_20260218_175658829_01_22
+  - first:
+      213: 6990408023489651183
+    second: KakaoTalk_20260218_175658829_01_23
+  - first:
+      213: 3345899283947195293
+    second: KakaoTalk_20260218_175658829_01_24
+  - first:
+      213: -3680818186653726846
+    second: KakaoTalk_20260218_175658829_01_25
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -61,7 +112,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -99,7 +150,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -140,10 +191,10 @@ TextureImporter:
       name: Stand
       rect:
         serializedVersion: 2
-        x: 212
-        y: 582
-        width: 311
-        height: 313
+        x: 146
+        y: 557
+        width: 390
+        height: 367
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,96 +203,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f6a2c935948e0ba80800000000000000
-      internalID: -8453001098941420945
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Happy
-      rect:
-        serializedVersion: 2
-        x: 595
-        y: 583
-        width: 330
-        height: 310
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 403e6c5ebc5173240800000000000000
-      internalID: 4771306295699890948
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ascend0
-      rect:
-        serializedVersion: 2
-        x: 205
-        y: 105
-        width: 322
-        height: 364
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: aed881f97dcb67240800000000000000
-      internalID: 4789222888028278250
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ascend1
-      rect:
-        serializedVersion: 2
-        x: 585
-        y: 100
-        width: 342
-        height: 393
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 40c70e61257f7c7d0800000000000000
-      internalID: -2898075903246435324
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ascend2
-      rect:
-        serializedVersion: 2
-        x: 950
-        y: 52
-        width: 486
-        height: 458
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 71b685c721df01150800000000000000
-      internalID: 5841446972536941335
+      spriteID: 301a24edbc9a67f60800000000000000
+      internalID: 8031793678534222083
       vertices: []
       indices: 
       edges: []
@@ -250,20 +213,108 @@ TextureImporter:
       name: Angry
       rect:
         serializedVersion: 2
-        x: 968
-        y: 576
-        width: 330
-        height: 310
+        x: 1012
+        y: 552
+        width: 367
+        height: 374
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: e23654b6a4dfef54cbeb81eb3debf264
-      internalID: -697782205
+      spriteID: 4be96679bcf209d60800000000000000
+      internalID: 7894862698245430964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Happy
+      rect:
+        serializedVersion: 2
+        x: 582
+        y: 555
+        width: 352
+        height: 369
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06aba1ab5a8727240800000000000000
+      internalID: 4788022007035509344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ascend0
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 106
+        width: 399
+        height: 403
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb8b0cd44f2536ce0800000000000000
+      internalID: -1413194648834230084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ascend1
+      rect:
+        serializedVersion: 2
+        x: 574
+        y: 100
+        width: 401
+        height: 412
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ae373927ac453370800000000000000
+      internalID: 8301625768962113185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ascend2
+      rect:
+        serializedVersion: 2
+        x: 1026
+        y: 100
+        width: 399
+        height: 412
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 769025e8d0a5d5a60800000000000000
+      internalID: 7664381155123267943
       vertices: []
       indices: 
       edges: []
@@ -272,7 +323,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 3f28f33d9f6f73541a9be7a47f7be97e
+    spriteID: 7a3f7953e48de1548876810b3f27a095
     internalID: 0
     vertices: []
     indices: 
@@ -282,16 +333,32 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      746FAAF6-4F55-4428-B26F-934C3DA9FFAA (1)_2: -1061279815252423941
-      746FAAF6-4F55-4428-B26F-934C3DA9FFAA (1)_3: -5364554085194623542
-      746FAAF6-4F55-4428-B26F-934C3DA9FFAA (1)_4: 473585081891404734
-      746FAAF6-4F55-4428-B26F-934C3DA9FFAA (1)_5: 485704386076907387
-      Angry: -697782205
-      Ascend0: 4789222888028278250
-      Ascend1: -2898075903246435324
-      Ascend2: 5841446972536941335
-      Happy: 4771306295699890948
-      Stand: -8453001098941420945
+      Angry: 7894862698245430964
+      Ascend0: -1413194648834230084
+      Ascend1: 8301625768962113185
+      Ascend2: 7664381155123267943
+      Happy: 4788022007035509344
+      KakaoTalk_20260218_175658829_01_1: 223512827308547435
+      KakaoTalk_20260218_175658829_01_10: 671508137539669590
+      KakaoTalk_20260218_175658829_01_11: -8494366561761523691
+      KakaoTalk_20260218_175658829_01_12: 8071257557903215999
+      KakaoTalk_20260218_175658829_01_13: -8273778859604529922
+      KakaoTalk_20260218_175658829_01_14: -5668942577824815948
+      KakaoTalk_20260218_175658829_01_16: 1174961577885812418
+      KakaoTalk_20260218_175658829_01_17: -7321330252729555529
+      KakaoTalk_20260218_175658829_01_18: -9152086107640229950
+      KakaoTalk_20260218_175658829_01_19: 4754020921243694553
+      KakaoTalk_20260218_175658829_01_2: -3422779129667757124
+      KakaoTalk_20260218_175658829_01_23: 6990408023489651183
+      KakaoTalk_20260218_175658829_01_24: 3345899283947195293
+      KakaoTalk_20260218_175658829_01_25: -3680818186653726846
+      KakaoTalk_20260218_175658829_01_3: -7135365361254996994
+      KakaoTalk_20260218_175658829_01_4: 8547098980863424799
+      KakaoTalk_20260218_175658829_01_6: 4164230405526847738
+      KakaoTalk_20260218_175658829_01_7: -6101952826284833064
+      KakaoTalk_20260218_175658829_01_8: -1272703007249862381
+      KakaoTalk_20260218_175658829_01_9: 3477983391711926606
+      Stand: 8031793678534222083
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

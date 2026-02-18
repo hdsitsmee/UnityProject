@@ -21,4 +21,10 @@ MonoBehaviour:
   unlockLevel: 5
   isAscended: 0
   hasMet: 0
-  dialogue: 
+  orderDialogue: 
+  happyDialogue: "\u2026So this is sincerity.\nEven a king has never tasted such
+    a drink."
+  angryDialogue: Do not test my patience. I could sink this entire shop into the
+    deep abyss.
+  ascendedDialogue: The thirst that weighed heavier than my crown has vanished. I
+    shall not forget your sincerity.

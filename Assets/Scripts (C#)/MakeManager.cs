@@ -284,7 +284,8 @@ public class MakeManager : MonoBehaviour
         if (GameManager.instance != null)
         {
             GameManager.instance.lastResultSuccess = isSuccess; // 게임 매니저에 성공 여부 전달
-            GameManager.instance.reactText = isSuccess ? "Delicioius! (UP)" : "No....)"; // 게임 매니저에 반응 텍스트 전달
+            GuestData gd = GameManager.instance.currentGuest;
+            GameManager.instance.reactText = isSuccess ?  gd.happyDialogue: gd.angryDialogue; // 게임 매니저에 반응 텍스트 전달
             GameManager.instance.reactPending = true; // 씬 돌아왔을 때 React 진입 플래그
             GameManager.instance.StopOrderTimer();
         }

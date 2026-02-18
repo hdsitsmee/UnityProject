@@ -39,7 +39,6 @@ public class GuestManager : MonoBehaviour
     // ===== Runtime =====
     public readonly List<GameObject> pool = new List<GameObject>();
     public GameObject currentGuest;
-    public bool isPaused; //[🚦추가] 도감 이동 코루틴 정지
 
     // 주문 데이터
     public string currentOrderName;
@@ -213,6 +212,10 @@ public class GuestManager : MonoBehaviour
         currentGuest.transform.position = spawnPoint.position;
         currentGuest.transform.rotation = spawnPoint.rotation;
         currentGuest.SetActive(true);
+        // 🥨 [추가] 등장 시 얼굴 표정 초기화
+        var gv = currentGuest.GetComponent<GhostVisual>();
+        gv.ShowFace(GhostVisual.Face.Stand); // 표정 초기화
+
 
         // 5. [🔥중요] GameManager에 현재 손님 정보 등록 (주문 단계 전에 미리 등록)
         GameManager.instance.currentGuest = selectedData;
@@ -274,6 +277,7 @@ public class GuestManager : MonoBehaviour
     {
         state = State.React;
         Debug.Log("반응 시작: React");
+
         // 1. 제조 버튼 비활/인내심 비활/현재손님 재등록 및 활성화/말풍선도 ㄱㄱ
         if (makeButton != null) makeButton.interactable = false; //제조 버튼 비활
         if (patienceSlider != null) patienceSlider.gameObject.SetActive(false); //인내심 비활
@@ -297,6 +301,12 @@ public class GuestManager : MonoBehaviour
                 currentGuest.transform.position = spawnPoint.position;
                 currentGuest.transform.rotation = spawnPoint.rotation;
                 currentGuest.SetActive(true);
+                Debug.Log($"현재 손님 재등록: {cg.guestName},{GameManager.instance.lastResultSuccess}");
+                //🥨 [추가] 반응에 따른 얼굴 표정 변경
+                var gv = currentGuest.GetComponent<GhostVisual>();
+                if (GameManager.instance.lastResultSuccess)
+                    gv.ShowFace(GhostVisual.Face.Happy);
+                else gv.ShowFace(GhostVisual.Face.Angry);
             }
 
         }
@@ -306,7 +316,6 @@ public class GuestManager : MonoBehaviour
             speechBubbleText.gameObject.SetActive(true);
             speechBubbleText.text = GameManager.instance.reactText;
         }
-
         // 2. reactDuration 뒤에 Leave로 이동
         StartCoroutine(ReactThenLeaveRoutine());
     }
@@ -314,6 +323,7 @@ public class GuestManager : MonoBehaviour
     // 5. Leave : 퇴장 → 다음 손님 대기
     private IEnumerator ReactThenLeaveRoutine()
     {
+        yield return new WaitForSeconds(reactDuration);
         EnterLeave();
         yield return new WaitForSeconds(leaveDuration); 
         FinishLeave();
@@ -373,9 +383,4 @@ public class GuestManager : MonoBehaviour
 
     }
 
-    //[🚦추가] 도감 이동 시 일시정지 기능
-    public void SetPause(bool pause)
-    {
-        isPaused = pause;
-    }
 }

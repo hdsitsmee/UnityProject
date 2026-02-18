@@ -57,8 +57,7 @@ public class MainUI : MonoBehaviour
     }
     public void ShowLevelUpNotification()
     {
-        
-        StopAllCoroutines(); 
+        StopAllCoroutines();
         StartCoroutine(LevelUpPopupRoutine());
     }
     IEnumerator LevelUpPopupRoutine()

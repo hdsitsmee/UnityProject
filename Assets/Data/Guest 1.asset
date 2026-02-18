@@ -21,4 +21,8 @@ MonoBehaviour:
   unlockLevel: 1
   isAscended: 1
   hasMet: 1
-  dialogue: 
+  orderDialogue: 
+  happyDialogue: "Oh!  this amazing freshness\u2026  I remember that!"
+  angryDialogue: Ugh... my body feels like it's drying up from this thirst!
+  ascendedDialogue: Ah, this scent... I can finally let my seeds bloom in peace.
+    Thank you.
