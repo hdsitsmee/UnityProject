@@ -15,7 +15,7 @@ public class Weapon : MonoBehaviour
     {
         Init(info.playerDamage);
         gameObject.SetActive(false);
-        Debug.Log("무기 활성화");
+        Debug.Log("무기 비활성화");
     }
 
     private void Awake()

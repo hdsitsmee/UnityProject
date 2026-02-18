@@ -3,22 +3,22 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
-    public GameObject attackArea; // ���� ����
+    public GameObject attackArea; 
     public GameObject weapon;
-    [Header("������ ����")]
+    [Header("플레이어 기본 정보")]
     public PlayerInfo info;
 
    
 
-    [Header("��Ÿ�� ����(������ ����ϴ� ��)")]
+    [Header("공격 관련 스텟")]
     public float playerDamage;
     public float speed;
     public float health;
 
 
     
-    public float attackTimer;//weapon �ֵθ��� �ð�
-    public float cooltimeTimer; // ���� ��Ÿ��
+    public float attackTimer;//weapon 지속시간
+    public float cooltimeTimer; // 공격 쿨타임 
     public Vector2 inputVec;
     bool canAttack;
     public float maxHealth;
@@ -26,10 +26,11 @@ public class Player : MonoBehaviour
     void Init()
     {
         ApplyPlayerInfo(info);
-     
-        transform.position = spawnPoint.position; // ����������Ʈ���� ����
-        health = maxHealth; // ü�� �ִ�ġ�� ����
-        rigid.linearVelocity = Vector2.zero; // �ӵ� ����
+
+        canAttack = true;
+        transform.position = spawnPoint.position; //스폰위치 재설정
+        health = maxHealth; //초기 체력 설정
+        rigid.linearVelocity = Vector2.zero;
         gameObject.SetActive(true); 
     }
     Rigidbody2D rigid;
@@ -45,7 +46,7 @@ public class Player : MonoBehaviour
     {
         Init(); 
     }
-    private void FixedUpdate() //�⺻ �̵�
+    private void FixedUpdate() 
     {
         if (Time.timeScale == 0f) return;
         Vector2 nextVec = inputVec * speed * Time.fixedDeltaTime;
@@ -54,26 +55,13 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-        //if(cooltimeTimer > 0f) // ���� ��Ÿ���� ���Ҵٸ�
-        //{
-        //    cooltimeTimer -= Time.deltaTime; // ��Ÿ�� ����
-        //}
-        //if(isAttack) // ���� ������ ���¶�� 
-        //{
-        //    attackTimer -= Time.deltaTime; //�������ӽð�
-        //    if(attackTimer <= 0)
-        //    {
-        //        attackArea.SetActive(false);
-        //        isAttack = false;
-
-        //    }
-        //}
+       
         if (Time.timeScale == 0f) return;
     }
     private void LateUpdate()
     {
         if (Time.timeScale == 0f) return;
-        if (inputVec.x != 0) // �ȱ�
+        if (inputVec.x != 0) 
         {
             spriter.flipX = inputVec.x < 0;
         }
@@ -90,21 +78,21 @@ public class Player : MonoBehaviour
         if (!collision.CompareTag("Monster")) 
             return;
         var monster = collision.GetComponentInParent<Monster>();
-        health -= monster.monsterDamage; //<- ������ �����ϰ���
-        Debug.Log("�÷��̾���ݹ���");
+        health -= monster.monsterDamage; //<- 몬스터데미지만큼 체력 감소
+        Debug.Log($"플레이어 피격, 남은 체력 {health}");
 
         if (health > 0)
-        {// �������
+        {//살아있음
 
         }
-        else // ���ó�� �� ������
+        else // 사망
         {
             Respawn();
         }
     }    
     void Respawn() 
     { 
-         Init(); // �ʱ� �������� ����
+         Init(); // 플레이어 초기 설정
     }
 
 
@@ -120,11 +108,16 @@ public class Player : MonoBehaviour
 
     IEnumerator Attack()
     {
+        canAttack = false;
         weapon.SetActive(true);
-        Debug.Log("���� Ȱ��ȭ");
+        Debug.Log("무기 활성화");
         yield return new WaitForSeconds(attackTimer);
         weapon.SetActive(false);
-        Debug.Log("�����Ȱ��ȭ");
+        Debug.Log("무기 비활성화");
+        yield return new WaitForSeconds(cooltimeTimer);
+        canAttack = true;
+        Debug.Log("다시 공격 가능");
+
     }
     void OnAttack(InputValue value)
     {
@@ -135,10 +128,10 @@ public class Player : MonoBehaviour
                 return;
             else
             {
-                Debug.Log("����");
+                Debug.Log("공격");
                 StartCoroutine(Attack());
-                canAttack = false;
-                Debug.Log("��Ÿ�ӽ���");
+                
+                Debug.Log("공격완료");
             }
             
             
