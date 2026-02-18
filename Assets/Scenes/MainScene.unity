@@ -1354,7 +1354,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &540800858
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4880,6 +4880,7 @@ MonoBehaviour:
   firstGuestDelay: 3
   nextGuestDelay: 3
   arriveDuration: 0.5
+  reactDelay: 2
   reactDuration: 1.2
   leaveDuration: 0.6
   patienceTime: 20

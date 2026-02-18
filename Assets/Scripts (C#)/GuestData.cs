@@ -16,5 +16,11 @@ public class GuestData : ScriptableObject
     public bool isAscended = false; // 성불 여부
     public bool hasMet = false;
     [TextArea]
-    public string dialogue; // 대사
+    public string orderDialogue; // 대사
+    [TextArea]
+    public string happyDialogue; // 만족 대사
+    [TextArea]
+    public string angryDialogue; // 불만 대사
+    [TextArea]
+    public string ascendedDialogue; // 성불 대사
 }

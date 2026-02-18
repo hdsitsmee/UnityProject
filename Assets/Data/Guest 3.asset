@@ -21,4 +21,8 @@ MonoBehaviour:
   unlockLevel: 3
   isAscended: 0
   hasMet: 0
-  dialogue: 
+  orderDialogue: 
+  happyDialogue: Ah! Look at that foam! how I imagined it!
+  angryDialogue: It's not sweet enough! This isn't what I asked for at all!
+  ascendedDialogue: "Oh my, this softness! It\u2019s exactly what I dreamed of. I\u2019m
+    so happy\u2026"

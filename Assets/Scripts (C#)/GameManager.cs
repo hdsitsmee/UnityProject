@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     public bool orderActive;
     public float patienceTotal;
     public float patienceRemaining;
+    public bool isPaused = false; //[🚦추가] 도감 이동 코루틴 정지
 
     // 🥨 [추가] 제조 -> 메인 이동 시 주문 데이터 연동 위한 변수 
     public bool reactPending; // 제조 -> 메인 이동 시 유령 반응 발생 여부
@@ -73,7 +74,7 @@ public class GameManager : MonoBehaviour
     // 🥨[추가] 인내심 데이터 관리
     void Update()
     {
-        if (!orderActive) return;
+        if (!orderActive || isPaused) return;
 
         // 1. 인내심 감소
         patienceRemaining -= Time.deltaTime;
@@ -92,12 +93,14 @@ public class GameManager : MonoBehaviour
         orderActive = true; 
         patienceTotal = patienceTime;
         patienceRemaining = patienceTime; // 제조 직전 인내심 시간
+
     }
     // 🥨[추가] 제조 -> 메인 화면에서 제조 완료 끝 알림
     public void StopOrderTimer()
     {
         orderActive = false;
     }
+
     // 🥨[추가] 인내심 시간 계산 로직
     public float GetPatienceNormalized()
     {
@@ -119,6 +122,13 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene("MainScene");
         }
     }
+
+    //[🚦추가] 도감 이동 시 일시정지 기능
+    public void SetPause(bool pause)
+    {
+        isPaused = pause;
+    }
+
     // ★ [수정됨] 변수명 변경 반영 (currentSatisfaction 사용)
     public void UpdateGuestSatisfaction(string name, int amount)
     {

@@ -21,4 +21,9 @@ MonoBehaviour:
   unlockLevel: 4
   isAscended: 0
   hasMet: 0
-  dialogue: 
+  orderDialogue: 
+  happyDialogue: Very well. I shall accept this offering!
+  angryDialogue: Impudent! You dare make a warrior wait? Do you wish to taste my
+    trident?
+  ascendedDialogue: With this sweet strength... I shall never lose anything again.
+    A fine treat indeed.
