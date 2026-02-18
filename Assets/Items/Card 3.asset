@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a522d74a2c416384f859b8f9ab6340fa, type: 3}
   m_Name: Card 3
   m_EditorClassIdentifier: 
-  itemName: 3
-  level: 4
+  itemName: Lunar Candy
+  level: 3
   description: item 3
-  icon: {fileID: 1574186296, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
+  icon: {fileID: -926637460, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}

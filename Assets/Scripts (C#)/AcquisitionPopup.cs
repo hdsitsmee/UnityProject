@@ -22,7 +22,7 @@ public class AcquisitionPopup : MonoBehaviour
 
     IEnumerator PopupRoutine(string itemName)
     {
-        infoText.text = $"'{itemName}'을(를) 획득했습니다!"; // 메시지 설정
+        infoText.text = "Acquired: " + itemName;
         popupPanel.SetActive(true); // 팝업 켜기
 
         yield return new WaitForSeconds(1.5f); 

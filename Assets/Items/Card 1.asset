@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a522d74a2c416384f859b8f9ab6340fa, type: 3}
   m_Name: Card 1
   m_EditorClassIdentifier: 
-  itemName: 1
-  level: 2
+  itemName: Shine MInt
+  level: 1
   description: item 1
-  icon: {fileID: 530383844, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
+  icon: {fileID: -1047059572, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}

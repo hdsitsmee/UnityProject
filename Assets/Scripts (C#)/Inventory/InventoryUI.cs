@@ -3,20 +3,37 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
 
-
 public class InventoryUI : MonoBehaviour
 {
+    public static InventoryUI Instance;
+
+    [Header("기본 데이터")]
     public InventoryData inventoryData;
     public Transform itemsParent;
     public GameObject inventoryPanel;
 
-    InventorySlot[] slots;
+    private InventorySlot[] slots;
+    private bool isInventoryOpen = false;
+
+    [Header("툴팁 UI")]
+    public GameObject tooltipPanel;
+    public TextMeshProUGUI itemNameText;
+    public TextMeshProUGUI itemLevelText;
+    public TextMeshProUGUI itemDescText;
+    public TextMeshProUGUI itemCountText;
+    public Image itemIcon;
+
+    void Awake()
+    {
+        Instance = this;
+        if (tooltipPanel != null) tooltipPanel.SetActive(false);
+    }
 
     void Start()
     {
         slots = itemsParent.GetComponentsInChildren<InventorySlot>();
         UpdateUI();
-        inventoryPanel.SetActive(false);
+        if (inventoryPanel != null) inventoryPanel.SetActive(false);
     }
 
     void Update()
@@ -27,35 +44,28 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    void Awake()
-    {
-        Instance = this;
-
-        if (tooltipPanel != null)
-        {
-            tooltipPanel.SetActive(false);
-        }
-    }
-
     public void ToggleInventory()
     {
-        // 패널 켜고 끄기
-        inventoryPanel.SetActive(!inventoryPanel.activeSelf);
+        if (inventoryPanel == null) return;
 
-        if (inventoryPanel.activeSelf)
+        isInventoryOpen = !isInventoryOpen;
+        inventoryPanel.SetActive(isInventoryOpen);
+
+        if (isInventoryOpen)
         {
             UpdateUI();
-            Time.timeScale = 0f;
+            Time.timeScale = 0f; 
         }
         else
         {
             Time.timeScale = 1f;
+            HideTooltip(); 
         }
     }
 
     public void UpdateUI()
     {
-        if (inventoryData == null) return;
+        if (inventoryData == null || slots == null) return;
 
         for (int i = 0; i < slots.Length; i++)
         {
@@ -69,25 +79,16 @@ public class InventoryUI : MonoBehaviour
             }
         }
     }
-    public static InventoryUI Instance; 
-
-    [Header("툴팁 UI")]
-    public GameObject tooltipPanel;
-    public TextMeshProUGUI itemNameText;
-    public TextMeshProUGUI itemLevelText;
-    public TextMeshProUGUI itemDescText;
-    public TextMeshProUGUI itemCountText;
-    public Image itemIcon;
-
 
     public void ShowTooltip(Item item, int count)
     {
-        itemNameText.text = item.itemName; //
-        itemLevelText.text = "LV. " + item.level; //
-        itemDescText.text = item.description; //
-        itemCountText.text = "보유 수량: " + count + "개";
+        if (item == null) return;
 
-        itemIcon.sprite = item.icon;
+        itemNameText.text = item.itemName;
+        itemLevelText.text = "LV. " + item.level;
+        itemDescText.text = item.description;
+        itemCountText.text = "Amount: " + count; 
+
         if (item.icon != null)
         {
             itemIcon.sprite = item.icon;
@@ -98,7 +99,7 @@ public class InventoryUI : MonoBehaviour
             itemIcon.enabled = false;
         }
 
-        tooltipPanel.SetActive(true); 
+        tooltipPanel.SetActive(true);
     }
 
     public void HideTooltip() => tooltipPanel.SetActive(false);
