@@ -78,11 +78,12 @@ public class Player : MonoBehaviour
   
 
 
-    private void OnTriggerEnter2D(Collider2D collision) // ���Ϳ� ���� ü�� ���� �� ���
+    void OnCollisionEnter2D(Collision2D collision) // ���Ϳ� ���� ü�� ���� �� ���
     {
-        if (!collision.CompareTag("Monster")) 
+        if (!collision.collider.CompareTag("Monster")) 
             return;
-        var monster = collision.GetComponentInParent<Monster>();
+        var monster = collision.collider.GetComponentInParent<Monster>();
+        if(monster==null)return;
         health -= monster.monsterDamage; //<- 몬스터데미지만큼 체력 감소
         Debug.Log($"플레이어 피격, 남은 체력 {health}");
         AudioManager.instance.PlaySfx(AudioManager.Sfx.PlayerHit);

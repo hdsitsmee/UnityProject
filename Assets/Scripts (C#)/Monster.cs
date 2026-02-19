@@ -83,29 +83,10 @@ public class Monster : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        RandomDirection();
-        ResetTimer();
-
-        // 임시: 부딪히면 체력 감소
-        //health --;
-        //HitEffectPlay(); //피격 효과. 
-        //AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterHit);
-
-        if (health <= 0)
-        {
-            Die();    
-        }
-        
-    }
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-
-
-        if (collision.CompareTag("Weapon"))
+        if (collision.collider.CompareTag("Weapon"))
         {
             // 1. 무기 오브젝트에 붙어있는 Weapon 스크립트를 직접 찾습니다.
-            Weapon weaponScript = collision.GetComponent<Weapon>();
+            Weapon weaponScript = collision.collider.GetComponent<Weapon>();
 
             if (weaponScript != null)
             {
@@ -117,7 +98,7 @@ public class Monster : MonoBehaviour
             }
             else
             {
-                var player = collision.GetComponentInParent<Player>();
+                var player = collision.collider.GetComponentInParent<Player>();
                 if (player == null) return;
 
                 health -= player.playerDamage;
@@ -130,6 +111,14 @@ public class Monster : MonoBehaviour
        
         if (health <= 0f)
             Die();
+
+        RandomDirection();
+        ResetTimer();
+
+        // 임시: 부딪히면 체력 감소
+        //health --;
+        //HitEffectPlay(); //피격 효과. 
+        //AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterHit);    
     }
 
     void RandomDirection()
