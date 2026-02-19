@@ -85,6 +85,7 @@ public class Player : MonoBehaviour
         var monster = collision.GetComponentInParent<Monster>();
         health -= monster.monsterDamage; //<- 몬스터데미지만큼 체력 감소
         Debug.Log($"플레이어 피격, 남은 체력 {health}");
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.PlayerHit);
 
         if (health > 0)
         {//살아있음
@@ -117,7 +118,8 @@ public class Player : MonoBehaviour
         weaponPivot.gameObject.SetActive(true);
         weapon.SetActive(true);
         Debug.Log("무기 활성화");
-
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.SwordAttack);
+        
         timer = 0f;
         Quaternion startRotation = Quaternion.Euler(0, 0, 90f);  // 시작 각도 (위)
         Quaternion endRotation = Quaternion.Euler(0, 0, -90f);   // 끝 각도 (아래)

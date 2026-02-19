@@ -36,7 +36,7 @@ public class Monster : MonoBehaviour
     int facing; //0 1 2 정면 후면 측면
     bool isHitPlaying; //피격 
     float hitEffectTime=0.12f;
-
+    
     Coroutine co;
 
     void Awake()
@@ -89,6 +89,7 @@ public class Monster : MonoBehaviour
         // 임시: 부딪히면 체력 감소
         //health --;
         //HitEffectPlay(); //피격 효과. 
+        //AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterHit);
 
         if (health <= 0)
         {
@@ -112,6 +113,7 @@ public class Monster : MonoBehaviour
                 health -= weaponScript.damage;
                 Debug.Log($"몬스터 피격! 남은 체력: {health}");
                 //PlayHitAnim();
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterHit);
             }
             else
             {
@@ -181,6 +183,7 @@ public class Monster : MonoBehaviour
                 }
             }
         }
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterDead);
 
         // 여기서 바로 리스폰 예약을 걸고
         if (spawner != null)
