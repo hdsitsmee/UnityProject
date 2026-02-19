@@ -469,8 +469,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.120723, g: 0.35220122, b: 0.15260524, a: 1}
+  m_Sprite: {fileID: 2043143487030897331, guid: 394116407d52a6a4ba03c56bb8b246f5, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -514,8 +514,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 1}
+  m_Offset: {x: -0.012386084, y: -0.016514897}
+  m_Size: {x: 1.2394671, y: 1.2724969}
   m_Direction: 0
 --- !u!50 &3383717465330415208
 Rigidbody2D:
@@ -564,6 +564,9 @@ MonoBehaviour:
   itemDatabase: {fileID: 11400000, guid: fa76393e083479f448cdb75441feb4ac, type: 2}
   playerInventory: {fileID: 11400000, guid: 9d1b37d10fe5abe4496d2ce65f59ea44, type: 2}
   spawner: {fileID: 0}
+  speed: 0
+  changeDirIntervalMin: 0
+  changeDirIntervalMax: 0
 --- !u!95 &-9125485080284935642
 Animator:
   serializedVersion: 7

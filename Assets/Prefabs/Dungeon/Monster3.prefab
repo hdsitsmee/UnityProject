@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.08}
   m_SizeDelta: {x: 120, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &2481184582711966910
@@ -341,8 +341,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.43283904, g: 0.18551464, b: 0.8805031, a: 1}
+  m_Sprite: {fileID: -2866408816234455141, guid: 098f0a628137c8540b4d72b0eceb005c, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -386,8 +386,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 1}
+  m_Offset: {x: -0.01600802, y: -0.08537626}
+  m_Size: {x: 1.3201609, y: 1.3201609}
   m_Direction: 0
 --- !u!50 &3383717465330415208
 Rigidbody2D:
@@ -436,6 +436,9 @@ MonoBehaviour:
   itemDatabase: {fileID: 11400000, guid: fa76393e083479f448cdb75441feb4ac, type: 2}
   playerInventory: {fileID: 11400000, guid: 9d1b37d10fe5abe4496d2ce65f59ea44, type: 2}
   spawner: {fileID: 0}
+  speed: 0
+  changeDirIntervalMin: 0
+  changeDirIntervalMax: 0
 --- !u!95 &-6018407717645606576
 Animator:
   serializedVersion: 7

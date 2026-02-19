@@ -21,15 +21,15 @@ public class Monster : MonoBehaviour
 
     [HideInInspector] public MonsterSpawner spawner;
 
-    private float speed;
-    private float changeDirIntervalMin;
-    private float changeDirIntervalMax;
+    public float speed;
+    public float changeDirIntervalMin; 
+    public float changeDirIntervalMax;
 
     Rigidbody2D rigidbody;
     Animator anim;
     SpriteRenderer sr;
     Vector2 dir;
-    float timer;
+    float timer; //다음 이동까지 걸리는, 계산된 시간 
 
     // "게임플레이로 죽어서" 비활성화되는 경우만 리스폰 예약
     bool diedByGameplay;
@@ -87,8 +87,8 @@ public class Monster : MonoBehaviour
         ResetTimer();
 
         // 임시: 부딪히면 체력 감소
-        health --;
-        HitEffectPlay(); //피격 효과. 이것도 임시!
+        //health --;
+        //HitEffectPlay(); //피격 효과. 
 
         if (health <= 0)
         {

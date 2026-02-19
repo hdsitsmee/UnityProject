@@ -26,8 +26,8 @@ public class MonsterInfo
     public float changeDirIntervalMax; //다음 이동까지 걸리는 시간을 최대~최소 사이 랜덤으로! 
     public Tilemap moveAreaTilemap;
 
-    [Header("드랍 재료 리스트")]
-    public List<DropMaterialInfo> dropMaterials = new List<DropMaterialInfo>();
+    //[Header("드랍 재료 리스트")]
+    //public List<DropMaterialInfo> dropMaterials = new List<DropMaterialInfo>();
     
 }
 
