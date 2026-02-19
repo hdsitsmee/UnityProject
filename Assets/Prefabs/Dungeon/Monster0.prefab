@@ -127,8 +127,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.012124956}
-  m_Size: {x: 0.8000001, y: 0.96927583}
+  m_Offset: {x: 0.00000017881393, y: -0.019976318}
+  m_Size: {x: 0.8856032, y: 1.0334784}
   m_Direction: 0
 --- !u!50 &2438242909829909951
 Rigidbody2D:
@@ -190,7 +190,7 @@ Animator:
   m_GameObject: {fileID: 1099374701884733046}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 74ba7c86867e5de498a5ee5b2895fe1b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
