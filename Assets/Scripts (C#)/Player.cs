@@ -3,7 +3,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
-    public GameObject attackArea; 
+    public Transform weaponPivot;
+    public GameObject attackArea; //불필요?
     public GameObject weapon;
     [Header("플레이어 기본 정보")]
     public PlayerInfo info;
@@ -21,6 +22,7 @@ public class Player : MonoBehaviour
     public float cooltimeTimer; // 공격 쿨타임 
     public Vector2 inputVec;
     bool canAttack;
+    float timer; //회전 공격에 사용
     public float maxHealth;
     public Transform spawnPoint;
     void Init()
@@ -63,7 +65,10 @@ public class Player : MonoBehaviour
         if (Time.timeScale == 0f) return;
         if (inputVec.x != 0) 
         {
+            float scaleX = Mathf.Abs(transform.localScale.x);
             spriter.flipX = inputVec.x < 0;
+            float xRotation = inputVec.x < 0 ? -scaleX : scaleX;
+            transform.localScale = new Vector3(xRotation, transform.localScale.y, transform.localScale.z);
         }
     }
     void OnMove(InputValue value)
@@ -109,9 +114,31 @@ public class Player : MonoBehaviour
     IEnumerator Attack()
     {
         canAttack = false;
+        weaponPivot.gameObject.SetActive(true);
         weapon.SetActive(true);
         Debug.Log("무기 활성화");
-        yield return new WaitForSeconds(attackTimer);
+
+        timer = 0f;
+        Quaternion startRotation = Quaternion.Euler(0, 0, 90f);  // 시작 각도 (위)
+        Quaternion endRotation = Quaternion.Euler(0, 0, -90f);   // 끝 각도 (아래)
+
+        while (timer < attackTimer)
+
+        {
+
+            timer += Time.deltaTime;
+            float progress = timer / attackTimer; // 0에서 1까지 진행률
+
+            // 시간에 따라 회전값 보간 (Lerp)
+
+             weaponPivot.localRotation = Quaternion.Lerp(startRotation, endRotation, progress);
+
+
+
+            yield return null; // 다음 프레임까지 대기
+
+        }
+        //yield return new WaitForSeconds(attackTimer);
         weapon.SetActive(false);
         Debug.Log("무기 비활성화");
         yield return new WaitForSeconds(cooltimeTimer);

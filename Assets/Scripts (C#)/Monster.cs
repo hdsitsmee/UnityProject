@@ -103,12 +103,24 @@ public class Monster : MonoBehaviour
 
         if (collision.CompareTag("Weapon"))
         {
-            var player = collision.GetComponentInParent<Player>();
-            if (player == null) return;
+            // 1. 무기 오브젝트에 붙어있는 Weapon 스크립트를 직접 찾습니다.
+            Weapon weaponScript = collision.GetComponent<Weapon>();
 
-            health -= player.playerDamage;
-            Debug.Log("몬스터가공격받음");
+            if (weaponScript != null)
+            {
+                // 2. 무기 스크립트가 가진 damage 값을 사용합니다.
+                health -= weaponScript.damage;
+                Debug.Log($"몬스터 피격! 남은 체력: {health}");
+                //PlayHitAnim();
+            }
+            else
+            {
+                var player = collision.GetComponentInParent<Player>();
+                if (player == null) return;
 
+                health -= player.playerDamage;
+                Debug.Log("몬스터가공격받음");
+            }
             //PlayHitAnim(); //Hit 애니메이션
             HitEffectPlay(); 
         }
