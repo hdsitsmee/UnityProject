@@ -20,14 +20,12 @@ public class UIGateByPanel : MonoBehaviour
     void OnEnable()
     {
         GameManager.instance.SetPause(true); // 도감 열리는 동안 게임 진행 멈춤
-        guestManager.SetActive(false);
         ApplyGate();     // UI 숨김
     }
 
     void OnDisable()
     {
         GameManager.instance.SetPause(false); // 도감 닫히면 게임 진행 재개
-        guestManager.SetActive(true);
         RestoreSnapshot();   // 직전 화면 저장한 그대로 복구
     }
 
