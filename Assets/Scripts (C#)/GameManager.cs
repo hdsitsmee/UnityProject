@@ -193,6 +193,9 @@ public class GameManager : MonoBehaviour
             isLevelUpPending = true;
         }
     }
+    private Dictionary<string, int> memoryCounts = new Dictionary<string, int>();
+
+    
 }
 
 
@@ -205,6 +208,7 @@ public class IngredientData
     public Sprite icon;
     public AudioClip soundEffect;
 }
+
 
 /// <summary>
 // DrinkRecipe를 DrinkData로 변경 (DrinkRecipe 사용 x) 

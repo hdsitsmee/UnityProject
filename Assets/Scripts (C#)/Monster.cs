@@ -174,6 +174,26 @@ public class Monster : MonoBehaviour
         }
         AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterDead);
 
+        TryDropMemoryFragment();
+
+        // 기억의 조각 드랍 시도 함수
+        void TryDropMemoryFragment()
+        {
+            if (InventoryManager.instance == null) return;
+
+            if (Random.value <= 0.03f) 
+            {
+                MemoryData fragment = MemoryDatabase.instance.GetMemoryByLevel(this.level);
+                if (fragment != null)
+                {
+                    if (InventoryManager.instance.GetMemoryCount(fragment.ghostName) < 3)
+                    {
+                        InventoryManager.instance.AddMemory(fragment);
+                    }
+                }
+            }
+        }
+
         // 여기서 바로 리스폰 예약을 걸고
         if (spawner != null)
             spawner.RequestRespawnOne();
@@ -183,7 +203,8 @@ public class Monster : MonoBehaviour
     }
 
     void UpdateFacingByDir()
-    {
+    {//애니메이터가 없거나 컨트롤러가 등록 안 됐으면 그냥 리턴
+        if (anim == null || anim.runtimeAnimatorController == null) return;
         // dir은 up/down/left/right 중 하나
         if (dir.y > 0) facing = 1;          // Up = Back
         else if (dir.y < 0) facing = 0;     // Down = Front
