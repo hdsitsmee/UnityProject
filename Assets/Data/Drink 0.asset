@@ -18,4 +18,4 @@ MonoBehaviour:
   - Shine Mint
   drinkIcon: {fileID: 7533078525629391243, guid: 9fc37f82f823f6248b36f9bd2a25f30b, type: 3}
   unlockLevel: 1
-  hasMade: 1
+  hasMade: 0
