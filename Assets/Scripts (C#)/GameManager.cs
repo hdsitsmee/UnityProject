@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
     public bool isLevelUpPending = false;
+    public bool isAscendMode = false; //🥨[추가] 
 
     void Awake()
     {
@@ -158,8 +159,11 @@ public class GameManager : MonoBehaviour
         Debug.Log($"[{name}] 현재 만족도: {guest.currentSatisfaction} / {guest.maxSatisfaction}");
 
         // 목표 점수(100) 넘으면 성불
-        if (guest.currentSatisfaction >= guest.maxSatisfaction && !guest.isAscended)
+        if (guest.currentSatisfaction >= guest.maxSatisfaction && !isAscendMode)
         {
+            isAscendMode = true; // 성불 모드 : 게스트 매니저에서 성불 진행 후 Leave 상태 진입 모드
+
+            // 도감 해금 시점 미룰까
             guest.isAscended = true;
             Debug.Log($"✨ [{name}] 성불 완료! 도감 해금!");
         }

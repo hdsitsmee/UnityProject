@@ -15,7 +15,7 @@ MonoBehaviour:
   ghostPrefab: {fileID: 3422300774198077495, guid: 81e6d27aacd57b7439395495b5c56fe1, type: 3}
   guestName: Soda
   guestIcon: {fileID: 6648469345471661232, guid: 3afe4c4fd3f6f6a4aa80729808ab125b, type: 3}
-  currentSatisfaction: 30
+  currentSatisfaction: 0
   maxSatisfaction: 100
   orderDrinkName: 
   unlockLevel: 3

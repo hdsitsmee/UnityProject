@@ -38,7 +38,7 @@ public class GuestManager : MonoBehaviour
 
     // ===== Runtime =====
     public readonly List<GameObject> pool = new List<GameObject>();
-    public GameObject currentGuest;
+    public GameObject CurrentGuestObject;
 
     // 주문 데이터
     public string currentOrderName;
@@ -67,14 +67,27 @@ public class GuestManager : MonoBehaviour
         // 0-1. 게임 첫 시작 시 손님 풀 생성
         BuildPool();
 
-        // 🥨 [추가] -1. 제조 -> 메인씬 전환 시 Order -> React 진입 플래그 설정
+        StartCoroutine(StartFlow());
+    }
+
+    IEnumerator StartFlow()
+    {
         if (GameManager.instance != null && GameManager.instance.reactPending)
         {
-            GameManager.instance.reactPending = false; // 플래그 초기화
-            StartCoroutine(EnterReact()); // 바로 React 진입
-            return;
+            GameManager.instance.reactPending = false;
+            yield return StartCoroutine(EnterReact());
+            yield break;
         }
-        // 🥨 [추가] 0-2. 게임 시작 함수 호출
+
+        else if (GameManager.instance != null && GameManager.instance.isAscendMode)
+        {
+            StartCoroutine(AscendManager.instance.StartAscend());
+
+            yield return new WaitUntil(() =>
+                !GameManager.instance.isAscendMode
+            );
+        }
+
         StartFirstGuest();
     }
     void Update()
@@ -103,7 +116,7 @@ public class GuestManager : MonoBehaviour
         Debug.Log("게임 시작: Boot");
         ResetUI();
         DeactivateAllGhosts();
-        currentGuest = null;
+        CurrentGuestObject = null;
 
         StartCoroutine(FirstGuestRoutine());
     }
@@ -222,12 +235,12 @@ public class GuestManager : MonoBehaviour
         if (targetObj == null) targetObj = pool[0];
 
         // 4. 활성화
-        currentGuest = targetObj;
-        currentGuest.transform.position = spawnPoint.position;
-        currentGuest.transform.rotation = spawnPoint.rotation;
-        currentGuest.SetActive(true);
+        CurrentGuestObject = targetObj;
+        CurrentGuestObject.transform.position = spawnPoint.position;
+        CurrentGuestObject.transform.rotation = spawnPoint.rotation;
+        CurrentGuestObject.SetActive(true);
         // 🥨 [추가] 등장 시 얼굴 표정 초기화
-        var gv = currentGuest.GetComponent<GhostVisual>();
+        var gv = CurrentGuestObject.GetComponent<GhostVisual>();
         gv.ShowFace(GhostVisual.Face.Stand); // 표정 초기화
 
 
@@ -290,7 +303,8 @@ public class GuestManager : MonoBehaviour
     public IEnumerator EnterReact()
     {
         // 🥨 [추가] 레벨업 팝업 시 일시정지
-        while(GameManager.instance.isGamePaused)
+        Debug.Log($"반응 대기: {GameManager.instance.isGamePaused}");
+        while (GameManager.instance.isGamePaused)
             yield return null;
         yield return new WaitForSeconds(0.2f); // 일시정지 해제 후 약간의 딜레이
         state = State.React;
@@ -315,13 +329,13 @@ public class GuestManager : MonoBehaviour
 
                 if (targetObj == null && pool.Count > 0) targetObj = pool[0];
                 //3. 현재 손님에 재등록 (오브젝트 및 위치,활성화)
-                currentGuest = targetObj;
-                currentGuest.transform.position = spawnPoint.position;
-                currentGuest.transform.rotation = spawnPoint.rotation;
-                currentGuest.SetActive(true);
+                CurrentGuestObject = targetObj;
+                CurrentGuestObject.transform.position = spawnPoint.position;
+                CurrentGuestObject.transform.rotation = spawnPoint.rotation;
+                CurrentGuestObject.SetActive(true);
                 Debug.Log($"현재 손님 재등록: {cg.guestName},{GameManager.instance.lastResultSuccess}");
                 //🥨 [추가] 반응에 따른 얼굴 표정 변경
-                var gv = currentGuest.GetComponent<GhostVisual>();
+                var gv = CurrentGuestObject.GetComponent<GhostVisual>();
                 if (GameManager.instance.lastResultSuccess)
                     gv.ShowFace(GhostVisual.Face.Happy);
                 else gv.ShowFace(GhostVisual.Face.Angry);
@@ -336,11 +350,11 @@ public class GuestManager : MonoBehaviour
         }
         yield return new WaitForSeconds(reactDuration);
         // 2. reactDuration 뒤에 Leave로 이동
-        StartCoroutine(ReactThenLeaveRoutine());
+        StartCoroutine(LeaveRoutine());
     }
 
     // 5. Leave : 퇴장 → 다음 손님 대기
-    private IEnumerator ReactThenLeaveRoutine()
+    private IEnumerator LeaveRoutine()
     {
         StartCoroutine(EnterLeave());
         yield return new WaitForSeconds(leaveDuration); 
@@ -374,10 +388,10 @@ public class GuestManager : MonoBehaviour
             GameManager.instance.currentDrink = null;
         }
         // 현재 손님 초기화
-        if (currentGuest != null)
-            currentGuest.SetActive(false);
+        if (CurrentGuestObject != null)
+            CurrentGuestObject.SetActive(false);
 
-        currentGuest = null;
+        CurrentGuestObject = null;
         GameManager.instance.currentGuest = null;
 
         // UI 정리
