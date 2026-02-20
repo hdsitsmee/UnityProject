@@ -71,7 +71,7 @@ public class GuestManager : MonoBehaviour
         if (GameManager.instance != null && GameManager.instance.reactPending)
         {
             GameManager.instance.reactPending = false; // 플래그 초기화
-            EnterReact(); // 바로 React 진입
+            StartCoroutine(EnterReact()); // 바로 React 진입
             return;
         }
         // 🥨 [추가] 0-2. 게임 시작 함수 호출
@@ -98,6 +98,7 @@ public class GuestManager : MonoBehaviour
     // 1. 게임 시작 (Boot) → 첫 손님 대기(WaitFirst)
     private void StartFirstGuest()
     {
+        // 이때 도감 이동,던전이동,제조버튼 전부 비활처리
         state = State.Boot;
         Debug.Log("게임 시작: Boot");
         ResetUI();
@@ -109,10 +110,22 @@ public class GuestManager : MonoBehaviour
     // 2. 첫 손님 대기(WaitFirst) → 유령 등장 및 주문 생성(Order)
     private IEnumerator FirstGuestRoutine()
     {
-        if (GameManager.instance.isPaused)  yield return null;
+        while (GameManager.instance != null && GameManager.instance.isPaused)
+            yield return null;
         state = State.WaitFirst;
         Debug.Log("첫 손님 대기: WaitFirst");
-        yield return new WaitForSeconds(firstGuestDelay);
+        // 도감에서는 대기
+        float t = 0f;
+        while (t < firstGuestDelay)
+        {
+            // 일시정지면 시간 안 줄이고 대기
+            while (GameManager.instance.isPaused)
+                yield return null;
+
+            t += Time.deltaTime;
+            yield return null;
+        }
+
         SpawnEnterOrder();
     }
 
@@ -274,8 +287,12 @@ public class GuestManager : MonoBehaviour
         }
     }
     //4. React : 주문 결과에 따른 반응 및 퇴장
-    public void EnterReact()
+    public IEnumerator EnterReact()
     {
+        // 🥨 [추가] 레벨업 팝업 시 일시정지
+        while(GameManager.instance.isGamePaused)
+            yield return null;
+        yield return new WaitForSeconds(0.2f); // 일시정지 해제 후 약간의 딜레이
         state = State.React;
         Debug.Log("반응 시작: React");
 
@@ -317,6 +334,7 @@ public class GuestManager : MonoBehaviour
             speechBubbleText.gameObject.SetActive(true);
             speechBubbleText.text = GameManager.instance.reactText;
         }
+        yield return new WaitForSeconds(reactDuration);
         // 2. reactDuration 뒤에 Leave로 이동
         StartCoroutine(ReactThenLeaveRoutine());
     }
@@ -324,27 +342,22 @@ public class GuestManager : MonoBehaviour
     // 5. Leave : 퇴장 → 다음 손님 대기
     private IEnumerator ReactThenLeaveRoutine()
     {
-        yield return new WaitForSeconds(reactDuration);
-        EnterLeave();
+        StartCoroutine(EnterLeave());
         yield return new WaitForSeconds(leaveDuration); 
-        FinishLeave();
+        //FinishLeave();
 
         // React 예약 해제 (안전)
         if (GameManager.instance != null) GameManager.instance.reactPending = false;
-
+        
         // 다음 손님 대기 후 스폰
         StartCoroutine(NextGuestDelayRoutine());
     }
 
-    private IEnumerator NextGuestDelayRoutine()
-    {
-        yield return new WaitForSeconds(nextGuestDelay);
-        SpawnEnterOrder();
-    }
-
     // 5-1. 퇴장 시작 (반응 끝나고 바로)
-    private void EnterLeave()
+    private IEnumerator EnterLeave()
     {
+        while (GameManager.instance.isPaused)
+            yield return null;
         state = State.Leave;
         Debug.Log("퇴장: Leave");
         /*
@@ -360,10 +373,6 @@ public class GuestManager : MonoBehaviour
             GameManager.instance.currentOrderName = "";
             GameManager.instance.currentDrink = null;
         }
-    }
-
-    private void FinishLeave()
-    {
         // 현재 손님 초기화
         if (currentGuest != null)
             currentGuest.SetActive(false);
@@ -372,16 +381,26 @@ public class GuestManager : MonoBehaviour
         GameManager.instance.currentGuest = null;
 
         // UI 정리
-        if (OrderBullon !=  null)
+        if (OrderBullon != null)
             OrderBullon.gameObject.SetActive(false); // [추가] 말풍선 비활성화
         if (speechBubbleText != null)
         {
             speechBubbleText.gameObject.SetActive(false);
             speechBubbleText.text = "";
         }
-        if (patienceSlider != null) 
+        if (patienceSlider != null)
             patienceSlider.gameObject.SetActive(false);
 
     }
+
+    private IEnumerator NextGuestDelayRoutine()
+    {
+        yield return new WaitForSeconds(nextGuestDelay);
+        SpawnEnterOrder();
+    }
+
+    private void FinishLeave()
+    {}
+        
 
 }

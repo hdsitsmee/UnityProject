@@ -25,7 +25,10 @@ public class GameManager : MonoBehaviour
     public bool orderActive;
     public float patienceTotal;
     public float patienceRemaining;
-    public bool isPaused = false; //[🚦추가] 도감 이동 코루틴 정지
+
+    // 🥨 [추가] 타이머 변수
+    public bool isGamePaused = false; // 게임 전체 일시정지 여부
+    public bool isPaused = false; //도감 이동 코루틴 정지
 
     // 🥨 [추가] 제조 -> 메인 이동 시 주문 데이터 연동 위한 변수 
     public bool reactPending; // 제조 -> 메인 이동 시 유령 반응 발생 여부
@@ -121,6 +124,12 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene("MainScene");
         }
+    }
+
+    // 🥨[추가] 게임 전체 일시정지 기능
+    public void GameIsPaused(bool paused)
+    {
+        isGamePaused = paused;
     }
 
     //[🚦추가] 도감 이동 시 일시정지 기능
