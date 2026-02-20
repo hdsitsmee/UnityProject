@@ -100,6 +100,8 @@ public class Player : MonoBehaviour
     void Respawn() 
     { 
          Init(); // 플레이어 초기 설정
+         AudioManager.instance.PlaySfx(AudioManager.Sfx.PlayerDead);
+
     }
 
 
