@@ -4,11 +4,11 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     public Transform weaponPivot;
-    public GameObject attackArea; //불필요?
     public GameObject weapon;
+
     [Header("플레이어 기본 정보")]
     public PlayerInfo info;
-
+    public int playerMoney;
    
 
     [Header("공격 관련 스텟")]
@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-       
+        playerMoney = GameManager.money; //카페씬에서 번 돈 가져옴
         if (Time.timeScale == 0f) return;
     }
     private void LateUpdate()
@@ -67,7 +67,7 @@ public class Player : MonoBehaviour
         {
             float scaleX = Mathf.Abs(transform.localScale.x);
             spriter.flipX = inputVec.x < 0;
-            float xRotation = inputVec.x < 0 ? -scaleX : scaleX;
+            float xRotation = inputVec.x < 0 ? - scaleX : scaleX;
             transform.localScale = new Vector3(xRotation, transform.localScale.y, transform.localScale.z);
         }
     }
@@ -78,7 +78,8 @@ public class Player : MonoBehaviour
   
 
 
-    void OnCollisionEnter2D(Collision2D collision) // ���Ϳ� ���� ü�� ���� �� ���
+
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (!collision.collider.CompareTag("Monster")) 
             return;
