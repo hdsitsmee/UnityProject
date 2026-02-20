@@ -20,14 +20,34 @@ public class UIGateByPanel : MonoBehaviour
     void OnEnable()
     {
         GameManager.instance.SetPause(true); // 도감 열리는 동안 게임 진행 멈춤
-        guestManager.SetActive(false);
+        if (GameManager.instance.currentGuest != null && GameManager.instance.currentGuest.ghostPrefab != null)
+        {
+            var cg = GameManager.instance.currentGuest;
+            GameObject targetObj = null;
+            if (cg.ghostPrefab != null)
+            {
+                string prefabName = cg.ghostPrefab.name;
+                targetObj = GuestManager.instance.pool.Find(g => g != null && g.name.Contains(prefabName));
+            }
+            targetObj.SetActive(false);
+        }
         ApplyGate();     // UI 숨김
     }
 
     void OnDisable()
     {
         GameManager.instance.SetPause(false); // 도감 닫히면 게임 진행 재개
-        guestManager.SetActive(true);
+        if (GameManager.instance.currentGuest != null)
+        {
+            var cg = GameManager.instance.currentGuest;
+            GameObject targetObj = null;
+            if (cg.ghostPrefab != null)
+            {
+                string prefabName = cg.ghostPrefab.name;
+                targetObj = GuestManager.instance.pool.Find(g => g != null && g.name.Contains(prefabName));
+            }
+            targetObj.SetActive(true);
+        }
         RestoreSnapshot();   // 직전 화면 저장한 그대로 복구
     }
 

@@ -197,7 +197,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ascned1
+      name: Ascend1
       rect:
         serializedVersion: 2
         x: 560
@@ -278,8 +278,8 @@ TextureImporter:
     nameFileIdTable:
       Angry: 1897260233
       Ascend0: 6214297192519887682
+      Ascend1: 7167613315010117338
       Ascend2: -5078531121789744910
-      Ascned1: 7167613315010117338
       Happy: 4933516057211192988
       KakaoTalk_20260218_175658829_2: 574237394815076856
       KakaoTalk_20260218_175658829_3: 2032462457926012169

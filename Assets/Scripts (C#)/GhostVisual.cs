@@ -8,24 +8,24 @@ public class GhostVisual : MonoBehaviour
     public GameObject Happy;
     public GameObject Angry;
 
-    [Header("# Ascend")]
+    /*[Header("# Ascend")]
     public GameObject Ascend;
-    public Animator AscendAnim;
+    public Animator AscendAnim;*/
 
     public enum Face {  Stand, Happy, Angry  }
 
-    void Awake()
+    /*void Awake()
     {
         if (Ascend != null && AscendAnim == null)
         {
             AscendAnim = Ascend.GetComponent<Animator>();
         }
-    }
+    }*/
 
     public void ShowFace(Face face)
     {
-        if (Ascend != null)
-            Ascend.SetActive(false);
+        /*if (Ascend != null)
+            Ascend.SetActive(false);*/
         if (faces != null)
             faces.SetActive(true);
         Stand.SetActive(face == Face.Stand);
@@ -39,10 +39,10 @@ public class GhostVisual : MonoBehaviour
         Happy.SetActive(false);
         Angry.SetActive(false);
 
-        Ascend.SetActive(true);
+        /*Ascend.SetActive(true);
         if (AscendAnim != null)
         {
             AscendAnim.Play("Ascend", 0, 0f);
-        }
+        }*/
     }
 }

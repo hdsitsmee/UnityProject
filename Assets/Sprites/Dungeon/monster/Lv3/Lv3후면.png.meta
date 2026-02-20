@@ -1,0 +1,455 @@
+fileFormatVersion: 2
+guid: 4257b6b2dac27374fa2f933f741467d8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -524902011374456128
+    second: KakaoTalk_20260219_184051970_05-Photoroom_0
+  - first:
+      213: 3866703315095020195
+    second: KakaoTalk_20260219_184051970_05-Photoroom_1
+  - first:
+      213: -8531267804782070595
+    second: KakaoTalk_20260219_184051970_05-Photoroom_2
+  - first:
+      213: -5986106024496987370
+    second: KakaoTalk_20260219_184051970_05-Photoroom_3
+  - first:
+      213: 6602634980946167942
+    second: KakaoTalk_20260219_184051970_05-Photoroom_4
+  - first:
+      213: -5871530972007028511
+    second: KakaoTalk_20260219_184051970_05-Photoroom_5
+  - first:
+      213: 4883129448141363616
+    second: KakaoTalk_20260219_184051970_05-Photoroom_6
+  - first:
+      213: 2912101289776292082
+    second: KakaoTalk_20260219_184051970_05-Photoroom_7
+  - first:
+      213: -7265446246335925505
+    second: KakaoTalk_20260219_184051970_05-Photoroom_8
+  - first:
+      213: -6570525028772442988
+    second: KakaoTalk_20260219_184051970_05-Photoroom_9
+  - first:
+      213: -6160335585210098204
+    second: KakaoTalk_20260219_184051970_05-Photoroom_10
+  - first:
+      213: -9199491000698325419
+    second: KakaoTalk_20260219_184051970_05-Photoroom_11
+  - first:
+      213: -5246932614181283737
+    second: KakaoTalk_20260219_184051970_05-Photoroom_12
+  - first:
+      213: 4250805819346224664
+    second: KakaoTalk_20260219_184051970_05-Photoroom_13
+  - first:
+      213: -6435845475103594660
+    second: KakaoTalk_20260219_184051970_05-Photoroom_14
+  - first:
+      213: 7729732612039834594
+    second: KakaoTalk_20260219_184051970_05-Photoroom_15
+  - first:
+      213: -4197146414737901223
+    second: KakaoTalk_20260219_184051970_05-Photoroom_16
+  - first:
+      213: -8740771094759177786
+    second: KakaoTalk_20260219_184051970_05-Photoroom_17
+  - first:
+      213: -3361469378311898066
+    second: KakaoTalk_20260219_184051970_05-Photoroom_18
+  - first:
+      213: 6985537810898139090
+    second: KakaoTalk_20260219_184051970_05-Photoroom_19
+  - first:
+      213: 8595290962613692471
+    second: KakaoTalk_20260219_184051970_05-Photoroom_20
+  - first:
+      213: -4882579703480288360
+    second: KakaoTalk_20260219_184051970_05-Photoroom_21
+  - first:
+      213: -2201251988682921158
+    second: KakaoTalk_20260219_184051970_05-Photoroom_22
+  - first:
+      213: -2066278013145199426
+    second: KakaoTalk_20260219_184051970_05-Photoroom_23
+  - first:
+      213: -2659261936503526559
+    second: KakaoTalk_20260219_184051970_05-Photoroom_24
+  - first:
+      213: 8023584892030170546
+    second: KakaoTalk_20260219_184051970_05-Photoroom_25
+  - first:
+      213: -7651976724011182614
+    second: KakaoTalk_20260219_184051970_05-Photoroom_26
+  - first:
+      213: 5784279130819724714
+    second: KakaoTalk_20260219_184051970_05-Photoroom_27
+  - first:
+      213: -5313594415965533877
+    second: KakaoTalk_20260219_184051970_05-Photoroom_28
+  - first:
+      213: -9066159797667880480
+    second: KakaoTalk_20260219_184051970_05-Photoroom_29
+  - first:
+      213: 280234711655912542
+    second: KakaoTalk_20260219_184051970_05-Photoroom_30
+  - first:
+      213: -8108367605170643190
+    second: KakaoTalk_20260219_184051970_05-Photoroom_31
+  - first:
+      213: 186371661059068312
+    second: KakaoTalk_20260219_184051970_05-Photoroom_32
+  - first:
+      213: 3821095650858046980
+    second: KakaoTalk_20260219_184051970_05-Photoroom_33
+  - first:
+      213: 7012260263587265704
+    second: KakaoTalk_20260219_184051970_05-Photoroom_34
+  - first:
+      213: -148761945013384463
+    second: KakaoTalk_20260219_184051970_05-Photoroom_35
+  - first:
+      213: 6217768987138532062
+    second: KakaoTalk_20260219_184051970_05-Photoroom_36
+  - first:
+      213: 6869816098691102110
+    second: KakaoTalk_20260219_184051970_05-Photoroom_37
+  - first:
+      213: 7282906682378000446
+    second: KakaoTalk_20260219_184051970_05-Photoroom_38
+  - first:
+      213: 5010196489259999734
+    second: KakaoTalk_20260219_184051970_05-Photoroom_39
+  - first:
+      213: -5104630911667665554
+    second: KakaoTalk_20260219_184051970_05-Photoroom_40
+  - first:
+      213: -8405682048193800134
+    second: KakaoTalk_20260219_184051970_05-Photoroom_41
+  - first:
+      213: 2503306943780365712
+    second: KakaoTalk_20260219_184051970_05-Photoroom_42
+  - first:
+      213: 2915241567553407642
+    second: KakaoTalk_20260219_184051970_05-Photoroom_43
+  - first:
+      213: -4683611856320224681
+    second: KakaoTalk_20260219_184051970_05-Photoroom_44
+  - first:
+      213: -6852361463906527326
+    second: KakaoTalk_20260219_184051970_05-Photoroom_45
+  - first:
+      213: -7926545956893581001
+    second: KakaoTalk_20260219_184051970_05-Photoroom_46
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 120
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: "Lv3\uD6C4\uBA74_0"
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 539
+        width: 245
+        height: 255
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e6080dbd8b70054caf3df6d5464806f
+      internalID: 770048915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Lv3\uD6C4\uBA74_1"
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 539
+        width: 245
+        height: 255
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40262af4f3ace0245938c060cdbb929e
+      internalID: 1362216206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Lv3\uD6C4\uBA74_2"
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 539
+        width: 245
+        height: 255
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d5a9ee11a2cf7094388c87656f7fc85e
+      internalID: -2005655918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Lv3\uD6C4\uBA74_3"
+      rect:
+        serializedVersion: 2
+        x: 751
+        y: 539
+        width: 245
+        height: 255
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4aa6fa0aa7e35424792e3270439634f2
+      internalID: -248993927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Lv3\uD6C4\uBA74_4"
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 232
+        width: 245
+        height: 255
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90a8320eccbbaf64ba4d261fdf8adf72
+      internalID: -1685557365
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Lv3\uD6C4\uBA74_5"
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 232
+        width: 245
+        height: 255
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70e00d2afc880e2479672af701fb1998
+      internalID: -718479385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Lv3\uD6C4\uBA74_6"
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 232
+        width: 245
+        height: 255
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74c9c9f9e67ddc843a60182b32606fac
+      internalID: 842447753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Lv3\uD6C4\uBA74_7"
+      rect:
+        serializedVersion: 2
+        x: 751
+        y: 232
+        width: 245
+        height: 255
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0420e842729909e48980987914796d5f
+      internalID: 1234641414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: d952aaeedaaa3d44d8c7d5be9df29861
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      "Lv3\uD6C4\uBA74_0": 770048915
+      "Lv3\uD6C4\uBA74_1": 1362216206
+      "Lv3\uD6C4\uBA74_2": -2005655918
+      "Lv3\uD6C4\uBA74_3": -248993927
+      "Lv3\uD6C4\uBA74_4": -1685557365
+      "Lv3\uD6C4\uBA74_5": -718479385
+      "Lv3\uD6C4\uBA74_6": 842447753
+      "Lv3\uD6C4\uBA74_7": 1234641414
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

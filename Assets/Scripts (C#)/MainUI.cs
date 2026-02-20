@@ -64,6 +64,7 @@ public class MainUI : MonoBehaviour
     {
         if (levelUpPopup != null)
         {
+            GameManager.instance.GameIsPaused(true); //🥨[추가] 레벨업 팝업이 뜨는 동안 게임 일시정지
             levelUpPopup.SetActive(true);
             
             if(SoundManager.instance != null) SoundManager.instance.PlaySFX(SoundManager.instance.levelUpSound);
@@ -71,6 +72,7 @@ public class MainUI : MonoBehaviour
             yield return new WaitForSeconds(2.0f);
 
             levelUpPopup.SetActive(false);
+            GameManager.instance.GameIsPaused(false); //🥨[추가] 게임 재개 -> 반응 로직 시작
         }
     }
 }

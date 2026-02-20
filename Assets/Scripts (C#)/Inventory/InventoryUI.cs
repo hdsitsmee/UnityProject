@@ -7,6 +7,7 @@ public class InventoryUI : MonoBehaviour
 {
     public static InventoryUI Instance;
 
+    [Header("ï¿½âº» ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
     public InventoryData inventoryData;
     public Transform itemsParent;
     public GameObject inventoryPanel;
@@ -14,6 +15,7 @@ public class InventoryUI : MonoBehaviour
     private InventorySlot[] slots;
     private bool isInventoryOpen = false;
 
+    [Header("ï¿½ï¿½ï¿½ï¿½ UI")]
     public GameObject tooltipPanel;
     public TextMeshProUGUI itemNameText;
     public TextMeshProUGUI itemLevelText;
@@ -53,6 +55,7 @@ public class InventoryUI : MonoBehaviour
         if (inventoryPanel == null) return;
         isInventoryOpen = !isInventoryOpen;
         inventoryPanel.SetActive(isInventoryOpen);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.OpenInventory);
 
         if (isInventoryOpen)
         {
@@ -106,7 +109,7 @@ public class InventoryUI : MonoBehaviour
 
     public void ShowMemoryTooltip(MemoryData data, int count)
     {
-        Debug.Log("³Ñ¾î¿Â Á¶°¢ °³¼ö: " + count);
+        Debug.Log("ï¿½Ñ¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: " + count);
         if (data == null) return;
         memoryTitleText.text = data.ghostName + "'s Memory";
         memoryLevelText.text = "LV. " + data.dropLevel;

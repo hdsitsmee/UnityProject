@@ -21,22 +21,22 @@ public class Monster : MonoBehaviour
 
     [HideInInspector] public MonsterSpawner spawner;
 
-    private float speed;
-    private float changeDirIntervalMin;
-    private float changeDirIntervalMax;
+    public float speed;
+    public float changeDirIntervalMin; 
+    public float changeDirIntervalMax;
 
     Rigidbody2D rigidbody;
     Animator anim;
     SpriteRenderer sr;
     Vector2 dir;
-    float timer;
+    float timer; //다음 이동까지 걸리는, 계산된 시간 
 
     // "게임플레이로 죽어서" 비활성화되는 경우만 리스폰 예약
     bool diedByGameplay;
     int facing; //0 1 2 정면 후면 측면
     bool isHitPlaying; //피격 
     float hitEffectTime=0.12f;
-
+    
     Coroutine co;
 
     void Awake()
@@ -83,32 +83,27 @@ public class Monster : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        RandomDirection();
-        ResetTimer();
-
-        // 임시: 부딪히면 체력 감소
-        health --;
-        HitEffectPlay(); //피격 효과. 이것도 임시!
-
-        if (health <= 0)
+        if (collision.collider.CompareTag("Weapon"))
         {
-            Die();    
-        }
-        
-    }
+            // 1. 무기 오브젝트에 붙어있는 Weapon 스크립트를 직접 찾습니다.
+            Weapon weaponScript = collision.collider.GetComponent<Weapon>();
 
-    void OnTriggerEnter2D(Collider2D collision)
-    {
+            if (weaponScript != null)
+            {
+                // 2. 무기 스크립트가 가진 damage 값을 사용합니다.
+                health -= weaponScript.damage;
+                Debug.Log($"몬스터 피격! 남은 체력: {health}");
+                //PlayHitAnim();
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterHit);
+            }
+            else
+            {
+                var player = collision.collider.GetComponentInParent<Player>();
+                if (player == null) return;
 
-
-        if (collision.CompareTag("Weapon"))
-        {
-            var player = collision.GetComponentInParent<Player>();
-            if (player == null) return;
-
-            health -= player.playerDamage;
-            Debug.Log("몬스터가공격받음");
-
+                health -= player.playerDamage;
+                Debug.Log("몬스터가공격받음");
+            }
             //PlayHitAnim(); //Hit 애니메이션
             HitEffectPlay(); 
         }
@@ -116,6 +111,14 @@ public class Monster : MonoBehaviour
        
         if (health <= 0f)
             Die();
+
+        RandomDirection();
+        ResetTimer();
+
+        // 임시: 부딪히면 체력 감소
+        //health --;
+        //HitEffectPlay(); //피격 효과. 
+        //AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterHit);    
     }
 
     void RandomDirection()
@@ -169,6 +172,7 @@ public class Monster : MonoBehaviour
                 }
             }
         }
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterDead);
 
         TryDropMemoryFragment();
 
