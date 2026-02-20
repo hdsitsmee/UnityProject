@@ -24,39 +24,34 @@ public class AscendManager : MonoBehaviour
     {
         if (instance == null) instance = this;
 
-        ascendTrigger ??= "DoAscend";              // null이면 기본값
-        if (ascendTrigger.Trim().Length == 0)      // 빈문자/공백이면 기본값
+        ascendTrigger ??= "DoAscend";   
+        if (ascendTrigger.Trim().Length == 0)  
             ascendTrigger = "DoAscend";
     }
     // 1. 성불 조건 충족 시 호출 -> 성불 알림 팝업 띄우고 일시정지
     public IEnumerator StartAscend()
     {
-        Debug.Log("[Ascend] A: coroutine start");
         while (GameManager.instance.isGamePaused)
         {
-            Debug.Log("[Ascend] B: still paused... timeScale=" + Time.timeScale);
             yield return null;
         }
 
-        Debug.Log("[Ascend] C: pause cleared! timeScale=" + Time.timeScale);
-
         yield return new WaitForSecondsRealtime(0.2f);
-
-        Debug.Log("[Ascend] D: after 0.2s realtime delay");
-
         isFlowRunning = true;
-        Debug.Log("[Ascend] E: isFlowRunning true");
 
         //애니메이터 가져오기
         var cg = GameManager.instance.currentGuest; 
         GameObject targetObj = null; 
-        if (cg.ghostPrefab != null) { 
+        if (cg.ghostPrefab != null) 
+        { 
             string prefabName = cg.ghostPrefab.name; 
             targetObj = GuestManager.instance.pool.Find(g => g != null && g.name.Contains(prefabName)); 
-        } targetObj.SetActive(true); 
+        } 
+        targetObj.SetActive(true); 
         targetObj.transform.Find("Face").gameObject.SetActive(false); // 기본 이미지는 비활
         ascend = targetObj.transform.Find("Ascend").gameObject; // Ascend만 활성화
-        ascend.SetActive(true); ghostAnimator = ascend.GetComponentInChildren<Animator>(); 
+        ascend.SetActive(true); 
+        ghostAnimator = ascend.GetComponentInChildren<Animator>(); 
         if (ascendPopup != null) ascendPopup.SetActive(true); 
         yield return new WaitForSeconds(5f); 
     }
