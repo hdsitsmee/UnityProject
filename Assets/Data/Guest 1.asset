@@ -15,7 +15,7 @@ MonoBehaviour:
   ghostPrefab: {fileID: 5243576223765091966, guid: e6a5b7f48ec1c264ead77596d4a9eda0, type: 3}
   guestName: Limey
   guestIcon: {fileID: -991570016262304793, guid: 3afe4c4fd3f6f6a4aa80729808ab125b, type: 3}
-  currentSatisfaction: 150
+  currentSatisfaction: 390
   maxSatisfaction: 100
   orderDrinkName: 
   unlockLevel: 1

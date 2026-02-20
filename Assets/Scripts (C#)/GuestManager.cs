@@ -109,6 +109,7 @@ public class GuestManager : MonoBehaviour
     // 2. 첫 손님 대기(WaitFirst) → 유령 등장 및 주문 생성(Order)
     private IEnumerator FirstGuestRoutine()
     {
+        if (GameManager.instance.isPaused)  yield return null;
         state = State.WaitFirst;
         Debug.Log("첫 손님 대기: WaitFirst");
         yield return new WaitForSeconds(firstGuestDelay);
