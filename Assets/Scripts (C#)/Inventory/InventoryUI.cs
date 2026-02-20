@@ -7,7 +7,7 @@ public class InventoryUI : MonoBehaviour
 {
     public static InventoryUI Instance;
 
-    [Header("±âº» µ¥ÀÌÅÍ")]
+    [Header("ï¿½âº» ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
     public InventoryData inventoryData;
     public Transform itemsParent;
     public GameObject inventoryPanel;
@@ -15,7 +15,7 @@ public class InventoryUI : MonoBehaviour
     private InventorySlot[] slots;
     private bool isInventoryOpen = false;
 
-    [Header("ÅøÆÁ UI")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ UI")]
     public GameObject tooltipPanel;
     public TextMeshProUGUI itemNameText;
     public TextMeshProUGUI itemLevelText;
@@ -50,6 +50,7 @@ public class InventoryUI : MonoBehaviour
 
         isInventoryOpen = !isInventoryOpen;
         inventoryPanel.SetActive(isInventoryOpen);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.OpenInventory);
 
         if (isInventoryOpen)
         {
