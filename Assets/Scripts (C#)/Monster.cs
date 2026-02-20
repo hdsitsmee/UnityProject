@@ -181,7 +181,7 @@ public class Monster : MonoBehaviour
         {
             if (InventoryManager.instance == null) return;
 
-            if (Random.value <= 0.03f) 
+            if (Random.value <= 0.9f) 
             {
                 MemoryData fragment = MemoryDatabase.instance.GetMemoryByLevel(this.level);
                 if (fragment != null)
