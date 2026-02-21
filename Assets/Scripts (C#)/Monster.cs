@@ -91,7 +91,7 @@ public class Monster : MonoBehaviour
             if (weaponScript != null)
             {
                 // 2. 무기 스크립트가 가진 damage 값을 사용합니다.
-                health -= weaponScript.weaponDamage; // weapon 스크립트에 있는 레벨별 데미지
+                health -= weaponScript.Damage; // weapon 스크립트에 있는 레벨별 데미지
                 Debug.Log($"몬스터 피격! 남은 체력: {health}");
                 //PlayHitAnim();
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterHit);
