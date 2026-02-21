@@ -15,12 +15,12 @@ MonoBehaviour:
   ghostPrefab: {fileID: 4742609840161581696, guid: a4b0242304e9cf44bbfbb0c0e7d16007, type: 3}
   guestName: Dewy
   guestIcon: {fileID: -2847606303174652045, guid: 3afe4c4fd3f6f6a4aa80729808ab125b, type: 3}
-  currentSatisfaction: 0
+  currentSatisfaction: 30
   maxSatisfaction: 100
   orderDrinkName: 
   unlockLevel: 2
   isAscended: 0
-  hasMet: 0
+  hasMet: 1
   orderDialogue: 
   happyDialogue: "great\u2026! So amazing\u2026! this is real water\u2026!"
   angryDialogue: Too slow! Are you waiting for me to evaporate completely?
