@@ -20,11 +20,15 @@ public class Player : MonoBehaviour
     
     public float attackTimer;//weapon 지속시간
     public float cooltimeTimer; // 공격 쿨타임 
-    public Vector2 inputVec;
+    //public Vector2 inputVec;
     bool canAttack;
     float timer; //회전 공격에 사용
     public float maxHealth;
     public Transform spawnPoint;
+    Vector2 lastAimDir = Vector2.down;
+    Vector2 moveDir;                 // 실제 이동 방향(우선순위 적용된 값)
+    Vector2 lastHeldDir = Vector2.down;
+
     void Init()
     {
         ApplyPlayerInfo(info);
@@ -51,7 +55,7 @@ public class Player : MonoBehaviour
     private void FixedUpdate() 
     {
         if (Time.timeScale == 0f) return;
-        Vector2 nextVec = inputVec * speed * Time.fixedDeltaTime;
+        Vector2 nextVec = moveDir * speed * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
 
     }
@@ -59,23 +63,79 @@ public class Player : MonoBehaviour
     {
         playerMoney = GameManager.money; //카페씬에서 번 돈 가져옴
         if (Time.timeScale == 0f) return;
+        UpdateMoveByLastPressedKey();   // ★ 이걸로 moveDir 갱신
     }
+    bool facingLeft;
+
     private void LateUpdate()
     {
         if (Time.timeScale == 0f) return;
-        if (inputVec.x != 0) 
+
+        if (moveDir.sqrMagnitude > 0.01f)
         {
-            float scaleX = Mathf.Abs(transform.localScale.x);
-            spriter.flipX = inputVec.x < 0;
-            float xRotation = inputVec.x < 0 ? - scaleX : scaleX;
-            transform.localScale = new Vector3(xRotation, transform.localScale.y, transform.localScale.z);
+            // 마지막 방향 저장(상하 포함)
+            lastAimDir = moveDir.normalized;
+
+            // 좌우 입력이 있을 때만 flip (상/하는 flip 안 바뀜)
+            if (Mathf.Abs(moveDir.x) > 0.01f)
+            {
+                facingLeft = moveDir.x < 0;
+                spriter.flipX = facingLeft;
+            }
         }
+    }   
+        void UpdateMoveByLastPressedKey()
+    {
+        var kb = Keyboard.current;
+        if (kb == null)
+        {
+            moveDir = Vector2.zero;
+            return;
+        }
+
+        // 어떤 방향키가 지금 눌려있는지
+        bool leftHeld  = kb.aKey.isPressed || kb.leftArrowKey.isPressed;
+        bool rightHeld = kb.dKey.isPressed || kb.rightArrowKey.isPressed;
+        bool upHeld    = kb.wKey.isPressed || kb.upArrowKey.isPressed;
+        bool downHeld  = kb.sKey.isPressed || kb.downArrowKey.isPressed;
+
+        // "마지막으로 눌린" 키를 우선순위로 갱신
+        if (kb.aKey.wasPressedThisFrame || kb.leftArrowKey.wasPressedThisFrame)  lastHeldDir = Vector2.left;
+        if (kb.dKey.wasPressedThisFrame || kb.rightArrowKey.wasPressedThisFrame) lastHeldDir = Vector2.right;
+        if (kb.wKey.wasPressedThisFrame || kb.upArrowKey.wasPressedThisFrame)    lastHeldDir = Vector2.up;
+        if (kb.sKey.wasPressedThisFrame || kb.downArrowKey.wasPressedThisFrame)  lastHeldDir = Vector2.down;
+
+        // 아직 어떤 키가 눌려있나?
+        bool anyHeld = leftHeld || rightHeld || upHeld || downHeld;
+        if (!anyHeld)
+        {
+            moveDir = Vector2.zero;
+            return;
+        }
+
+        // lastHeldDir 방향이 "아직도 눌려있으면" 그 방향으로 이동
+        if (lastHeldDir == Vector2.left  && leftHeld)  { moveDir = Vector2.left;  return; }
+        if (lastHeldDir == Vector2.right && rightHeld) { moveDir = Vector2.right; return; }
+        if (lastHeldDir == Vector2.up    && upHeld)    { moveDir = Vector2.up;    return; }
+        if (lastHeldDir == Vector2.down  && downHeld)  { moveDir = Vector2.down;  return; }
+
+        // lastHeldDir 키가 떼졌으면, 남아있는 키 중 하나로 fallback (원하는 우선순위로)
+        if (rightHeld) { moveDir = Vector2.right; return; }
+        if (leftHeld)  { moveDir = Vector2.left;  return; }
+        if (upHeld)    { moveDir = Vector2.up;    return; }
+        if (downHeld)  { moveDir = Vector2.down;  return; }
     }
+    
+    /*
     void OnMove(InputValue value)
     {
         inputVec = value.Get<Vector2>();
+        
+        if (inputVec.sqrMagnitude > 0.01f)
+            lastAimDir = inputVec.normalized;
+
     }
-  
+    */
 
 
 
@@ -115,43 +175,41 @@ public class Player : MonoBehaviour
         cooltimeTimer = info.cooltimeTimer;
     }
 
+[SerializeField] float swingArc = 120f; 
+[SerializeField] float swingDuration = 0.15f;  // 회전 시간 
+[SerializeField] float hitActiveTime = 0.25f;  // 타격 판정 켜지는 시간(선택)
 
-    IEnumerator Attack()
+IEnumerator Attack()
+{
+    canAttack = false;
+
+    weaponPivot.gameObject.SetActive(true);
+    weapon.SetActive(true);
+    AudioManager.instance.PlaySfx(AudioManager.Sfx.SwordAttack);
+
+    float centerZ = Mathf.Atan2(lastAimDir.y, lastAimDir.x) * Mathf.Rad2Deg;
+    float half = swingArc * 0.5f;
+    float startZ = centerZ + half;
+    float endZ   = centerZ - half;
+
+    float t = 0f;
+    while (t < swingDuration)
     {
-        canAttack = false;
-        weaponPivot.gameObject.SetActive(true);
-        weapon.SetActive(true);
-        Debug.Log("무기 활성화");
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.SwordAttack);
-        
-        timer = 0f;
-        Quaternion startRotation = Quaternion.Euler(0, 0, 90f);  // 시작 각도 (위)
-        Quaternion endRotation = Quaternion.Euler(0, 0, -90f);   // 끝 각도 (아래)
-
-        while (timer < attackTimer)
-
-        {
-
-            timer += Time.deltaTime;
-            float progress = timer / attackTimer; // 0에서 1까지 진행률
-
-            // 시간에 따라 회전값 보간 (Lerp)
-
-             weaponPivot.localRotation = Quaternion.Lerp(startRotation, endRotation, progress);
-
-
-
-            yield return null; // 다음 프레임까지 대기
-
-        }
-        //yield return new WaitForSeconds(attackTimer);
-        weapon.SetActive(false);
-        Debug.Log("무기 비활성화");
-        yield return new WaitForSeconds(cooltimeTimer);
-        canAttack = true;
-        Debug.Log("다시 공격 가능");
-
+        t += Time.deltaTime;
+        float p = Mathf.Clamp01(t / swingDuration);
+        float z = Mathf.LerpAngle(startZ, endZ, p);
+        weaponPivot.localRotation = Quaternion.Euler(0, 0, z);
+        yield return null;
     }
+
+    // (선택) 판정 더 빨리 끄고 싶으면
+    weapon.SetActive(false);
+    weaponPivot.localRotation = Quaternion.identity;
+    weaponPivot.gameObject.SetActive(false);
+
+    yield return new WaitForSeconds(cooltimeTimer);
+    canAttack = true;
+}
     void OnAttack(InputValue value)
     {
        

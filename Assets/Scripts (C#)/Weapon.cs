@@ -1,20 +1,31 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private WeaponInfo info;
 
-    [Header("·±Å¸ÀÓ")]
-    [SerializeField] public int weaponLevel = 1; // 1ºÎÅÍ
+    [Header("ëŸ°íƒ€ì„")]
+    [SerializeField] public int weaponLevel = 1; // 1ï¿½ï¿½ï¿½ï¿½
     [SerializeField] private float weaponDamage;
     [SerializeField] private int nextWeaponPrice;
 
-    //¹Û¿¡¼­ ÀĞ±â Àü¿ë
+    // ê³µê²©í‚¤ í•œ ë²ˆì— ì¤‘ë³µ íƒ€ê²© ë°©ì§€
+    private readonly HashSet<int> hitThisSwing = new HashSet<int>();
+    
+    //ï¿½Û¿ï¿½ï¿½ï¿½ ï¿½Ğ±ï¿½ ï¿½ï¿½ï¿½ï¿½
     public int Level => weaponLevel;
     public float Damage => weaponDamage;
     public int NextPrice => nextWeaponPrice;
 
-    //Å¬·¡½º ¸â¹ö(ÇÔ¼ö ¹Û)¿¡ ÀÖ¾î¾ß ÇÔ
+    void OnEnable()
+    {
+        // ë¬´ê¸° ì¼œì§ˆ ë•Œë§ˆë‹¤(=ê³µê²© ì‹œì‘) ì´ˆê¸°í™”
+        hitThisSwing.Clear();
+    }
+
+
+    //Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½(ï¿½Ô¼ï¿½ ï¿½ï¿½)ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ ï¿½ï¿½
     public bool HasNext
     {
         get
@@ -22,7 +33,7 @@ public class Weapon : MonoBehaviour
             int idx = weaponLevel - 1;
             return weaponLevel < info.maxWeaponLevel
                    && idx >= 0
-                   && idx < info.weaponDamage.Length - 1; // ´ÙÀ½ µ¥¹ÌÁö Á¸Àç
+                   && idx < info.weaponDamage.Length - 1; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
     }
 
@@ -40,15 +51,37 @@ public class Weapon : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        // ëª¬ìŠ¤í„° íƒœê·¸/ë ˆì´ì–´ ì¤‘ ë„ˆ í”„ë¡œì íŠ¸ ê¸°ì¤€ìœ¼ë¡œ ë§ì¶°
+        if (!other.CompareTag("MonsterHitBox")) return;
+
+        // Monster ìŠ¤í¬ë¦½íŠ¸ê°€ ë¶€ëª¨ì— ìˆì„ ìˆ˜ë„ ìˆìœ¼ë‹ˆ
+        var hitbox = other.GetComponentInParent<Monster>();
+        if (hitbox == null) return;
+
+        int id = hitbox.gameObject.GetInstanceID();
+        if (hitThisSwing.Contains(id)) return; // ì´ë²ˆ íœ˜ë‘ë¥´ê¸°ì—ì„œ ì´ë¯¸ ë§ìŒ
+
+        hitThisSwing.Add(id);
+
+        // ë°ë¯¸ì§€ ì ìš© (Monsterì— TakeDamage ê°™ì€ í•¨ìˆ˜ê°€ ìˆìœ¼ë©´ ê·¸ê±¸ ì“°ëŠ” ê²Œ ë” ì¢‹ìŒ)
+        hitbox.TakeDamage(Damage);
+
+        // í•„ìš”í•˜ë©´ í”¼ê²© SFX/ì´í™íŠ¸
+        // AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterHit);
+        
+    }
+
     public void Recalculate()
     {
         int idx = weaponLevel - 1;
 
-        // ÇöÀç µ¥¹ÌÁö °è»ê
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         idx = Mathf.Clamp(idx, 0, info.weaponDamage.Length - 1);
         weaponDamage = info.weaponDamage[idx];
 
-        // ´ÙÀ½ ¾÷±×·¹ÀÌµå ºñ¿ë °è»ê 
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½×·ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ 
         bool hasPrice = idx >= 0 && idx < info.weaponPrice.Length;
         bool hasNext = weaponLevel < info.maxWeaponLevel;
 
@@ -61,7 +94,7 @@ public class Weapon : MonoBehaviour
 
         if (GameManager.money < nextWeaponPrice)
         {
-            Debug.Log("µ· ºÎÁ·");
+            Debug.Log("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             return false;
         }
 

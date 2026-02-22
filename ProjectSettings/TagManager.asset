@@ -8,6 +8,7 @@ TagManager:
   - Monster
   - Wall
   - SafeZone
+  - MonsterHitBox
   layers:
   - Default
   - TransparentFX

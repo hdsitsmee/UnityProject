@@ -35,7 +35,7 @@ public class Monster : MonoBehaviour
     bool diedByGameplay;
     int facing; //0 1 2 정면 후면 측면
     bool isHitPlaying; //피격 
-    float hitEffectTime=0.12f;
+    float hitEffectTime=0.08f;
     
     Coroutine co;
 
@@ -44,13 +44,14 @@ public class Monster : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
-
+        sr.color=new Color(1f,1f,1f,1f);
         health = maxHealth;
     }
 
     void OnEnable()
     {
         diedByGameplay = false; // 재사용될 때 초기화
+
         RandomDirection();
         ResetTimer();
     }
@@ -81,36 +82,23 @@ public class Monster : MonoBehaviour
         }
     }
 
+    public void TakeDamage(float dmg)
+{
+    if (!gameObject.activeSelf) return;   // 비활성화된 애 또 맞는 것 방지(풀)
+    if (dmg <= 0f) return;
+
+    health -= dmg;
+    Debug.Log($"몬스터 피격! 남은 체력: {health}");
+
+    AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterHit);
+    HitEffectPlay();
+
+    if (health <= 0f)
+        Die();
+}
+
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Weapon"))
-        {
-            // 1. 무기 오브젝트에 붙어있는 Weapon 스크립트를 직접 찾습니다.
-            Weapon weaponScript = collision.collider.GetComponent<Weapon>();
-
-            if (weaponScript != null)
-            {
-                // 2. 무기 스크립트가 가진 damage 값을 사용합니다.
-                health -= weaponScript.Damage; // weapon 스크립트에 있는 레벨별 데미지
-                Debug.Log($"몬스터 피격! 남은 체력: {health}");
-                //PlayHitAnim();
-                AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterHit);
-            }
-            else
-            {
-                var player = collision.collider.GetComponentInParent<Player>();
-                if (player == null) return;
-
-                health -= player.playerDamage;
-                Debug.Log("몬스터가공격받음");
-            }
-            //PlayHitAnim(); //Hit 애니메이션
-            HitEffectPlay(); 
-        }
-
-       
-        if (health <= 0f)
-            Die();
 
         RandomDirection();
         ResetTimer();
