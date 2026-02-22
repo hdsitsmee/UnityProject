@@ -136,7 +136,6 @@ public class GameManager : MonoBehaviour
         }
         else // 메인화면에서 인내심 바닥 -> 반응 바로 실행
         {
-            reactPending = false;
             StartCoroutine(GuestManager.instance.EnterReact());
         }
     }
