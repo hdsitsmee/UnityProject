@@ -100,7 +100,8 @@ public class Weapon : MonoBehaviour
 
         GameManager.money -= nextWeaponPrice;
         weaponLevel += 1;
-
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.SwordUpgrade);
+        
         Recalculate();
         return true;
     }

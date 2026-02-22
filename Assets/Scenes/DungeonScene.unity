@@ -24497,7 +24497,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 58a0cb8ea9ed8504e8743caaa7bdf123, type: 3}
   - {fileID: 8300000, guid: caca3961b34a1134998c86699da7af3b, type: 3}
   - {fileID: 8300000, guid: 912d783fece44ed4290ca220708ba741, type: 3}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 131cf1e6ae9a6ce46ad64a97fb24a8c8, type: 3}
   - {fileID: 8300000, guid: 700d1359a01af2f44b6206418ca3384e, type: 3}
   sfxVolume: 0.5
   channels: 4
@@ -28487,7 +28487,6 @@ MonoBehaviour:
   health: 10
   attackTimer: 0
   cooltimeTimer: 0
-  inputVec: {x: 0, y: 0}
   maxHealth: 10
   spawnPoint: {fileID: 387012441}
   swingArc: 90
