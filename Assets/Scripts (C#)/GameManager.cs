@@ -1,6 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,7 +24,7 @@ public class GameManager : MonoBehaviour
 
     // 🥨 [추가] 인내심 로직 위한 타이머 변수
     [Header("# 인내심 로직")]
-    public bool orderActive;
+    public bool orderActive; // 인내심 활성화 여부 (false면 타이머 작동 x)
     public float patienceTotal;
     public float patienceRemaining;
 
@@ -111,7 +113,7 @@ public class GameManager : MonoBehaviour
         if (!orderActive || patienceTotal <= 0f) return 0f;
         return patienceRemaining / patienceTotal;
     }
-    
+
     // 🥨[추가] 인내심 시간 초과 시 처리 로직
     void OrderTimeout()
     {
@@ -120,10 +122,22 @@ public class GameManager : MonoBehaviour
         reactText = "Time Over!";
         reactPending = true;
 
+        // 🥨 [추가] 인내심 바닥 시 만족도 감소
+        // 음료 레벨에 따라 감소량 증가 (예시: 레벨 1 음료 -> -20, 레벨 2 음료 -> -40)
+        int DrinkNum = recipebook.allRecipes.IndexOf(currentDrink) + 1;
+        int Down = - (DrinkNum * 20); 
+
+        UpdateGuestSatisfaction(currentGuest.guestName, Down);
+
         // 🥨 [중요] 인내심 바닥 -> 메인 화면으로 강제 이동
         if (SceneManager.GetActiveScene().name == "MakeScene")
         {
             SceneManager.LoadScene("MainScene");
+        }
+        else // 메인화면에서 인내심 바닥 -> 반응 바로 실행
+        {
+            reactPending = false;
+            StartCoroutine(GuestManager.instance.EnterReact());
         }
     }
 
@@ -140,7 +154,7 @@ public class GameManager : MonoBehaviour
     }
 
     // ★ [수정됨] 변수명 변경 반영 (currentSatisfaction 사용)
-    public void UpdateGuestSatisfaction(string name, int amount)
+    public void UpdateGuestSatisfaction(string name, float amount)
     {
         // 리스트에서 이름이 같은 손님 찾기
         GuestData guest = allGuests.Find(g => g.guestName == name);
@@ -154,8 +168,11 @@ public class GameManager : MonoBehaviour
             allGuests.Add(guest);
         }
 
-        // 만족도 증가
+        // 🥨 [수정] 만족도 100 달성 -> 증가 x
         guest.currentSatisfaction += amount;
+        // 🥨 [추가] 현 만족도를 최소 0, 최대 100 으로 조정 연산
+        guest.currentSatisfaction = Mathf.Clamp(guest.currentSatisfaction, 0, guest.maxSatisfaction);
+
         Debug.Log($"[{name}] 현재 만족도: {guest.currentSatisfaction} / {guest.maxSatisfaction}");
 
         // 목표 점수(100) 넘으면 성불

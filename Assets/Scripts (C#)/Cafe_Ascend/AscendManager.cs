@@ -56,17 +56,14 @@ public class AscendManager : MonoBehaviour
         yield return new WaitForSeconds(5f); 
     }
 
-    // 팝업의 "취소" 버튼 OnClick에 연결
-    /*public void CancelAscend()
+    // 1-1. 팝업의 "Back" 버튼 -> 기존 화면 전환 -> 손님 호출
+    public void CancelAscend()
     {
         if (!isFlowRunning) return;
-
         if (ascendPopup != null) ascendPopup.SetActive(false);
-        if (inputBlocker != null) inputBlocker.SetActive(false);
-
-        PauseGame(false);
         isFlowRunning = false;
-    }*/
+        GameManager.instance.isAscendMode = false; // 성불 모드 종료 플래그
+    }
 
     // 팝업의 "성불하기/확인" 버튼 OnClick에 연결
     // 2. 성불 진행 : 애니메이션 진행
