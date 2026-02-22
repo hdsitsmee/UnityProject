@@ -44,7 +44,6 @@ public class Monster : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
-        sr.color=new Color(1f,1f,1f,1f);
         health = maxHealth;
     }
 
@@ -54,6 +53,7 @@ public class Monster : MonoBehaviour
 
         RandomDirection();
         ResetTimer();
+        sr.color = new Color(1f,1f,1f,1f);
     }
 
     void FixedUpdate()
@@ -162,9 +162,16 @@ public class Monster : MonoBehaviour
         }
         AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterDead);
 
-        TryDropMemoryFragment();
+        //TryDropMemoryFragment();
 
-        // 기억의 조각 드랍 시도 함수
+        // 여기서 바로 리스폰 예약을 걸고
+        if (spawner != null)
+            spawner.RequestRespawnOne();
+
+        // 풀로 반환
+        gameObject.SetActive(false);
+    }
+    // 기억의 조각 드랍 시도 함수
         void TryDropMemoryFragment()
         {
             if (InventoryManager.instance == null) return;
@@ -181,14 +188,6 @@ public class Monster : MonoBehaviour
                 }
             }
         }
-
-        // 여기서 바로 리스폰 예약을 걸고
-        if (spawner != null)
-            spawner.RequestRespawnOne();
-
-        // 풀로 반환
-        gameObject.SetActive(false);
-    }
 
     void UpdateFacingByDir()
     {//애니메이터가 없거나 컨트롤러가 등록 안 됐으면 그냥 리턴
