@@ -38,7 +38,7 @@ public class GuestManager : MonoBehaviour
 
     // ===== Runtime =====
     public readonly List<GameObject> pool = new List<GameObject>();
-    public GameObject CurrentGuestObject;
+    public GameObject CurrentGuest;
 
     // 주문 데이터
     public string currentOrderName;
@@ -69,13 +69,13 @@ public class GuestManager : MonoBehaviour
 
         StartCoroutine(StartFlow());
     }
-
+    //🥨 [추가] 반응 로직 -> EnterReact // 성불 실행 -> 성불 실행 끝날 때까지 대기 -> 다음 손님 스폰
     IEnumerator StartFlow()
     {
         if (GameManager.instance != null && GameManager.instance.reactPending)
         {
             GameManager.instance.reactPending = false;
-            yield return StartCoroutine(EnterReact());
+            StartCoroutine(EnterReact());
             yield break;
         }
 
@@ -116,7 +116,7 @@ public class GuestManager : MonoBehaviour
         Debug.Log("게임 시작: Boot");
         ResetUI();
         DeactivateAllGhosts();
-        CurrentGuestObject = null;
+        CurrentGuest = null;
 
         StartCoroutine(FirstGuestRoutine());
     }
@@ -235,12 +235,12 @@ public class GuestManager : MonoBehaviour
         if (targetObj == null) targetObj = pool[0];
 
         // 4. 활성화
-        CurrentGuestObject = targetObj;
-        CurrentGuestObject.transform.position = spawnPoint.position;
-        CurrentGuestObject.transform.rotation = spawnPoint.rotation;
-        CurrentGuestObject.SetActive(true);
+        CurrentGuest = targetObj;
+        CurrentGuest.transform.position = spawnPoint.position;
+        CurrentGuest.transform.rotation = spawnPoint.rotation;
+        CurrentGuest.SetActive(true);
         // 🥨 [추가] 등장 시 얼굴 표정 초기화
-        var gv = CurrentGuestObject.GetComponent<GhostVisual>();
+        var gv = CurrentGuest.GetComponent<GhostVisual>();
         gv.ShowFace(GhostVisual.Face.Stand); // 표정 초기화
 
 
@@ -329,13 +329,13 @@ public class GuestManager : MonoBehaviour
 
                 if (targetObj == null && pool.Count > 0) targetObj = pool[0];
                 //3. 현재 손님에 재등록 (오브젝트 및 위치,활성화)
-                CurrentGuestObject = targetObj;
-                CurrentGuestObject.transform.position = spawnPoint.position;
-                CurrentGuestObject.transform.rotation = spawnPoint.rotation;
-                CurrentGuestObject.SetActive(true);
+                CurrentGuest = targetObj;
+                CurrentGuest.transform.position = spawnPoint.position;
+                CurrentGuest.transform.rotation = spawnPoint.rotation;
+                CurrentGuest.SetActive(true);
                 Debug.Log($"현재 손님 재등록: {cg.guestName},{GameManager.instance.lastResultSuccess}");
                 //🥨 [추가] 반응에 따른 얼굴 표정 변경
-                var gv = CurrentGuestObject.GetComponent<GhostVisual>();
+                var gv = CurrentGuest.GetComponent<GhostVisual>();
                 if (GameManager.instance.lastResultSuccess)
                     gv.ShowFace(GhostVisual.Face.Happy);
                 else gv.ShowFace(GhostVisual.Face.Angry);
@@ -388,10 +388,10 @@ public class GuestManager : MonoBehaviour
             GameManager.instance.currentDrink = null;
         }
         // 현재 손님 초기화
-        if (CurrentGuestObject != null)
-            CurrentGuestObject.SetActive(false);
+        if (CurrentGuest != null)
+            CurrentGuest.SetActive(false);
 
-        CurrentGuestObject = null;
+        CurrentGuest = null;
         GameManager.instance.currentGuest = null;
 
         // UI 정리
