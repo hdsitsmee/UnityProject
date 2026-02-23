@@ -5,7 +5,7 @@ public class Player : MonoBehaviour
 {
     public Transform weaponPivot;
     public GameObject weapon;
-
+    Animator anim;
     [Header("플레이어 기본 정보")]
     public PlayerInfo info;
     public int playerMoney;
@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
     }
 
     private void Start()
@@ -83,6 +84,7 @@ public class Player : MonoBehaviour
                 spriter.flipX = facingLeft;
             }
         }
+        anim.SetFloat("speed", moveDir.magnitude);
     }   
         void UpdateMoveByLastPressedKey()
     {

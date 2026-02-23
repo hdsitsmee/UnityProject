@@ -34,7 +34,8 @@ public class WeaponInfo : ScriptableObject
 {
     [Header("무기 이미지")]
     public Sprite[] weaponIcons;
-    
+    public Sprite[] weaponSprites; // 인게임 무기 Sprites
+
     [Header("무기 레벨")]
     public int weaponLevel = 1; // 초기값 -> 런타임에 들고 있는 걸 추천
     public int maxWeaponLevel = 5; // 최고레벨

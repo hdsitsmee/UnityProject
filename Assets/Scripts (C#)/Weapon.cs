@@ -4,15 +4,16 @@ using System.Collections.Generic;
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private WeaponInfo info;
+    [SerializeField] private SpriteRenderer weaponRenderer;
+    
 
     [Header("런타임")]
     [SerializeField] public int weaponLevel = 1; // 1����
     [SerializeField] private float weaponDamage;
     [SerializeField] private int nextWeaponPrice;
-
     // 공격키 한 번에 중복 타격 방지
     private readonly HashSet<int> hitThisSwing = new HashSet<int>();
-    
+
     //�ۿ��� �б� ����
     public int Level => weaponLevel;
     public float Damage => weaponDamage;
@@ -44,9 +45,16 @@ public class Weapon : MonoBehaviour
             return HasNext && nextWeaponPrice > 0;
         }
     }
+    private void Awake()
+    {
+        //rigid = GetComponent<Rigidbody2D>();
+        if (weaponRenderer == null)
+            weaponRenderer = GetComponent<SpriteRenderer>();
 
+    }
     private void Start()
     {
+       
         Recalculate();
         gameObject.SetActive(false);
     }
@@ -70,7 +78,7 @@ public class Weapon : MonoBehaviour
 
         // 필요하면 피격 SFX/이펙트
         // AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterHit);
-        
+
     }
 
     public void Recalculate()
@@ -86,6 +94,8 @@ public class Weapon : MonoBehaviour
         bool hasNext = weaponLevel < info.maxWeaponLevel;
 
         nextWeaponPrice = (hasNext && hasPrice) ? info.weaponPrice[idx] : 0;
+
+        ApplyVisual();
     }
 
     public bool TryUpgrade()
@@ -94,15 +104,26 @@ public class Weapon : MonoBehaviour
 
         if (GameManager.money < nextWeaponPrice)
         {
-            Debug.Log("�� ����");
             return false;
         }
 
         GameManager.money -= nextWeaponPrice;
         weaponLevel += 1;
         AudioManager.instance.PlaySfx(AudioManager.Sfx.SwordUpgrade);
-        
+
         Recalculate();
         return true;
+    }
+    private void ApplyVisual()
+    {
+        Debug.Log($"[ApplyVisual] name={name}, lvl={weaponLevel}, renderer={(weaponRenderer ? weaponRenderer.name : "NULL")}, spritesLen={(info && info.weaponSprites != null ? info.weaponSprites.Length : -1)}");
+        if (info == null || weaponRenderer == null) return;
+
+        int idx = weaponLevel - 1;
+        if (info.weaponSprites == null || info.weaponSprites.Length == 0) return;
+
+        idx = Mathf.Clamp(idx, 0, info.weaponSprites.Length - 1);
+        weaponRenderer.sprite = info.weaponSprites[idx];
+        Debug.Log($"[ApplyVisual] renderer={(weaponRenderer ? weaponRenderer.name : "NULL")}, sprite={(weaponRenderer && weaponRenderer.sprite ? weaponRenderer.sprite.name : "NULL")}");
     }
 }

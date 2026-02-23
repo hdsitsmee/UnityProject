@@ -18,6 +18,12 @@ MonoBehaviour:
   - {fileID: 21300000, guid: cd94a756043dd7b4194eb103adb8ed1c, type: 3}
   - {fileID: 21300000, guid: 1d3773202ae64614f92e5bcce9793f0d, type: 3}
   - {fileID: 21300000, guid: a434b2fa96d2388428fdca1ed979b3f4, type: 3}
+  weaponSprites:
+  - {fileID: 21300000, guid: 73c22d6309e9a09469dcfe8c939920bc, type: 3}
+  - {fileID: 21300000, guid: 671e2a237568f1645ae7d7b9e6588215, type: 3}
+  - {fileID: 21300000, guid: cd94a756043dd7b4194eb103adb8ed1c, type: 3}
+  - {fileID: 21300000, guid: 1d3773202ae64614f92e5bcce9793f0d, type: 3}
+  - {fileID: 21300000, guid: a434b2fa96d2388428fdca1ed979b3f4, type: 3}
   weaponLevel: 1
   maxWeaponLevel: 5
   weaponDamage:

@@ -1,31 +1,31 @@
 fileFormatVersion: 2
-guid: 1a1904bb401876d4d81ab12084ecf86c
+guid: d8a45c27057e1fe4cae9d5dc80adb5c6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6035171654545788892
-    second: "\uAC77\uAE30 \uC815\uBA74_0"
+      213: -7583606234343552622
+    second: player_Stand_0
   - first:
-      213: 597310845060913799
-    second: "\uAC77\uAE30 \uC815\uBA74_1"
+      213: 2652002095627575485
+    second: player_Stand_1
   - first:
-      213: -941040250810255048
-    second: "\uAC77\uAE30 \uC815\uBA74_2"
+      213: 3206049323831569650
+    second: player_Stand_2
   - first:
-      213: -554837184173383458
-    second: "\uAC77\uAE30 \uC815\uBA74_3"
+      213: 9000839129995643488
+    second: player_Stand_3
   - first:
-      213: 1631262823254789349
-    second: "\uAC77\uAE30 \uC815\uBA74_4"
+      213: -3515501290865073890
+    second: player_Stand_4
   - first:
-      213: -4275677970415054432
-    second: "\uAC77\uAE30 \uC815\uBA74_5"
+      213: -1577445551940818761
+    second: player_Stand_5
   - first:
-      213: 3882722686180261730
-    second: "\uAC77\uAE30 \uC815\uBA74_6"
+      213: 8401594144167572968
+    second: player_Stand_6
   - first:
-      213: 3799134580081901461
-    second: "\uAC77\uAE30 \uC815\uBA74_7"
+      213: -449875621835115501
+    second: player_Stand_7
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,13 +134,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\uAC77\uAE30 \uC815\uBA74_0"
+      name: player_Stand_0
       rect:
         serializedVersion: 2
-        x: 15
-        y: 0
-        width: 1699
-        height: 2730
+        x: 47
+        y: 543
+        width: 434
+        height: 372
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -149,20 +149,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 420ba4c1b53ce3ca0800000000000000
-      internalID: -6035171654545788892
+      spriteID: 299c38d3f4e91c690800000000000000
+      internalID: -7583606234343552622
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC77\uAE30 \uC815\uBA74_1"
+      name: player_Stand_1
       rect:
         serializedVersion: 2
-        x: 784
-        y: 319
-        width: 486
-        height: 845
+        x: 120
+        y: 503
+        width: 303
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -171,20 +171,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 78a18548c031a4800800000000000000
-      internalID: 597310845060913799
+      spriteID: db02975eaddcdc420800000000000000
+      internalID: 2652002095627575485
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC77\uAE30 \uC815\uBA74_2"
+      name: player_Stand_2
       rect:
         serializedVersion: 2
-        x: 1819
-        y: 0
-        width: 1943
-        height: 2730
+        x: 543
+        y: 543
+        width: 434
+        height: 372
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -193,20 +193,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8393c13b0e0c0f2f0800000000000000
-      internalID: -941040250810255048
+      spriteID: 2fcac57afdc2e7c20800000000000000
+      internalID: 3206049323831569650
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC77\uAE30 \uC815\uBA74_3"
+      name: player_Stand_3
       rect:
         serializedVersion: 2
-        x: 2832
-        y: 319
-        width: 486
-        height: 845
+        x: 600
+        y: 503
+        width: 313
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -215,20 +215,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ed0ea294582dc48f0800000000000000
-      internalID: -554837184173383458
+      spriteID: 06a83df008769ec70800000000000000
+      internalID: 9000839129995643488
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC77\uAE30 \uC815\uBA74_4"
+      name: player_Stand_4
       rect:
         serializedVersion: 2
-        x: 3867
-        y: 0
-        width: 1943
-        height: 2730
+        x: 43
+        y: 103
+        width: 438
+        height: 362
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -237,20 +237,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5ec076b15e863a610800000000000000
-      internalID: 1631262823254789349
+      spriteID: e116f8ea33e663fc0800000000000000
+      internalID: -3515501290865073890
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC77\uAE30 \uC815\uBA74_5"
+      name: player_Stand_5
       rect:
         serializedVersion: 2
-        x: 4880
-        y: 319
-        width: 486
-        height: 845
+        x: 535
+        y: 103
+        width: 442
+        height: 362
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -259,20 +259,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0a192771a8db9a4c0800000000000000
-      internalID: -4275677970415054432
+      spriteID: 7b82c00d0a9cb1ae0800000000000000
+      internalID: -1577445551940818761
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC77\uAE30 \uC815\uBA74_6"
+      name: player_Stand_6
       rect:
         serializedVersion: 2
-        x: 5915
-        y: 0
-        width: 2246
-        height: 2730
+        x: 115
+        y: 59
+        width: 304
+        height: 38
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -281,20 +281,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 26fff1726b332e530800000000000000
-      internalID: 3882722686180261730
+      spriteID: 8e53c1e4c55789470800000000000000
+      internalID: 8401594144167572968
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC77\uAE30 \uC815\uBA74_7"
+      name: player_Stand_7
       rect:
         serializedVersion: 2
-        x: 6928
-        y: 319
-        width: 486
-        height: 845
+        x: 600
+        y: 60
+        width: 317
+        height: 39
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -303,8 +303,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 59f3fab95cc39b430800000000000000
-      internalID: 3799134580081901461
+      spriteID: 314f8676188b1c9f0800000000000000
+      internalID: -449875621835115501
       vertices: []
       indices: 
       edges: []
@@ -323,14 +323,14 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "\uAC77\uAE30 \uC815\uBA74_0": -6035171654545788892
-      "\uAC77\uAE30 \uC815\uBA74_1": 597310845060913799
-      "\uAC77\uAE30 \uC815\uBA74_2": -941040250810255048
-      "\uAC77\uAE30 \uC815\uBA74_3": -554837184173383458
-      "\uAC77\uAE30 \uC815\uBA74_4": 1631262823254789349
-      "\uAC77\uAE30 \uC815\uBA74_5": -4275677970415054432
-      "\uAC77\uAE30 \uC815\uBA74_6": 3882722686180261730
-      "\uAC77\uAE30 \uC815\uBA74_7": 3799134580081901461
+      player_Stand_0: -7583606234343552622
+      player_Stand_1: 2652002095627575485
+      player_Stand_2: 3206049323831569650
+      player_Stand_3: 9000839129995643488
+      player_Stand_4: -3515501290865073890
+      player_Stand_5: -1577445551940818761
+      player_Stand_6: 8401594144167572968
+      player_Stand_7: -449875621835115501
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
