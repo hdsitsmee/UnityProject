@@ -176,7 +176,7 @@ public class Monster : MonoBehaviour
     {
         if (InventoryManager.instance == null || MemoryDatabase.instance == null) return;
 
-        if (UnityEngine.Random.value <= 0.1f)
+        if (UnityEngine.Random.value <= 0.9f)
         {
             MemoryData fragment = MemoryDatabase.instance.GetMemoryByLevel(this.level);
 
@@ -185,6 +185,11 @@ public class Monster : MonoBehaviour
                 if (InventoryManager.instance.GetMemoryCount(fragment.ghostName) < 3)
                 {
                     InventoryManager.instance.AddMemory(fragment);
+
+                    if (MemoryAcquisitionPopup.instance != null)
+                    {
+                        MemoryAcquisitionPopup.instance.ShowMemoryMessage(fragment.ghostName);
+                    }
 
                 }
             }
