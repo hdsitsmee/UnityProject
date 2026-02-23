@@ -162,7 +162,7 @@ public class Monster : MonoBehaviour
         }
         AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterDead);
 
-        //TryDropMemoryFragment();
+        TryDropMemoryFragment();
 
         // 여기서 바로 리스폰 예약을 걸고
         if (spawner != null)
@@ -172,22 +172,24 @@ public class Monster : MonoBehaviour
         gameObject.SetActive(false);
     }
     // 기억의 조각 드랍 시도 함수
-        void TryDropMemoryFragment()
-        {
-            if (InventoryManager.instance == null) return;
+    void TryDropMemoryFragment()
+    {
+        if (InventoryManager.instance == null || MemoryDatabase.instance == null) return;
 
-            if (Random.value <= 0.9f) 
+        if (UnityEngine.Random.value <= 0.1f)
+        {
+            MemoryData fragment = MemoryDatabase.instance.GetMemoryByLevel(this.level);
+
+            if (fragment != null)
             {
-                MemoryData fragment = MemoryDatabase.instance.GetMemoryByLevel(this.level);
-                if (fragment != null)
+                if (InventoryManager.instance.GetMemoryCount(fragment.ghostName) < 3)
                 {
-                    if (InventoryManager.instance.GetMemoryCount(fragment.ghostName) < 3)
-                    {
-                        InventoryManager.instance.AddMemory(fragment);
-                    }
+                    InventoryManager.instance.AddMemory(fragment);
+
                 }
             }
         }
+    }
 
     void UpdateFacingByDir()
     {//애니메이터가 없거나 컨트롤러가 등록 안 됐으면 그냥 리턴
