@@ -26,9 +26,9 @@ public class Player : MonoBehaviour
     public float maxHealth;
     public Transform spawnPoint;
     Vector2 lastAimDir = Vector2.down;
-    Vector2 moveDir;                 // 실제 이동 방향(우선순위 적용된 값)
+    public Vector2 moveDir { get; private set; }                 // 실제 이동 방향(우선순위 적용된 값)
     Vector2 lastHeldDir = Vector2.down;
-
+    
     void Init()
     {
         ApplyPlayerInfo(info);
@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();
+        
     }
 
     private void Start()
@@ -84,7 +84,7 @@ public class Player : MonoBehaviour
                 spriter.flipX = facingLeft;
             }
         }
-        anim.SetFloat("speed", moveDir.magnitude);
+        
     }   
         void UpdateMoveByLastPressedKey()
     {
