@@ -219,7 +219,7 @@ public class MakeManager : MonoBehaviour
     void CheckResult(DrinkData recipe)
     {
         int matchCount = 0;
-        int score = 0; 
+        float score = 0; 
         string message = "";
 
         foreach (string required in recipe.requiredIngredients)
@@ -229,6 +229,12 @@ public class MakeManager : MonoBehaviour
 
         bool isSuccess = (matchCount == recipe.requiredIngredients.Length && currentIngredients.Count == recipe.requiredIngredients.Length);
 
+        // 🥨 [추가] 음료별 만족도 차등 부여
+        // 상승도 : 음료 번호 * 맞춘 재료/올바른 재료 * 고정 상수 20
+        int DrinkNum = GameManager.instance.recipebook.allRecipes.IndexOf(GameManager.instance.currentDrink)+1;
+        score = DrinkNum*((float)matchCount / recipe.requiredIngredients.Length); // 0.0 ~ 1.0 사이의 점수
+        score = Mathf.Round(score * 20); // 20 곱하고 반올림
+
         if (isSuccess)
         {
             message = "Great!"; // 한글쓰면 팝업창이 깨지는 현상 있어서 일단 영어로 바꿨습니다 ㅠㅠ
@@ -237,9 +243,8 @@ public class MakeManager : MonoBehaviour
             GameManager.AddMoney(500); // 돈 증가
             UpdateMoneyUI(); // 돈이 올랐으니 화면도 갱신
 
-            if (GameManager.instance != null) GameManager.instance.GainExp(100); 
-
-            score = 30; 
+            if (GameManager.instance != null) GameManager.instance.GainExp(100);
+            
             recipe.hasMade = true; 
         }
         else

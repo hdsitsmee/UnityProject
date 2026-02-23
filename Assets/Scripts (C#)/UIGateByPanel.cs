@@ -4,14 +4,14 @@ using TMPro;
 
 public class UIGateByPanel : MonoBehaviour
 {
-    public GameObject guestManager;
     TMP_Text speechBubbleText;
     GameObject orderBullon;
     Slider patienceSlider;
+    //🥨 [추가] 기존화면 말풍선 출현 여부
+    bool snapOrder;
 
     void Awake()
     {
-        // 인스턴스 준비 타이밍 이슈 있을 수 있으면 Start에서 보정하는 게 안전
         speechBubbleText = GuestManager.instance?.speechBubbleText;
         orderBullon = GuestManager.instance?.OrderBullon;
         patienceSlider = GuestManager.instance?.patienceSlider;
@@ -19,7 +19,11 @@ public class UIGateByPanel : MonoBehaviour
 
     void OnEnable()
     {
-        GameManager.instance.SetPause(true); // 도감 열리는 동안 게임 진행 멈춤
+        // 1. 도감 On -> 정지 플래그 설정 = 게스트 매니저 흐름 일시정지
+        GameManager.instance.SetPause(true);
+        // 🥨 [추가] 1-1. 화면 전환 직전 말풍선이 있었는지 저장
+        snapOrder = orderBullon != null && orderBullon.activeSelf;
+        // 2. 유령 오브젝트 비활
         if (GameManager.instance.currentGuest != null && GameManager.instance.currentGuest.ghostPrefab != null)
         {
             var cg = GameManager.instance.currentGuest;
@@ -31,6 +35,7 @@ public class UIGateByPanel : MonoBehaviour
             }
             targetObj.SetActive(false);
         }
+    
         ApplyGate();     // UI 숨김
     }
 
@@ -57,8 +62,9 @@ public class UIGateByPanel : MonoBehaviour
         /*if (!hasSnapshot) return;
         hasSnapshot = false;*/
 
+        // 🥨 [추가] 이전 화면에 말풍선이 없었다면 복구 x
         if (orderBullon != null)
-            orderBullon.SetActive(true);
+            orderBullon.SetActive(snapOrder);
 
         if (speechBubbleText != null)
         {

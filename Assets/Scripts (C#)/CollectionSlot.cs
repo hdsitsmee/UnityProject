@@ -8,6 +8,13 @@ public class CollectionSlot : MonoBehaviour
     public TMP_Text nameText; // 이름
     public GameObject lockPanel; // 잠금 표시 (자물쇠 이미지 등)
 
+    public Button slotButton;
+
+    void Awake()
+    {
+        if (slotButton == null) slotButton = GetComponent<Button>();
+    }
+
     // 데이터를 받아서 슬롯을 세팅
     public void SetSlot(string name, Sprite sprite, bool isUnlocked)
     {
@@ -20,6 +27,8 @@ public class CollectionSlot : MonoBehaviour
             iconImage.color = Color.white; 
             lockPanel.SetActive(false);
             nameText.text = name;
+
+            if (slotButton != null) slotButton.interactable = true;
         }
         else
         {
@@ -28,6 +37,8 @@ public class CollectionSlot : MonoBehaviour
             iconImage.color = Color.black;
             lockPanel.SetActive(true);
             nameText.text = "???";
+
+            if (slotButton != null) slotButton.interactable = false;
         }
     }
 }

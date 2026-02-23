@@ -38,7 +38,7 @@ public class GuestManager : MonoBehaviour
 
     // ===== Runtime =====
     public readonly List<GameObject> pool = new List<GameObject>();
-    public GameObject CurrentGuestObject;
+    public GameObject CurrentGuest;
 
     // 주문 데이터
     public string currentOrderName;
@@ -66,16 +66,15 @@ public class GuestManager : MonoBehaviour
     {
         // 0-1. 게임 첫 시작 시 손님 풀 생성
         BuildPool();
-
         StartCoroutine(StartFlow());
     }
-
+    //🥨 [추가] 반응 로직 -> EnterReact // 성불 실행 -> 성불 실행 끝날 때까지 대기 -> 다음 손님 스폰
     IEnumerator StartFlow()
     {
         if (GameManager.instance != null && GameManager.instance.reactPending)
         {
             GameManager.instance.reactPending = false;
-            yield return StartCoroutine(EnterReact());
+            StartCoroutine(EnterReact());
             yield break;
         }
 
@@ -92,6 +91,7 @@ public class GuestManager : MonoBehaviour
     }
     void Update()
     {
+        if (GameManager.instance != null && GameManager.instance.isPaused) return;
         // 🥨 [추가] Order 중 메인,제조 두 씬에서 인내심 표시 갱신
         if (patienceSlider != null && GameManager.instance != null)
         {
@@ -111,34 +111,20 @@ public class GuestManager : MonoBehaviour
     // 1. 게임 시작 (Boot) → 첫 손님 대기(WaitFirst)
     private void StartFirstGuest()
     {
-        // 이때 도감 이동,던전이동,제조버튼 전부 비활처리
         state = State.Boot;
         Debug.Log("게임 시작: Boot");
         ResetUI();
         DeactivateAllGhosts();
-        CurrentGuestObject = null;
+        CurrentGuest = null;
 
         StartCoroutine(FirstGuestRoutine());
     }
     // 2. 첫 손님 대기(WaitFirst) → 유령 등장 및 주문 생성(Order)
     private IEnumerator FirstGuestRoutine()
     {
-        while (GameManager.instance != null && GameManager.instance.isPaused)
-            yield return null;
         state = State.WaitFirst;
         Debug.Log("첫 손님 대기: WaitFirst");
-        // 도감에서는 대기
-        float t = 0f;
-        while (t < firstGuestDelay)
-        {
-            // 일시정지면 시간 안 줄이고 대기
-            while (GameManager.instance.isPaused)
-                yield return null;
-
-            t += Time.deltaTime;
-            yield return null;
-        }
-
+        yield return StartCoroutine(WaitSecondsPaused(firstGuestDelay));
         SpawnEnterOrder();
     }
 
@@ -196,6 +182,7 @@ public class GuestManager : MonoBehaviour
     //3-1. 유령 등장
     private void SpawnNextGuest()
     {
+        StartCoroutine(WaitWhilePaused());
         state = State.Order;
         Debug.Log("주문 시작: Order");
         if (pool.Count == 0) return;
@@ -235,12 +222,12 @@ public class GuestManager : MonoBehaviour
         if (targetObj == null) targetObj = pool[0];
 
         // 4. 활성화
-        CurrentGuestObject = targetObj;
-        CurrentGuestObject.transform.position = spawnPoint.position;
-        CurrentGuestObject.transform.rotation = spawnPoint.rotation;
-        CurrentGuestObject.SetActive(true);
+        CurrentGuest = targetObj;
+        CurrentGuest.transform.position = spawnPoint.position;
+        CurrentGuest.transform.rotation = spawnPoint.rotation;
+        CurrentGuest.SetActive(true);
         // 🥨 [추가] 등장 시 얼굴 표정 초기화
-        var gv = CurrentGuestObject.GetComponent<GhostVisual>();
+        var gv = CurrentGuest.GetComponent<GhostVisual>();
         gv.ShowFace(GhostVisual.Face.Stand); // 표정 초기화
 
 
@@ -258,7 +245,7 @@ public class GuestManager : MonoBehaviour
     //3-2. 주문 생성
    private void BeginOrder()
    {
-       // 1. 현재 레벨에 주문 가능한 'DrinkData' 후보군 뽑기
+        // 1. 현재 레벨에 주문 가능한 'DrinkData' 후보군 뽑기
         List<DrinkData> possibleDrinks = new List<DrinkData>();
         int myLevel = GameManager.level;
 
@@ -306,7 +293,9 @@ public class GuestManager : MonoBehaviour
         Debug.Log($"반응 대기: {GameManager.instance.isGamePaused}");
         while (GameManager.instance.isGamePaused)
             yield return null;
-        yield return new WaitForSeconds(0.2f); // 일시정지 해제 후 약간의 딜레이
+        yield return StartCoroutine(WaitSecondsPaused(0.2f)); // 일시정지 해제 후 약간의 딜레이
+
+        StartCoroutine(WaitWhilePaused());
         state = State.React;
         Debug.Log("반응 시작: React");
 
@@ -329,13 +318,13 @@ public class GuestManager : MonoBehaviour
 
                 if (targetObj == null && pool.Count > 0) targetObj = pool[0];
                 //3. 현재 손님에 재등록 (오브젝트 및 위치,활성화)
-                CurrentGuestObject = targetObj;
-                CurrentGuestObject.transform.position = spawnPoint.position;
-                CurrentGuestObject.transform.rotation = spawnPoint.rotation;
-                CurrentGuestObject.SetActive(true);
+                CurrentGuest = targetObj;
+                CurrentGuest.transform.position = spawnPoint.position;
+                CurrentGuest.transform.rotation = spawnPoint.rotation;
+                CurrentGuest.SetActive(true);
                 Debug.Log($"현재 손님 재등록: {cg.guestName},{GameManager.instance.lastResultSuccess}");
                 //🥨 [추가] 반응에 따른 얼굴 표정 변경
-                var gv = CurrentGuestObject.GetComponent<GhostVisual>();
+                var gv = CurrentGuest.GetComponent<GhostVisual>();
                 if (GameManager.instance.lastResultSuccess)
                     gv.ShowFace(GhostVisual.Face.Happy);
                 else gv.ShowFace(GhostVisual.Face.Angry);
@@ -348,7 +337,8 @@ public class GuestManager : MonoBehaviour
             speechBubbleText.gameObject.SetActive(true);
             speechBubbleText.text = GameManager.instance.reactText;
         }
-        yield return new WaitForSeconds(reactDuration);
+        // 타이머 호출
+        yield return StartCoroutine(WaitSecondsPaused(reactDuration)); 
         // 2. reactDuration 뒤에 Leave로 이동
         StartCoroutine(LeaveRoutine());
     }
@@ -356,11 +346,11 @@ public class GuestManager : MonoBehaviour
     // 5. Leave : 퇴장 → 다음 손님 대기
     private IEnumerator LeaveRoutine()
     {
-        StartCoroutine(EnterLeave());
-        yield return new WaitForSeconds(leaveDuration); 
+        EnterLeave();
+        yield return StartCoroutine(WaitSecondsPaused(leaveDuration));
         //FinishLeave();
 
-        // React 예약 해제 (안전)
+        // React 예약 해제
         if (GameManager.instance != null) GameManager.instance.reactPending = false;
         
         // 다음 손님 대기 후 스폰
@@ -368,10 +358,9 @@ public class GuestManager : MonoBehaviour
     }
 
     // 5-1. 퇴장 시작 (반응 끝나고 바로)
-    private IEnumerator EnterLeave()
+    private void EnterLeave()
     {
-        while (GameManager.instance.isPaused)
-            yield return null;
+        StartCoroutine(WaitWhilePaused());
         state = State.Leave;
         Debug.Log("퇴장: Leave");
         /*
@@ -388,10 +377,10 @@ public class GuestManager : MonoBehaviour
             GameManager.instance.currentDrink = null;
         }
         // 현재 손님 초기화
-        if (CurrentGuestObject != null)
-            CurrentGuestObject.SetActive(false);
+        if (CurrentGuest != null)
+            CurrentGuest.SetActive(false);
 
-        CurrentGuestObject = null;
+        CurrentGuest = null;
         GameManager.instance.currentGuest = null;
 
         // UI 정리
@@ -406,15 +395,32 @@ public class GuestManager : MonoBehaviour
             patienceSlider.gameObject.SetActive(false);
 
     }
-
     private IEnumerator NextGuestDelayRoutine()
     {
-        yield return new WaitForSeconds(nextGuestDelay);
+        yield return StartCoroutine(WaitSecondsPaused(leaveDuration));
+        // Leave -> Order
         SpawnEnterOrder();
     }
+    //🥨[중요] 타이머 로직
+    // 도감 타이머 로직
+    IEnumerator WaitWhilePaused()
+    {
+        //도감 켰을 때 중지
+        while (GameManager.instance != null && GameManager.instance.isPaused)
+            yield return null;
+    }
+    // 상태 전환 대기 시간 + 도감 타이머
+    IEnumerator WaitSecondsPaused(float seconds)
+    {
+        //기존 코루틴 대기시간 흐르는 중 도감 켰을 때 중지
+        float t = 0f;
+        while (t < seconds)
+        {
+            while (GameManager.instance != null && GameManager.instance.isPaused)
+                yield return null;
 
-    private void FinishLeave()
-    {}
-        
-
+            t += Time.deltaTime;
+            yield return null;
+        }
+    }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
-
+using System.Collections.Generic;
 public class MainUI : MonoBehaviour
 {
 
@@ -10,6 +10,7 @@ public class MainUI : MonoBehaviour
 
     [Header("Popups")]
     public GameObject levelUpPopup;
+    public TMP_Text unlockedItemsText;
 
     public TMP_Text levelText;
     public TMP_Text moneyText;
@@ -64,15 +65,50 @@ public class MainUI : MonoBehaviour
     {
         if (levelUpPopup != null)
         {
-            GameManager.instance.GameIsPaused(true); //🥨[추가] 레벨업 팝업이 뜨는 동안 게임 일시정지
+            GameManager.instance.isGamePaused = true; // 팝업 뜨는 동안 게임 일시정지
+
+            if (unlockedItemsText != null && GameManager.instance != null)
+            {
+                int currentLevel = GameManager.level;
+                
+                // 1. 새로 해금된 손님 이름 찾기
+                List<string> newGuests = new List<string>();
+                foreach (var guest in GameManager.instance.allGuests)
+                {
+                    if (guest.unlockLevel == currentLevel)
+                        newGuests.Add(guest.guestName);
+                }
+
+                // 2. 새로 해금된 음료 이름 찾기
+                List<string> newDrinks = new List<string>();
+                foreach (var drink in GameManager.instance.recipebook.allRecipes)
+                {
+                    if (drink.unlockLevel == currentLevel)
+                        newDrinks.Add(drink.drinkName);
+                }
+
+                // 3. 화면에 띄울 메시지 조립
+                string message = $"Lv {currentLevel}!\n\n";
+                
+                if (newGuests.Count > 0)
+                    message += $"New Guest: {string.Join(", ", newGuests)}\n";
+                if (newDrinks.Count > 0)
+                    message += $"New Recipe: {string.Join(", ", newDrinks)}";
+
+                unlockedItemsText.text = message; // 텍스트 적용
+            }
+
             levelUpPopup.SetActive(true);
             
-            if(SoundManager.instance != null) SoundManager.instance.PlaySFX(SoundManager.instance.levelUpSound);
-
-            yield return new WaitForSeconds(2.0f);
+            // 레벨업 소리 재생
+            if(SoundManager.instance != null && SoundManager.instance.levelUpSound != null) 
+                SoundManager.instance.PlaySFX(SoundManager.instance.levelUpSound);
+            
+            // 글을 읽어야 하니 3초 동안 대기
+            yield return new WaitForSeconds(3.0f); 
 
             levelUpPopup.SetActive(false);
-            GameManager.instance.GameIsPaused(false); //🥨[추가] 게임 재개 -> 반응 로직 시작
+            GameManager.instance.isGamePaused = false; // 일시정지 해제
         }
     }
 }

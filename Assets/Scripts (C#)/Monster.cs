@@ -35,7 +35,7 @@ public class Monster : MonoBehaviour
     bool diedByGameplay;
     int facing; //0 1 2 정면 후면 측면
     bool isHitPlaying; //피격 
-    float hitEffectTime=0.12f;
+    float hitEffectTime=0.08f;
     
     Coroutine co;
 
@@ -44,15 +44,16 @@ public class Monster : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
-
         health = maxHealth;
     }
 
     void OnEnable()
     {
         diedByGameplay = false; // 재사용될 때 초기화
+
         RandomDirection();
         ResetTimer();
+        sr.color = new Color(1f,1f,1f,1f);
     }
 
     void FixedUpdate()
@@ -81,36 +82,23 @@ public class Monster : MonoBehaviour
         }
     }
 
+    public void TakeDamage(float dmg)
+{
+    if (!gameObject.activeSelf) return;   // 비활성화된 애 또 맞는 것 방지(풀)
+    if (dmg <= 0f) return;
+
+    health -= dmg;
+    Debug.Log($"몬스터 피격! 남은 체력: {health}");
+
+    AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterHit);
+    HitEffectPlay();
+
+    if (health <= 0f)
+        Die();
+}
+
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Weapon"))
-        {
-            // 1. 무기 오브젝트에 붙어있는 Weapon 스크립트를 직접 찾습니다.
-            Weapon weaponScript = collision.collider.GetComponent<Weapon>();
-
-            if (weaponScript != null)
-            {
-                // 2. 무기 스크립트가 가진 damage 값을 사용합니다.
-                health -= weaponScript.damage;
-                Debug.Log($"몬스터 피격! 남은 체력: {health}");
-                //PlayHitAnim();
-                AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterHit);
-            }
-            else
-            {
-                var player = collision.collider.GetComponentInParent<Player>();
-                if (player == null) return;
-
-                health -= player.playerDamage;
-                Debug.Log("몬스터가공격받음");
-            }
-            //PlayHitAnim(); //Hit 애니메이션
-            HitEffectPlay(); 
-        }
-
-       
-        if (health <= 0f)
-            Die();
 
         RandomDirection();
         ResetTimer();
@@ -174,9 +162,16 @@ public class Monster : MonoBehaviour
         }
         AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterDead);
 
-        TryDropMemoryFragment();
+        //TryDropMemoryFragment();
 
-        // 기억의 조각 드랍 시도 함수
+        // 여기서 바로 리스폰 예약을 걸고
+        if (spawner != null)
+            spawner.RequestRespawnOne();
+
+        // 풀로 반환
+        gameObject.SetActive(false);
+    }
+    // 기억의 조각 드랍 시도 함수
         void TryDropMemoryFragment()
         {
             if (InventoryManager.instance == null) return;
@@ -193,14 +188,6 @@ public class Monster : MonoBehaviour
                 }
             }
         }
-
-        // 여기서 바로 리스폰 예약을 걸고
-        if (spawner != null)
-            spawner.RequestRespawnOne();
-
-        // 풀로 반환
-        gameObject.SetActive(false);
-    }
 
     void UpdateFacingByDir()
     {//애니메이터가 없거나 컨트롤러가 등록 안 됐으면 그냥 리턴

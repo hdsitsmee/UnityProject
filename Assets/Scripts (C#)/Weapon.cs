@@ -1,25 +1,129 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Weapon : MonoBehaviour
 {
-    public float damage;
-    public PlayerInfo info;
-    Rigidbody2D rigid;
-    public void Init(float damage) //  �ʱ�ȭ�ϴ� ����
-    {
-        this.damage = damage;
+    [SerializeField] private WeaponInfo info;
+    [SerializeField] private SpriteRenderer weaponRenderer;
+    
 
+    [Header("런타임")]
+    [SerializeField] public int weaponLevel = 1; // 1����
+    [SerializeField] private float weaponDamage;
+    [SerializeField] private int nextWeaponPrice;
+    // 공격키 한 번에 중복 타격 방지
+    private readonly HashSet<int> hitThisSwing = new HashSet<int>();
+
+    //�ۿ��� �б� ����
+    public int Level => weaponLevel;
+    public float Damage => weaponDamage;
+    public int NextPrice => nextWeaponPrice;
+
+    void OnEnable()
+    {
+        // 무기 켜질 때마다(=공격 시작) 초기화
+        hitThisSwing.Clear();
+    }
+
+
+    //Ŭ���� ���(�Լ� ��)�� �־�� ��
+    public bool HasNext
+    {
+        get
+        {
+            int idx = weaponLevel - 1;
+            return weaponLevel < info.maxWeaponLevel
+                   && idx >= 0
+                   && idx < info.weaponDamage.Length - 1; // ���� ������ ����
+        }
+    }
+
+    public bool CanUpgrade
+    {
+        get
+        {
+            return HasNext && nextWeaponPrice > 0;
+        }
+    }
+    private void Awake()
+    {
+        //rigid = GetComponent<Rigidbody2D>();
+        if (weaponRenderer == null)
+            weaponRenderer = GetComponent<SpriteRenderer>();
 
     }
     private void Start()
     {
-        Init(info.playerDamage);
+       
+        Recalculate();
         gameObject.SetActive(false);
-        Debug.Log("���� ��Ȱ��ȭ");
     }
 
-    private void Awake()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        rigid = GetComponent<Rigidbody2D>();
+        // 몬스터 태그/레이어 중 너 프로젝트 기준으로 맞춰
+        if (!other.CompareTag("MonsterHitBox")) return;
+
+        // Monster 스크립트가 부모에 있을 수도 있으니
+        var hitbox = other.GetComponentInParent<Monster>();
+        if (hitbox == null) return;
+
+        int id = hitbox.gameObject.GetInstanceID();
+        if (hitThisSwing.Contains(id)) return; // 이번 휘두르기에서 이미 맞음
+
+        hitThisSwing.Add(id);
+
+        // 데미지 적용 (Monster에 TakeDamage 같은 함수가 있으면 그걸 쓰는 게 더 좋음)
+        hitbox.TakeDamage(Damage);
+
+        // 필요하면 피격 SFX/이펙트
+        // AudioManager.instance.PlaySfx(AudioManager.Sfx.MonsterHit);
+
+    }
+
+    public void Recalculate()
+    {
+        int idx = weaponLevel - 1;
+
+        // ���� ������ ���
+        idx = Mathf.Clamp(idx, 0, info.weaponDamage.Length - 1);
+        weaponDamage = info.weaponDamage[idx];
+
+        // ���� ���׷��̵� ��� ��� 
+        bool hasPrice = idx >= 0 && idx < info.weaponPrice.Length;
+        bool hasNext = weaponLevel < info.maxWeaponLevel;
+
+        nextWeaponPrice = (hasNext && hasPrice) ? info.weaponPrice[idx] : 0;
+
+        ApplyVisual();
+    }
+
+    public bool TryUpgrade()
+    {
+        if (!CanUpgrade) return false;
+
+        if (GameManager.money < nextWeaponPrice)
+        {
+            return false;
+        }
+
+        GameManager.money -= nextWeaponPrice;
+        weaponLevel += 1;
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.SwordUpgrade);
+
+        Recalculate();
+        return true;
+    }
+    private void ApplyVisual()
+    {
+        Debug.Log($"[ApplyVisual] name={name}, lvl={weaponLevel}, renderer={(weaponRenderer ? weaponRenderer.name : "NULL")}, spritesLen={(info && info.weaponSprites != null ? info.weaponSprites.Length : -1)}");
+        if (info == null || weaponRenderer == null) return;
+
+        int idx = weaponLevel - 1;
+        if (info.weaponSprites == null || info.weaponSprites.Length == 0) return;
+
+        idx = Mathf.Clamp(idx, 0, info.weaponSprites.Length - 1);
+        weaponRenderer.sprite = info.weaponSprites[idx];
+        Debug.Log($"[ApplyVisual] renderer={(weaponRenderer ? weaponRenderer.name : "NULL")}, sprite={(weaponRenderer && weaponRenderer.sprite ? weaponRenderer.sprite.name : "NULL")}");
     }
 }
