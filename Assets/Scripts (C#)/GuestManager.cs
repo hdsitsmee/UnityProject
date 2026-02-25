@@ -21,7 +21,8 @@ public class GuestManager : MonoBehaviour
 
     [Header("Timing")]
     public float firstGuestDelay = 2.5f; // 게임 시작 후 첫 손님
-    public float reactDuration = 1.5f; 
+    public float spawnGuestDuration = 1.5f;
+    public float reactDuration = 1.5f;
     public float leaveDuration = 1f;
 
     [Header("Patience")]
@@ -130,8 +131,8 @@ public class GuestManager : MonoBehaviour
 
     private void SpawnEnterOrder()
     {
-        SpawnNextGuest();
-        BeginOrder();
+        StartCoroutine(SpawnNextGuest());
+        //BeginOrder();
     }
 
     // ====== 0~2번까지 과정 함수 ======
@@ -172,7 +173,7 @@ public class GuestManager : MonoBehaviour
     {
         for (int i = 0; i < pool.Count; i++)
         {
-            if (pool[i] != null) 
+            if (pool[i] != null)
                 pool[i].SetActive(false);
         }
     }
@@ -180,71 +181,75 @@ public class GuestManager : MonoBehaviour
 
     //3. Order : 유령 등장 및 주문 생성
     //3-1. 유령 등장
-    private void SpawnNextGuest()
+    private IEnumerator SpawnNextGuest()
     {
-        StartCoroutine(WaitWhilePaused());
+        yield return StartCoroutine(WaitWhilePaused());
         state = State.Order;
         Debug.Log("주문 시작: Order");
-        if (pool.Count == 0) return;
+
+        if (pool.Count == 0) yield break;
 
         // 1. 현재 레벨에 등장 가능한 'GuestData' 후보군 뽑기
         List<GuestData> candidates = new List<GuestData>();
         int myLevel = GameManager.level;
-
         foreach (var guest in GameManager.instance.allGuests)
         {
             if (guest.unlockLevel <= myLevel)
-            {
                 candidates.Add(guest);
-            }
         }
 
         // 안전장치: 없으면 에러 안나게 아무거나 혹은 리턴
         if (candidates.Count == 0)
         {
             Debug.LogError("현재 레벨에 등장 가능한 유령 데이터가 없습니다!");
-            return;
+            yield break;
         }
-
         // 2. 후보 중 하나 랜덤 선택 (GuestData)
         GuestData selectedData = candidates[Random.Range(0, candidates.Count)];
 
-        // 3. 선택된 Data에 맞는 유령 오브젝트를 'Pool'에서 찾기
+        // 3. 선택된 Data에 맞는 유령 오브젝트를 'Pool'에서 찾기 
         // (GuestData의 ghostPrefab 이름과 Pool에 있는 오브젝트 이름이 포함관계인지 확인)
         GameObject targetObj = null;
         if (selectedData.ghostPrefab != null)
         {
             string prefabName = selectedData.ghostPrefab.name;
-            targetObj = pool.Find(g => g.name.Contains(prefabName));
+            targetObj = pool.Find(g => g != null && g.name.Contains(prefabName));
         }
-
         // 못 찾았으면 임시로 0번 (에러 방지)
         if (targetObj == null) targetObj = pool[0];
 
-        // 4. 활성화
+        //4. 활성화
         CurrentGuest = targetObj;
-        CurrentGuest.transform.position = spawnPoint.position;
-        CurrentGuest.transform.rotation = spawnPoint.rotation;
+        CurrentGuest.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
         CurrentGuest.SetActive(true);
+
         // 🥨 [추가] 등장 시 얼굴 표정 초기화
         var gv = CurrentGuest.GetComponent<GhostVisual>();
-        gv.ShowFace(GhostVisual.Face.Stand); // 표정 초기화
-
+        if (gv != null)
+            gv.ShowFace(GhostVisual.Face.Stand);
 
         // 5. [🔥중요] GameManager에 현재 손님 정보 등록 (주문 단계 전에 미리 등록)
         GameManager.instance.currentGuest = selectedData;
-        
+        // 🥨 [추가] 손님별 주문 대사 출력
+        if (OrderBullon != null) OrderBullon.SetActive(true);
+        if (speechBubbleText != null)
+        {
+            speechBubbleText.gameObject.SetActive(true);
+            speechBubbleText.text = selectedData.orderDialogue;
+            yield return StartCoroutine(WaitSecondsPaused(spawnGuestDuration));
+            speechBubbleText.gameObject.SetActive(false);
+        }
         // 도감 해금 처리
         if (!selectedData.hasMet)
         {
             selectedData.hasMet = true;
             Debug.Log($"📖 새로운 손님 발견: {selectedData.guestName}");
         }
-
+        BeginOrder();
     }
     //3-2. 주문 생성
-   private void BeginOrder()
-   {
+    private void BeginOrder()
+    {
         // 1. 현재 레벨에 주문 가능한 'DrinkData' 후보군 뽑기
         List<DrinkData> possibleDrinks = new List<DrinkData>();
         int myLevel = GameManager.level;
@@ -269,7 +274,7 @@ public class GuestManager : MonoBehaviour
         // 여기서 중복으로 할 필요 없음.
 
         // 4. UI 업데이트
-        if (OrderBullon != null) OrderBullon.gameObject.SetActive(true); 
+        //if (OrderBullon != null) OrderBullon.gameObject.SetActive(true); 
         if (speechBubbleText != null)
         {
             speechBubbleText.gameObject.SetActive(true);
@@ -280,7 +285,7 @@ public class GuestManager : MonoBehaviour
         // 5. 인내심 시작
         GameManager.instance.StartOrderTimer(patienceTime);
 
-        if (patienceSlider != null) 
+        if (patienceSlider != null)
         {
             patienceSlider.gameObject.SetActive(true);
             patienceSlider.value = 1f; // 초기값은 100%
@@ -340,7 +345,7 @@ public class GuestManager : MonoBehaviour
             GameManager.instance.reactDialogue = "";
         }
         // 타이머 호출
-        yield return StartCoroutine(WaitSecondsPaused(reactDuration)); 
+        yield return StartCoroutine(WaitSecondsPaused(reactDuration));
         // 2. reactDuration 뒤에 Leave로 이동
         StartCoroutine(LeaveRoutine());
     }
@@ -354,7 +359,7 @@ public class GuestManager : MonoBehaviour
 
         // React 예약 해제
         if (GameManager.instance != null) GameManager.instance.reactPending = false;
-        
+
         // 다음 손님 대기 후 스폰
         StartCoroutine(NextGuestDelayRoutine());
     }
