@@ -131,13 +131,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Stand
+      name: Stand5
       rect:
         serializedVersion: 2
-        x: 163
-        y: 596
-        width: 357
-        height: 356
+        x: 180
+        y: 600
+        width: 330
+        height: 330
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,13 +153,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Happy
+      name: Happy5
       rect:
         serializedVersion: 2
-        x: 561
-        y: 601
-        width: 387
-        height: 347
+        x: 580
+        y: 600
+        width: 350
+        height: 350
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -175,13 +175,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ascend0
+      name: Ascend5_0
       rect:
         serializedVersion: 2
-        x: 163
-        y: 105
-        width: 387
-        height: 395
+        x: 180
+        y: 115
+        width: 380
+        height: 380
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -197,13 +197,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ascend1
+      name: Ascend5_1
       rect:
         serializedVersion: 2
-        x: 560
-        y: 101
-        width: 376
-        height: 400
+        x: 565
+        y: 114
+        width: 380
+        height: 380
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -219,11 +219,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ascend2
+      name: Ascend5_2
       rect:
         serializedVersion: 2
         x: 963
-        y: 100
+        y: 115
         width: 493
         height: 401
       alignment: 0
@@ -241,13 +241,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Angry
+      name: Angry5
       rect:
         serializedVersion: 2
-        x: 995
-        y: 597
-        width: 387
-        height: 347
+        x: 1000
+        y: 600
+        width: 380
+        height: 350
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -276,14 +276,14 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Angry: 1897260233
-      Ascend0: 6214297192519887682
-      Ascend1: 7167613315010117338
-      Ascend2: -5078531121789744910
-      Happy: 4933516057211192988
+      Angry5: 1897260233
+      Ascend5_0: 6214297192519887682
+      Ascend5_1: 7167613315010117338
+      Ascend5_2: -5078531121789744910
+      Happy5: 4933516057211192988
       KakaoTalk_20260218_175658829_2: 574237394815076856
       KakaoTalk_20260218_175658829_3: 2032462457926012169
-      Stand: 8587852967836405263
+      Stand5: 8587852967836405263
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

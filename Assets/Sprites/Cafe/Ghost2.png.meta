@@ -173,13 +173,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Stand
+      name: Stand2
       rect:
         serializedVersion: 2
-        x: 172
-        y: 541
-        width: 346
-        height: 355
+        x: 190
+        y: 560
+        width: 320
+        height: 320
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -195,13 +195,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Angry
+      name: Angry2
       rect:
         serializedVersion: 2
-        x: 1024
-        y: 543
-        width: 368
-        height: 354
+        x: 1040
+        y: 560
+        width: 330
+        height: 330
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -217,13 +217,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Happy
+      name: Happy2
       rect:
         serializedVersion: 2
-        x: 580
-        y: 542
-        width: 379
-        height: 354
+        x: 600
+        y: 560
+        width: 330
+        height: 330
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -239,13 +239,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ascend0
+      name: Ascend2_0
       rect:
         serializedVersion: 2
-        x: 181
-        y: 126
-        width: 351
-        height: 367
+        x: 180
+        y: 130
+        width: 350
+        height: 350
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -261,13 +261,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ascend1
+      name: Ascend2_1
       rect:
         serializedVersion: 2
-        x: 585
-        y: 123
-        width: 376
-        height: 369
+        x: 595
+        y: 130
+        width: 350
+        height: 350
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -283,13 +283,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ascend2
+      name: Ascend2_2
       rect:
         serializedVersion: 2
-        x: 1025
-        y: 126
-        width: 391
-        height: 362
+        x: 1050
+        y: 130
+        width: 360
+        height: 350
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -318,11 +318,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Angry: 2488745966710262749
-      Ascend0: -696891065880188100
-      Ascend1: 2627540921789998124
-      Ascend2: -1698060062544055890
-      Happy: 3604296628000634086
+      Angry2: 2488745966710262749
+      Ascend2_0: -696891065880188100
+      Ascend2_1: 2627540921789998124
+      Ascend2_2: -1698060062544055890
+      Happy2: 3604296628000634086
       KakaoTalk_20260218_175658829_03_1: -7840570870308892632
       KakaoTalk_20260218_175658829_03_12: -7088563646280800381
       KakaoTalk_20260218_175658829_03_13: 1755240695070905693
@@ -338,7 +338,7 @@ TextureImporter:
       KakaoTalk_20260218_175658829_03_7: 753127014631352188
       KakaoTalk_20260218_175658829_03_8: -2992764142682136269
       KakaoTalk_20260218_175658829_03_9: 940909102908669241
-      Stand: -4862023215584432
+      Stand2: -4862023215584432
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -16,7 +16,7 @@ public class AscendManager : MonoBehaviour
     public Animator ghostAnimator; // 현재 유령 Animator
     public GameObject ascend;
     public string ascendTrigger="DoAscend"; // Animator Trigger 이름
-    public float ascendAnimDuration = 2.5f; 
+    public float ascendAnimDuration = 2.7f; 
     bool isFlowRunning;
 
     static public AscendManager instance;

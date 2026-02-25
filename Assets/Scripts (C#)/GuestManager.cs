@@ -20,11 +20,9 @@ public class GuestManager : MonoBehaviour
     public Transform spawnPoint;
 
     [Header("Timing")]
-    public float firstGuestDelay = 3f; // 게임 시작 후 첫 손님
-    public float nextGuestDelay = 3f;  // 퇴장 후 다음 손님
-    public float arriveDuration = 0.5f;
-    public float reactDuration = 2.5f;
-    public float leaveDuration = 0.6f;
+    public float firstGuestDelay = 2.5f; // 게임 시작 후 첫 손님
+    public float reactDuration = 1.5f; 
+    public float leaveDuration = 1f;
 
     [Header("Patience")]
     public float patienceTime = 10f;
@@ -81,10 +79,12 @@ public class GuestManager : MonoBehaviour
         else if (GameManager.instance != null && GameManager.instance.isAscendMode)
         {
             StartCoroutine(AscendManager.instance.StartAscend());
-
-            yield return new WaitUntil(() =>
-                !GameManager.instance.isAscendMode
-            );
+            // isAscendMode true -> false 까지 지속
+            yield return new WaitUntil(() => !GameManager.instance.isAscendMode);
+            // 성불 후 반응 시작
+            GameManager.instance.reactPending = true;
+            yield return StartCoroutine(EnterReact());
+            yield break;
         }
 
         StartFirstGuest();
@@ -290,9 +290,10 @@ public class GuestManager : MonoBehaviour
     public IEnumerator EnterReact()
     {
         // 🥨 [추가] 레벨업 팝업 시 일시정지
-        Debug.Log($"반응 대기: {GameManager.instance.isGamePaused}");
         while (GameManager.instance.isGamePaused)
+        {
             yield return null;
+        }
         yield return StartCoroutine(WaitSecondsPaused(0.2f)); // 일시정지 해제 후 약간의 딜레이
 
         StartCoroutine(WaitWhilePaused());
@@ -322,20 +323,21 @@ public class GuestManager : MonoBehaviour
                 CurrentGuest.transform.position = spawnPoint.position;
                 CurrentGuest.transform.rotation = spawnPoint.rotation;
                 CurrentGuest.SetActive(true);
-                Debug.Log($"현재 손님 재등록: {cg.guestName},{GameManager.instance.lastResultSuccess}");
+
                 //🥨 [추가] 반응에 따른 얼굴 표정 변경
                 var gv = CurrentGuest.GetComponent<GhostVisual>();
                 if (GameManager.instance.lastResultSuccess)
                     gv.ShowFace(GhostVisual.Face.Happy);
                 else gv.ShowFace(GhostVisual.Face.Angry);
+                GameManager.instance.lastResultSuccess = false;
             }
-
         }
         if (OrderBullon != null) OrderBullon.gameObject.SetActive(true); // 말풍선 UI 활성화
         if (speechBubbleText != null)
         {
             speechBubbleText.gameObject.SetActive(true);
-            speechBubbleText.text = GameManager.instance.reactText;
+            speechBubbleText.text = GameManager.instance.reactDialogue;
+            GameManager.instance.reactDialogue = "";
         }
         // 타이머 호출
         yield return StartCoroutine(WaitSecondsPaused(reactDuration)); 

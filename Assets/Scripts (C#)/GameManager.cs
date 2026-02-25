@@ -13,33 +13,34 @@ public class GameManager : MonoBehaviour
 
     [Header("# 게임 데이터")]
     public List<IngredientData> allIngredients; // 모든 재료 목록
-    public DrinkRecipeBook recipebook; //[🥨변경] 기존 public List<DrinkRecipe> allRecipe, 여기서 레시피 리스트 호출 : recipebook.allRecipes
-    public List<GuestData> allGuests; //[🥨변경] 코드 변경 x 데이터 설정을 Assets->data->Guest1,2,3,4...로 옮김
+    public DrinkRecipeBook recipebook; //레시피 리스트 호출 : recipebook.allRecipes
+    public List<GuestData> allGuests;
 
     // ★ [추가됨] 현재 주문 중인 손님 정보를 담을 변수
-    public GuestData currentGuest; //[🥨변경] 코드 변경 x 데이터 설정을 Assets->data->Guest1,2,3,4...로 옮김
-    public DrinkData currentDrink; //[🥨변경] DrinkRecipe -> DrinkData
+    [Header("# 현재 손님 정보")]
+    public GuestData currentGuest;
+    public DrinkData currentDrink;
     public string currentOrderName = ""; // 주문한 음료 이름
+    public string reactDialogue = ""; // 마지막 주문 결과에 따른 반응 텍스트 저장
     public GameObject SpawnPoint;
 
-    // 🥨 [추가] 인내심 로직 위한 타이머 변수
     [Header("# 인내심 로직")]
     public bool orderActive; // 인내심 활성화 여부 (false면 타이머 작동 x)
     public float patienceTotal;
     public float patienceRemaining;
 
-    // 🥨 [추가] 타이머 변수
-    public bool isGamePaused = false; // 게임 전체 일시정지 여부
+    [Header("# 타이머 플래그")]
+    public bool isGamePaused = false; // 게임 전체 일시정지 여부,
     public bool isPaused = false; //도감 이동 코루틴 정지
 
-    // 🥨 [추가] 제조 -> 메인 이동 시 주문 데이터 연동 위한 변수 
+    [Header("# 반응 플래그")]
     public bool reactPending; // 제조 -> 메인 이동 시 유령 반응 발생 여부
     public bool lastResultSuccess; // 마지막 주문 결과 (성공/실패) 저장
-    public string reactText; // 마지막 주문 결과에 따른 반응 텍스트 저장
+    public bool isAscendMode = false; // 성불 모드 On
 
     public static GameManager instance;
     public bool isLevelUpPending = false;
-    public bool isAscendMode = false; //🥨[추가] 
+    
 
     void Awake()
     {
@@ -76,8 +77,7 @@ public class GameManager : MonoBehaviour
     }
 
     // 인내심 관련 로직 게임 매니저로 옮겼습니다
-    // (메인, 제조 씬 모두 인내심 로직 필요하고 데이터 이동이 많아서)
-    // 🥨[추가] 인내심 데이터 관리
+    // 인내심 데이터 관리
     void Update()
     {
         if (!orderActive || isPaused) return;
@@ -93,13 +93,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 🥨[추가] 메인 -> 제조 화면에서 인내심 데이터 연동
+    // 메인 -> 제조 화면에서 인내심 데이터 연동
     public void StartOrderTimer(float patienceTime)
     {
         orderActive = true; 
         patienceTotal = patienceTime;
         patienceRemaining = patienceTime; // 제조 직전 인내심 시간
-
     }
     // 🥨[추가] 제조 -> 메인 화면에서 제조 완료 끝 알림
     public void StopOrderTimer()
@@ -119,7 +118,7 @@ public class GameManager : MonoBehaviour
     {
         orderActive = false;
         lastResultSuccess = false;
-        reactText = "Time Over!";
+        reactDialogue = "Time Over!";
         reactPending = true;
 
         // 🥨 [추가] 인내심 바닥 시 만족도 감소
