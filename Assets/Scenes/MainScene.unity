@@ -485,7 +485,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 726575804}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1378,7 +1378,7 @@ MonoBehaviour:
   ghostAnimator: {fileID: 0}
   ascend: {fileID: 0}
   ascendTrigger: 
-  ascendAnimDuration: 5
+  ascendAnimDuration: 2.7
 --- !u!4 &337945079
 Transform:
   m_ObjectHideFlags: 0
@@ -1652,6 +1652,7 @@ MonoBehaviour:
   currentGuest: {fileID: 0}
   currentDrink: {fileID: 0}
   currentOrderName: 
+  reactDialogue: 
   SpawnPoint: {fileID: 0}
   orderActive: 0
   patienceTotal: 0
@@ -1660,9 +1661,8 @@ MonoBehaviour:
   isPaused: 0
   reactPending: 0
   lastResultSuccess: 0
-  reactText: 
-  isLevelUpPending: 0
   isAscendMode: 0
+  isLevelUpPending: 0
 --- !u!4 &479382597
 Transform:
   m_ObjectHideFlags: 0
@@ -3864,7 +3864,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc942d7b96d4f7b47b9d9da027d3f9c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guestManager: {fileID: 0}
 --- !u!1 &953906176
 GameObject:
   m_ObjectHideFlags: 0
@@ -6722,11 +6721,9 @@ MonoBehaviour:
   - {fileID: 8820346056753260566, guid: dda77f04876332347be9cd07bb18baa6, type: 3}
   - {fileID: 1315190047272948948, guid: 09caeed01a082534d97f5db67db6b065, type: 3}
   spawnPoint: {fileID: 1540838712}
-  firstGuestDelay: 3
-  nextGuestDelay: 3
-  arriveDuration: 0.5
-  reactDuration: 1.2
-  leaveDuration: 0.6
+  firstGuestDelay: 2.5
+  reactDuration: 1.5
+  leaveDuration: 1
   patienceTime: 10
   state: 0
   CurrentGuest: {fileID: 0}

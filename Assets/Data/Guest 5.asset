@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostPrefab: {fileID: 1315190047272948948, guid: 09caeed01a082534d97f5db67db6b065, type: 3}
   guestName: Abyss
-  guestIcon: {fileID: -1415061158698659907, guid: 3afe4c4fd3f6f6a4aa80729808ab125b, type: 3}
+  guestIcon: {fileID: 8587852967836405263, guid: 9571bc4a5095c904aa6e72c0c54002f1, type: 3}
   currentSatisfaction: 0
   maxSatisfaction: 100
   orderDrinkName: 

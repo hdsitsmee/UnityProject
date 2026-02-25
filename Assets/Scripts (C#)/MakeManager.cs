@@ -235,6 +235,12 @@ public class MakeManager : MonoBehaviour
         score = DrinkNum*((float)matchCount / recipe.requiredIngredients.Length); // 0.0 ~ 1.0 사이의 점수
         score = Mathf.Round(score * 20); // 20 곱하고 반올림
 
+        // 🥨 [추가] 제조 실패 -> 만족도 차등 감소
+        if (!isSuccess)
+        {
+            score = -score;
+        }
+
         if (isSuccess)
         {
             message = "Great!"; // 한글쓰면 팝업창이 깨지는 현상 있어서 일단 영어로 바꿨습니다 ㅠㅠ
@@ -290,7 +296,7 @@ public class MakeManager : MonoBehaviour
         {
             GameManager.instance.lastResultSuccess = isSuccess; // 게임 매니저에 성공 여부 전달
             GuestData gd = GameManager.instance.currentGuest;
-            GameManager.instance.reactText = isSuccess ?  gd.happyDialogue: gd.angryDialogue; // 게임 매니저에 반응 텍스트 전달
+            GameManager.instance.reactDialogue = isSuccess ?  gd.happyDialogue: gd.angryDialogue; // 게임 매니저에 반응 텍스트 전달
             if (!GameManager.instance.isAscendMode) // 성불 모드 아닐 때만 React 진입
                 GameManager.instance.reactPending = true; // 씬 돌아왔을 때 React 진입 플래그
             GameManager.instance.StopOrderTimer();
