@@ -21,7 +21,8 @@ MonoBehaviour:
   unlockLevel: 5
   isAscended: 0
   hasMet: 0
-  orderDialogue: 
+  orderDialogue: "Only a miracle\u2014the only one of its kind\u2014can quench My
+    Royal Thirst."
   happyDialogue: "\u2026So this is sincerity.\nEven a king has never tasted such
     a drink."
   angryDialogue: Do not test my patience. I could sink this entire shop into the
