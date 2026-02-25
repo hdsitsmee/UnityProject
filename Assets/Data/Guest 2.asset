@@ -21,7 +21,7 @@ MonoBehaviour:
   unlockLevel: 2
   isAscended: 0
   hasMet: 0
-  orderDialogue: 
+  orderDialogue: "I\u2019m so parched... Please, something with plenty of ice."
   happyDialogue: "great\u2026! So amazing\u2026! this is real water\u2026!"
   angryDialogue: Too slow! Are you waiting for me to evaporate completely?
   ascendedDialogue: " I\u2019ve finally found it. My oasis... I don\u2019t feel the

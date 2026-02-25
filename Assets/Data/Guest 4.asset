@@ -21,7 +21,8 @@ MonoBehaviour:
   unlockLevel: 4
   isAscended: 0
   hasMet: 0
-  orderDialogue: 
+  orderDialogue: I ask thee upon my honor... can you capture the galaxy within this
+    glass?
   happyDialogue: Very well. I shall accept this offering!
   angryDialogue: Impudent! You dare make a warrior wait? Do you wish to taste my
     trident?
