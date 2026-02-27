@@ -149,6 +149,7 @@ public class Monster : MonoBehaviour
         if (itemDatabase != null && playerInventory != null)
         {
             Item droppedItem = itemDatabase.GetItemByMonsterLevel(this.level); 
+            GameManager.money += Random.Range(10, 31);
 
             if (droppedItem != null)
             {

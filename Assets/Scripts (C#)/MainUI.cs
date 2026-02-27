@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 public class MainUI : MonoBehaviour
 {
 
@@ -39,6 +40,10 @@ public class MainUI : MonoBehaviour
     void OnDisable()
     {
         CancelInvoke(nameof(UpdateUI)); // 비활성화 시 반복 호출 취소
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.isGamePaused = false; 
+        }
     }
 
     public void UpdateUI()
@@ -60,6 +65,14 @@ public class MainUI : MonoBehaviour
     {
         StopAllCoroutines();
         StartCoroutine(LevelUpPopupRoutine());
+    }
+    public void GoToDungeon()
+    {
+        if (GuestManager.instance != null)
+        {
+            GuestManager.instance.StopAllCoroutines();
+        }
+        SceneManager.LoadScene("DungeonScene"); 
     }
     IEnumerator LevelUpPopupRoutine()
     {

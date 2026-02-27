@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     [Header("플레이어 기본 정보")]
     public PlayerInfo info;
     public int playerMoney;
+    
    
 
     [Header("공격 관련 스텟")]
