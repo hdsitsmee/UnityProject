@@ -18,14 +18,14 @@ public class InventoryData : ScriptableObject
         public int count; 
     }
 
-    // ¾ÆÀÌÅÛµéÀÌ ´ã±æ ¸®½ºÆ®
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ûµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
     public List<InventoryEntry> items = new List<InventoryEntry>();
 
     public List<MemoryEntry> memories = new List<MemoryEntry>();
 
     public void AddItem(Item newItem)
     {
-        // ÀÌ¹Ì ÀÖ´Â ÅÛÀÌ¸é ¼ýÀÚ¸¸ ¿Ã¸®°í, ¾øÀ¸¸é »õ·Î Ãß°¡
+        // ï¿½Ì¹ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½Ã¸ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
         InventoryEntry entry = items.Find(x => x.item == newItem);
         if (entry != null) entry.count++;
         else items.Add(new InventoryEntry { item = newItem, count = 1 });
@@ -41,6 +41,23 @@ public class InventoryData : ScriptableObject
         else
         {
             memories.Add(new MemoryEntry { data = newMemory, count = 1 });
+        }
+    }
+    public int GetItemCount(string targetName)
+    {
+        InventoryEntry entry = items.Find(x => x.item != null && x.item.itemName == targetName);
+        return entry != null ? entry.count : 0;
+    }
+    public void ConsumeItem(string targetName, int amount = 1)
+    {
+        InventoryEntry entry = items.Find(x => x.item != null && x.item.itemName == targetName);
+        if (entry != null)
+        {
+            entry.count -= amount;
+            if (entry.count <= 0)
+            {
+                items.Remove(entry); //0ê°œê°€ ë˜ë©´ ë¦¬ìŠ¤íŠ¸ì—ì„œ ì‚­ì œí•œë‹¤
+            }
         }
     }
 }

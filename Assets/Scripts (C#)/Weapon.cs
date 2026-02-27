@@ -47,6 +47,15 @@ public class Weapon : MonoBehaviour
     }
     private void Awake()
     {
+        if (info == null)
+        {
+            info = Resources.Load<WeaponInfo>("WeaponData");
+            
+            if (info != null)
+                Debug.Log("무기 데이터를 코드로 강제 복구했습니다!");
+            else
+                Debug.LogError("Resources 폴더 안에 WeaponData 파일이 없습니다!");
+        }
         //rigid = GetComponent<Rigidbody2D>();
         if (weaponRenderer == null)
             weaponRenderer = GetComponent<SpriteRenderer>();

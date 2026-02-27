@@ -89,17 +89,15 @@ public class MakeManager : MonoBehaviour
         // 게임매니저에 등록된 모든 재료를 검사
         foreach (var data in GameManager.instance.allIngredients)
         {
-            // 해금 레벨이 되었는가? (내 레벨 >= 재료 해금 레벨)
-            if (myLevel >= data.unlockLevel)
+            int count = GameManager.instance.playerInventory.GetItemCount(data.ingredientName);
+            Debug.Log($"[재료 연동 테스트] 카페 재료 이름: {data.ingredientName} / 인벤토리에서 찾은 개수: {count}개");
+
+            if (myLevel >= data.unlockLevel && count > 0)
             {
-                // 버튼 생성!
                 GameObject go = Instantiate(buttonPrefab, buttonContainer);
                 IngredientButton btnScript = go.GetComponent<IngredientButton>();
 
-                // 데이터 주입
                 btnScript.Setup(data);
-
-                // 관리 목록에 등록 (나중에 색깔 바꾸려고)
                 spawnedButtons.Add(data.ingredientName, btnScript);
             }
         }
@@ -252,6 +250,10 @@ public class MakeManager : MonoBehaviour
             if (GameManager.instance != null) GameManager.instance.GainExp(100);
             
             recipe.hasMade = true; 
+            foreach (string usedIng in currentIngredients)
+            {
+                GameManager.instance.playerInventory.ConsumeItem(usedIng, 1);
+            }
         }
         else
         {

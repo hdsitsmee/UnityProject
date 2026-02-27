@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
     public string currentOrderName = ""; // 주문한 음료 이름
     public string reactDialogue = ""; // 마지막 주문 결과에 따른 반응 텍스트 저장
     public GameObject SpawnPoint;
+    
+    [Header("# 던전 인벤토리 연동")]
+    public InventoryData playerInventory;
 
     [Header("# 인내심 로직")]
     public bool orderActive; // 인내심 활성화 여부 (false면 타이머 작동 x)
