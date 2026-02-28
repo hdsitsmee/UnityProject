@@ -9,9 +9,12 @@ public class PlayerClothesChange : MonoBehaviour
     public GameObject cafeVisual;
     public GameObject battleVisual;
 
+    /*
     [Header("외형 animator")]
     [SerializeField] private Animator cafeAnim;    // ClothesCafe의 Animator
     [SerializeField] private Animator battleAnim;
+    */
+    
     void Awake()
     {
         player = GetComponent<Player>();
@@ -35,6 +38,8 @@ public class PlayerClothesChange : MonoBehaviour
         if (other.CompareTag("SafeZone")) //safezone에서 나갔으면
             SetInSafeZone(false);//전투복장 활성화됨 
     }
+    
+    /*
     void LateUpdate()
     {
         float speed = player.moveDir.magnitude;
@@ -59,4 +64,5 @@ public class PlayerClothesChange : MonoBehaviour
         //    if (battleSprite) battleSprite.flipX = left;
         //}
     }
+    */
 }
