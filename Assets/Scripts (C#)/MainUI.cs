@@ -8,6 +8,7 @@ public class MainUI : MonoBehaviour
 {
 
     public static MainUI instance;
+    public UnlockPopupUI unlockPopupUI;
 
     [Header("Popups")]
     public GameObject levelUpPopup;
@@ -23,6 +24,7 @@ public class MainUI : MonoBehaviour
     void Awake()
     {
         instance = this;
+        unlockPopupUI = levelUpPopup.GetComponent<UnlockPopupUI>();
     }
     void Start()
     {
@@ -42,7 +44,7 @@ public class MainUI : MonoBehaviour
         CancelInvoke(nameof(UpdateUI)); // 비활성화 시 반복 호출 취소
         if (GameManager.instance != null)
         {
-            GameManager.instance.isGamePaused = false; 
+            GameManager.instance.isGamePaused = false;
         }
     }
 
@@ -56,7 +58,7 @@ public class MainUI : MonoBehaviour
         {
             // 슬라이더의 최대값을 '다음 레벨업에 필요한 경험치'로 설정
             expSlider.maxValue = GameManager.instance.maxExp;
-            
+
             // 슬라이더의 현재값을 '내 현재 경험치'로 설정
             expSlider.value = GameManager.instance.currentExp;
         }
@@ -72,53 +74,59 @@ public class MainUI : MonoBehaviour
         {
             GuestManager.instance.StopAllCoroutines();
         }
-        SceneManager.LoadScene("DungeonScene"); 
+        SceneManager.LoadScene("DungeonScene");
     }
     IEnumerator LevelUpPopupRoutine()
     {
+        Debug.Log(levelUpPopup.scene.name);
         if (levelUpPopup != null)
         {
             GameManager.instance.isGamePaused = true; // 팝업 뜨는 동안 게임 일시정지
 
-            if (unlockedItemsText != null && GameManager.instance != null)
+            if (GameManager.instance != null) // 기존 텍스트 UI는 UnlockPopupUI.cs에서 관리
             {
                 int currentLevel = GameManager.level;
-                
-                // 1. 새로 해금된 손님 이름 찾기
+
                 List<string> newGuests = new List<string>();
+                List<Sprite> newGuestsIcons = new List<Sprite>(); // 아이콘 스프라이트 추가
+
                 foreach (var guest in GameManager.instance.allGuests)
                 {
                     if (guest.unlockLevel == currentLevel)
+                    {
                         newGuests.Add(guest.guestName);
+                        newGuestsIcons.Add(guest.guestIcon);
+                    }
                 }
 
-                // 2. 새로 해금된 음료 이름 찾기
                 List<string> newDrinks = new List<string>();
+                List<Sprite> newDrinksIcons = new List<Sprite>();
+
                 foreach (var drink in GameManager.instance.recipebook.allRecipes)
                 {
                     if (drink.unlockLevel == currentLevel)
+                    {
                         newDrinks.Add(drink.drinkName);
+                        newDrinksIcons.Add(drink.drinkIcon);
+                    }
                 }
 
-                // 3. 화면에 띄울 메시지 조립
-                string message = $"Lv {currentLevel}!\n\n";
-                
-                if (newGuests.Count > 0)
-                    message += $"New Guest: {string.Join(", ", newGuests)}\n";
-                if (newDrinks.Count > 0)
-                    message += $"New Recipe: {string.Join(", ", newDrinks)}";
+                levelUpPopup.SetActive(true);
+                yield return null;
 
-                unlockedItemsText.text = message; // 텍스트 적용
+                if (unlockPopupUI != null)
+                    unlockPopupUI.Show(currentLevel, newGuests, newGuestsIcons, newDrinks, newDrinksIcons);
+                else
+                    Debug.LogWarning("UnlockPopupUI not found on levelUpPopup");
             }
-
             levelUpPopup.SetActive(true);
-            
+
             // 레벨업 소리 재생
-            if(SoundManager.instance != null && SoundManager.instance.levelUpSound != null) 
+            if (SoundManager.instance != null && SoundManager.instance.levelUpSound != null)
                 SoundManager.instance.PlaySFX(SoundManager.instance.levelUpSound);
-            
+
             // 글을 읽어야 하니 3초 동안 대기
-            yield return new WaitForSeconds(3.0f); 
+            yield return new WaitForSeconds(3.0f);
 
             levelUpPopup.SetActive(false);
             GameManager.instance.isGamePaused = false; // 일시정지 해제

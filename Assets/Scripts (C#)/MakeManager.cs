@@ -92,7 +92,8 @@ public class MakeManager : MonoBehaviour
             int count = GameManager.instance.playerInventory.GetItemCount(data.ingredientName);
             Debug.Log($"[재료 연동 테스트] 카페 재료 이름: {data.ingredientName} / 인벤토리에서 찾은 개수: {count}개");
 
-            if (myLevel >= data.unlockLevel && count > 0)
+            //if (myLevel >= data.unlockLevel && count > 0)
+            if (myLevel >= data.unlockLevel)
             {
                 GameObject go = Instantiate(buttonPrefab, buttonContainer);
                 IngredientButton btnScript = go.GetComponent<IngredientButton>();
