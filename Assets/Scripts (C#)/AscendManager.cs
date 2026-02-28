@@ -31,6 +31,12 @@ public class AscendManager : MonoBehaviour
     // 1. 성불 조건 충족 시 호출 -> 성불 알림 팝업 띄우고 일시정지
     public IEnumerator StartAscend()
     {
+        Debug.Log($"[StartAscend][ENTER] frame={Time.frameCount} real={Time.realtimeSinceStartup:F2} " +
+          $"hostActive={gameObject.activeInHierarchy} hostEnabled={enabled} " +
+          $"GM={(GameManager.instance != null ? GameManager.instance.GetInstanceID().ToString() : "NULL")} " +
+          $"ascendMode={(GameManager.instance != null ? GameManager.instance.isAscendMode.ToString() : "NULL")} " +
+          $"paused={(GameManager.instance != null ? GameManager.instance.isGamePaused.ToString() : "NULL")} " +
+          $"timeScale={Time.timeScale}");
         while (GameManager.instance.isGamePaused)
         {
             yield return null;
@@ -38,7 +44,9 @@ public class AscendManager : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(0.2f);
         isFlowRunning = true;
-
+        Debug.Log($"[StartAscend][UI] before popup active | ascendPopup={(ascendPopup != null)} storyUI={(storyUI != null)}");
+        if (ascendPopup != null) ascendPopup.SetActive(true);
+        Debug.Log($"[StartAscend][UI] after popup active | popupActive={(ascendPopup != null ? ascendPopup.activeInHierarchy : false)}");
         //애니메이터 가져오기
         var cg = GameManager.instance.currentGuest; 
         GameObject targetObj = null; 

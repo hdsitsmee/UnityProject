@@ -1,8 +1,8 @@
-using UnityEngine;
-using UnityEngine.UI;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using TMPro; // ★ TextMeshPro 사용을 위해 필수!
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 // 버튼과 재료 이름을 연결해주는 구조체
 [System.Serializable]
@@ -24,7 +24,8 @@ public class MakeManager : MonoBehaviour
 
     [Header("Colors")]
     public Color selectedColor = Color.green;      
-    public Color normalColor = Color.white;        
+    public Color normalColor = Color.white;
+    public Color emptyColor = new Color(0.40f, 0.40f, 0.40f, 0.9f); // 재고 없을 시 변경할 색상
 
     [Header("Nirvana System")]
     public Slider nirvanaSlider; 
@@ -91,14 +92,34 @@ public class MakeManager : MonoBehaviour
         {
             int count = GameManager.instance.playerInventory.GetItemCount(data.ingredientName);
             Debug.Log($"[재료 연동 테스트] 카페 재료 이름: {data.ingredientName} / 인벤토리에서 찾은 개수: {count}개");
-
-            if (myLevel >= data.unlockLevel && count > 0)
+            //if (myLevel >= data.unlockLevel && count > 0)
+            // count 값 0 이어도 카드는 생성
+            if (myLevel >= data.unlockLevel)
             {
                 GameObject go = Instantiate(buttonPrefab, buttonContainer);
                 IngredientButton btnScript = go.GetComponent<IngredientButton>();
 
                 btnScript.Setup(data);
                 spawnedButtons.Add(data.ingredientName, btnScript);
+
+                // count = 0 카드 잠금 + 색상 변경
+                bool isEmpty = !(count > 0);
+
+                if (isEmpty)
+                {
+                    // 카드 잠급 = 클릭 차단
+                    Button uiBtn = go.GetComponent<Button>();
+                    if (uiBtn != null) uiBtn.interactable = false;
+
+                    // 색상 변경
+                    var images = go.GetComponentsInChildren<Image>(true);
+                    foreach (var img in images)
+                    {
+                        img.color = emptyColor;
+                        //img.raycastTarget = false;   // ← 이게 “완전 차단”에 꽤 중요함
+                    }
+
+                }
             }
         }
     }
