@@ -25,7 +25,7 @@ public class MakeManager : MonoBehaviour
     [Header("Colors")]
     public Color selectedColor = Color.green;      
     public Color normalColor = Color.white;
-    public Color emptyColor = new Color(0.40f, 0.40f, 0.40f, 0.9f); // 재고 없을 시 변경할 색상
+    public Color emptyColor = new Color(0.50f, 0.50f, 0.50f, 0.95f); // 재고 없을 시 변경할 색상
 
     [Header("Nirvana System")]
     public Slider nirvanaSlider; 

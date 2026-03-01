@@ -68,6 +68,9 @@ public class MainUI : MonoBehaviour
     }
     public void GoToDungeon()
     {
+        // 기존 메인씬 데이터 보존
+        GameManager.instance.CaptureMainFlow();
+
         if (GuestManager.instance != null)
         {
             GuestManager.instance.StopAllCoroutines();
