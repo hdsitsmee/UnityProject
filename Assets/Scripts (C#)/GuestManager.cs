@@ -31,7 +31,7 @@ public class GuestManager : MonoBehaviour
     //상태 열거 : 게임 시작, 첫손님 대기 3초, 유령 랜덤 선택, 유령 등장(=활성화), 주문 생성(인내심 생성), 유령 데이터 업뎃, 반응 (성공,실패), 퇴장(=비활성화), 다음손님 대기 3초
     public enum State
     {
-        Boot, WaitFirst, Order, React, Leave
+        Boot, WaitFirst, Spawn, Order, React, Leave
     }
     public State state;
 
@@ -44,7 +44,13 @@ public class GuestManager : MonoBehaviour
 
     void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         instance = this;
+
         if (spawnPoint == null)
             spawnPoint = transform;
 
@@ -65,9 +71,85 @@ public class GuestManager : MonoBehaviour
     {
         // 0-1. 게임 첫 시작 시 손님 풀 생성
         BuildPool();
+
+        // 화면 전환 직전 데이터 불러오기
+        if (GameManager.instance != null && GameManager.instance.hasSnapshot)
+        {
+            SnapShot snap = GameManager.instance.ConsumeSnapshot();
+            RestoreFromSnapshot(snap);
+            return;
+        }
         StartCoroutine(StartFlow());
     }
-    //🥨 [추가] 반응 로직 -> EnterReact // 성불 실행 -> 성불 실행 끝날 때까지 대기 -> 다음 손님 스폰
+    // 화면 전환 직전 데이터로 복원
+    void RestoreFromSnapshot(SnapShot s)
+    {
+        // 기본 정리
+        DeactivateAllGhosts();
+        ResetUI();
+
+        // 1. 저장된 데이터 GameManager에 다시 넣기(혹시 씬 전환 중 바뀌었을 수도)
+        GameManager.instance.currentGuest = s.currentGuest;
+        GameManager.instance.currentDrink = s.currentDrink;
+        GameManager.instance.currentOrderName = s.currentOrderName;
+
+        GameManager.instance.orderActive = s.orderActive;
+        GameManager.instance.patienceTotal = s.patienceTotal;
+        GameManager.instance.patienceRemaining = s.patienceRemaining;
+
+        // 2. state 복원
+        state = s.state;
+
+        // 3. state에 맞게 화면/오브젝트 재구성
+        switch (state)
+        {
+            case State.Spawn:
+            case State.Order:
+                RestoreOrderScene();
+                break;
+
+            case State.WaitFirst:
+                StartCoroutine(FirstGuestRoutine());
+                break;
+        }
+    }
+
+    void RestoreOrderScene()
+    {
+        GuestData cg = GameManager.instance.currentGuest;
+        if (cg == null || cg.ghostPrefab == null)
+        {
+            StartCoroutine(StartFlow());
+            return;
+        }
+
+        // 현재 손님 오브젝트 On
+        string prefabName = cg.ghostPrefab.name;
+        var targetObj = pool.Find(g => g != null && g.name.Contains(prefabName));
+        if (targetObj == null && pool.Count > 0) targetObj = pool[0];
+
+        CurrentGuest = targetObj;
+        CurrentGuest.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
+        CurrentGuest.SetActive(true);
+
+        // 주문 UI 복원
+        if (OrderBullon != null) OrderBullon.SetActive(true);
+
+        if (speechBubbleText != null)
+        {
+            speechBubbleText.gameObject.SetActive(true);
+            speechBubbleText.text = GameManager.instance.currentOrderName; // 저장된 주문명
+        }
+        
+        if (makeButton != null) makeButton.interactable = true;
+
+        // 인내심 ON
+        if (patienceSlider != null)
+            patienceSlider.gameObject.SetActive(GameManager.instance.orderActive);
+        GameManager.instance.isPaused = false;
+    }
+
+    // 반응 로직 -> EnterReact // 성불 실행 -> 성불 실행 끝날 때까지 대기 -> 다음 손님 스폰
     IEnumerator StartFlow()
     {
         if (GameManager.instance != null && GameManager.instance.reactPending)
@@ -184,8 +266,8 @@ public class GuestManager : MonoBehaviour
     private IEnumerator SpawnNextGuest()
     {
         yield return StartCoroutine(WaitWhilePaused());
-        state = State.Order;
-        Debug.Log("주문 시작: Order");
+        state = State.Spawn;
+        Debug.Log("손님 호출: Spawn");
 
         if (pool.Count == 0) yield break;
 
@@ -250,6 +332,7 @@ public class GuestManager : MonoBehaviour
     //3-2. 주문 생성
     private void BeginOrder()
     {
+        Debug.Log("주문 시작: Order");
         // 1. 현재 레벨에 주문 가능한 'DrinkData' 후보군 뽑기
         List<DrinkData> possibleDrinks = new List<DrinkData>();
         int myLevel = GameManager.level;
@@ -301,7 +384,7 @@ public class GuestManager : MonoBehaviour
         }
         yield return StartCoroutine(WaitSecondsPaused(0.2f)); // 일시정지 해제 후 약간의 딜레이
 
-        StartCoroutine(WaitWhilePaused());
+        yield return StartCoroutine(WaitWhilePaused());
         state = State.React;
         Debug.Log("반응 시작: React");
 

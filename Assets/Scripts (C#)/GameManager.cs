@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,10 +41,12 @@ public class GameManager : MonoBehaviour
     public bool reactPending; // 제조 -> 메인 이동 시 유령 반응 발생 여부
     public bool lastResultSuccess; // 마지막 주문 결과 (성공/실패) 저장
     public bool isAscendMode = false; // 성불 모드 On
+    public bool isLevelUpPending = false;
 
     public static GameManager instance;
-    public bool isLevelUpPending = false;
-    
+    public SnapShot snapshot; // 메인 씬 저장고
+    public bool hasSnapshot = false;
+
 
     void Awake()
     {
@@ -57,7 +60,48 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    // 🥨 [중요] 게스트 매니저 데이터 보존
+    public void CaptureMainFlow()
+    {
+        SnapShot shot = new SnapShot();
 
+        // 1. 게스트 매니저의 State 가져오기
+        if (GuestManager.instance != null)
+        {
+            shot.state = GuestManager.instance.state;
+        }
+        // 1-1. 없으면 처음부터 재시작
+        else shot.state = GuestManager.State.Boot; 
+
+        // 2. 게임 매니저 기존 데이터 저장
+        shot.currentOrderName = currentOrderName;
+        shot.currentGuest = currentGuest;
+        shot.currentDrink = currentDrink;
+        shot.orderActive = orderActive;
+
+        // 3. 인내심 저장
+        isPaused = true;
+        shot.patienceRemaining = GetPatienceRemaining();
+        shot.patienceTotal = patienceTotal;
+        // 4. 모든 데이터 저장
+        snapshot = shot;
+        hasSnapshot = true;
+    }
+
+    // 남은 인내심 복원
+    float GetPatienceRemaining()
+    {
+        return patienceRemaining;
+    }
+
+    // 데이터 리턴 + 기존 데이터 shot 비우기
+    public SnapShot ConsumeSnapshot()
+    {
+        SnapShot Shot = snapshot;
+        snapshot = null;
+        hasSnapshot = false;
+        return Shot;
+    }
     // 돈 더하는 함수
     public static void AddMoney(int amount)
     {
@@ -215,7 +259,23 @@ public class GameManager : MonoBehaviour
 
     
 }
+// 🥨 [중요] 게스트매니저 데이터 저장소
+[System.Serializable]
+public class SnapShot
+{
+    // GuestManager 진행 상태(재개 지점)
+    public GuestManager.State state;
 
+    // 주문/손님 데이터 (GameManager가 이미 들고 있는 값들)
+    public string currentOrderName;
+    public GuestData currentGuest;
+    public DrinkData currentDrink;
+
+    // 타이머/흐름 플래그
+    public bool orderActive;
+    public float patienceRemaining;
+    public float patienceTotal;
+}
 
 // 재료 설계도
 [System.Serializable]
