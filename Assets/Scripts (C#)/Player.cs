@@ -69,24 +69,28 @@ public class Player : MonoBehaviour
     }
     bool facingLeft;
 
-    private void LateUpdate()
+    [SerializeField] SpriteRenderer cafeSR;
+    [SerializeField] SpriteRenderer battleSR;
+
+    void LateUpdate()
     {
         if (Time.timeScale == 0f) return;
 
+        // 이동 중일 때만 방향 갱신
         if (moveDir.sqrMagnitude > 0.01f)
         {
-            // 마지막 방향 저장(상하 포함)
             lastAimDir = moveDir.normalized;
 
-            // 좌우 입력이 있을 때만 flip (상/하는 flip 안 바뀜)
+            // 좌우 입력일 때만 flip 갱신 (상/하는 그대로)
             if (Mathf.Abs(moveDir.x) > 0.01f)
             {
                 facingLeft = moveDir.x < 0;
-                spriter.flipX = facingLeft;
+
+                if (cafeSR != null) cafeSR.flipX = facingLeft;
+                if (battleSR != null) battleSR.flipX = facingLeft;
             }
         }
-        
-    }   
+    } 
         void UpdateMoveByLastPressedKey()
     {
         var kb = Keyboard.current;
