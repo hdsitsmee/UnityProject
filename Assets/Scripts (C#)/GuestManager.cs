@@ -124,7 +124,7 @@ public class GuestManager : MonoBehaviour
         if (cg == null || cg.ghostPrefab == null)
         {
             GameManager.instance.isScenePausesd = false;
-            StartCoroutine(StartFlow());
+            StartCoroutine(FirstGuestRoutine());
             return;
         }
         
