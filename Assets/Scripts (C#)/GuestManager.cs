@@ -46,6 +46,7 @@ public class GuestManager : MonoBehaviour
     {
         if (instance != null && instance != this)
         {
+            // 씬 전환 시 2중 호출 방지
             Destroy(gameObject);
             return;
         }
@@ -79,6 +80,7 @@ public class GuestManager : MonoBehaviour
             RestoreFromSnapshot(snap);
             return;
         }
+
         StartCoroutine(StartFlow());
     }
     // 화면 전환 직전 데이터로 복원
@@ -88,7 +90,7 @@ public class GuestManager : MonoBehaviour
         DeactivateAllGhosts();
         ResetUI();
 
-        // 1. 저장된 데이터 GameManager에 다시 넣기(혹시 씬 전환 중 바뀌었을 수도)
+        // 1. 저장된 데이터 GameManager에 다시 넣기
         GameManager.instance.currentGuest = s.currentGuest;
         GameManager.instance.currentDrink = s.currentDrink;
         GameManager.instance.currentOrderName = s.currentOrderName;
@@ -103,26 +105,29 @@ public class GuestManager : MonoBehaviour
         // 3. state에 맞게 화면/오브젝트 재구성
         switch (state)
         {
+            case State.WaitFirst:
             case State.Spawn:
             case State.Order:
                 RestoreOrderScene();
                 break;
 
-            case State.WaitFirst:
-                StartCoroutine(FirstGuestRoutine());
-                break;
+            
+                /*StartCoroutine(FirstGuestRoutine());
+                break;*/
         }
     }
 
     void RestoreOrderScene()
     {
         GuestData cg = GameManager.instance.currentGuest;
+        // WaitFirst -> 재시작 Boot
         if (cg == null || cg.ghostPrefab == null)
         {
+            GameManager.instance.isScenePausesd = false;
             StartCoroutine(StartFlow());
             return;
         }
-
+        
         // 현재 손님 오브젝트 On
         string prefabName = cg.ghostPrefab.name;
         var targetObj = pool.Find(g => g != null && g.name.Contains(prefabName));
@@ -131,10 +136,19 @@ public class GuestManager : MonoBehaviour
         CurrentGuest = targetObj;
         CurrentGuest.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
         CurrentGuest.SetActive(true);
-
+        
         // 주문 UI 복원
         if (OrderBullon != null) OrderBullon.SetActive(true);
 
+        // Spawn -> Order 
+        if (currentOrderName == "")
+        {
+            GameManager.instance.isScenePausesd = false;
+            BeginOrder();
+            return;
+        }
+
+        // 기존 Order 진행
         if (speechBubbleText != null)
         {
             speechBubbleText.gameObject.SetActive(true);
@@ -142,11 +156,11 @@ public class GuestManager : MonoBehaviour
         }
         
         if (makeButton != null) makeButton.interactable = true;
-
+        
         // 인내심 ON
         if (patienceSlider != null)
             patienceSlider.gameObject.SetActive(GameManager.instance.orderActive);
-        GameManager.instance.isPaused = false;
+        GameManager.instance.isScenePausesd = false;
     }
 
     // 반응 로직 -> EnterReact // 성불 실행 -> 성불 실행 끝날 때까지 대기 -> 다음 손님 스폰
@@ -333,6 +347,7 @@ public class GuestManager : MonoBehaviour
     private void BeginOrder()
     {
         Debug.Log("주문 시작: Order");
+        state = State.Order;
         // 1. 현재 레벨에 주문 가능한 'DrinkData' 후보군 뽑기
         List<DrinkData> possibleDrinks = new List<DrinkData>();
         int myLevel = GameManager.level;

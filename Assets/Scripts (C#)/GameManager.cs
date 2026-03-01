@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     [Header("# 타이머 플래그")]
     public bool isGamePaused = false; // 게임 전체 일시정지 여부,
     public bool isPaused = false; //도감 이동 코루틴 정지
+    public bool isScenePausesd = false;
 
     [Header("# 반응 플래그")]
     public bool reactPending; // 제조 -> 메인 이동 시 유령 반응 발생 여부
@@ -80,7 +81,7 @@ public class GameManager : MonoBehaviour
         shot.orderActive = orderActive;
 
         // 3. 인내심 저장
-        isPaused = true;
+        isScenePausesd = true;
         shot.patienceRemaining = GetPatienceRemaining();
         shot.patienceTotal = patienceTotal;
         // 4. 모든 데이터 저장
@@ -127,7 +128,7 @@ public class GameManager : MonoBehaviour
     // 인내심 데이터 관리
     void Update()
     {
-        if (!orderActive || isPaused) return;
+        if (!orderActive || isPaused || isScenePausesd) return;
 
         // 1. 인내심 감소
         patienceRemaining -= Time.deltaTime;
