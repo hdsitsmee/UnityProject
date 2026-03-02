@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
+using UnityEngine.InputSystem;
 
 public class Weapon : MonoBehaviour
 {
@@ -18,6 +20,8 @@ public class Weapon : MonoBehaviour
     public int Level => weaponLevel;
     public float Damage => weaponDamage;
     public int NextPrice => nextWeaponPrice;
+
+    const string KEY_WEAPON_LEVEL="WeaponLevel";
 
     void OnEnable()
     {
@@ -77,7 +81,19 @@ public class Weapon : MonoBehaviour
 
         if (weaponRenderer == null)
             weaponRenderer = GetComponent<SpriteRenderer>();
+        Load();    
     }
+
+    public void Load()
+    {
+        weaponLevel=PlayerPrefs.GetInt(KEY_WEAPON_LEVEL,1);
+    }
+    public void Save()
+    {
+        PlayerPrefs.SetInt(KEY_WEAPON_LEVEL,weaponLevel);
+        PlayerPrefs.Save(); //디스크에 
+    }
+
     private void Start()
     {
        
@@ -138,6 +154,7 @@ public class Weapon : MonoBehaviour
         AudioManager.instance.PlaySfx(AudioManager.Sfx.SwordUpgrade);
 
         Recalculate();
+        Save();
         return true;
     }
     private void ApplyVisual()
