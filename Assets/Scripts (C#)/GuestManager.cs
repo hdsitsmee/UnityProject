@@ -94,11 +94,14 @@ public class GuestManager : MonoBehaviour
         GameManager.instance.currentGuest = s.currentGuest;
         GameManager.instance.currentDrink = s.currentDrink;
         GameManager.instance.currentOrderName = s.currentOrderName;
-
         GameManager.instance.orderActive = s.orderActive;
+
+        GameManager.instance.lastResultSuccess = s.lastResultSuccess;
+        GameManager.instance.reactDialogue = s.reactDialogue;
+
         GameManager.instance.patienceTotal = s.patienceTotal;
         GameManager.instance.patienceRemaining = s.patienceRemaining;
-
+       
         // 2. state 복원
         state = s.state;
 
@@ -110,8 +113,13 @@ public class GuestManager : MonoBehaviour
             case State.Order:
                 RestoreOrderScene();
                 break;
-
-            
+            case State.React:
+                GameManager.instance.reactPending = true;
+                StartCoroutine(StartFlow());
+                break;
+            case State.Leave:
+                StartCoroutine(LeaveRoutine());
+                break;
                 /*StartCoroutine(FirstGuestRoutine());
                 break;*/
         }
@@ -168,6 +176,7 @@ public class GuestManager : MonoBehaviour
     {
         if (GameManager.instance != null && GameManager.instance.reactPending)
         {
+            GameManager.instance.isScenePausesd = false;
             GameManager.instance.reactPending = false;
             StartCoroutine(EnterReact());
             yield break;
@@ -440,7 +449,6 @@ public class GuestManager : MonoBehaviour
         {
             speechBubbleText.gameObject.SetActive(true);
             speechBubbleText.text = GameManager.instance.reactDialogue;
-            GameManager.instance.reactDialogue = "";
         }
         // 타이머 호출
         yield return StartCoroutine(WaitSecondsPaused(reactDuration));
@@ -451,6 +459,8 @@ public class GuestManager : MonoBehaviour
     // 5. Leave : 퇴장 → 다음 손님 대기
     private IEnumerator LeaveRoutine()
     {
+        // 반응 대화 회수
+        GameManager.instance.reactDialogue = "";
         EnterLeave();
         yield return StartCoroutine(WaitSecondsPaused(leaveDuration));
         //FinishLeave();
@@ -465,6 +475,7 @@ public class GuestManager : MonoBehaviour
     // 5-1. 퇴장 시작 (반응 끝나고 바로)
     private void EnterLeave()
     {
+        GameManager.instance.isScenePausesd = false;
         StartCoroutine(WaitWhilePaused());
         state = State.Leave;
         Debug.Log("퇴장: Leave");

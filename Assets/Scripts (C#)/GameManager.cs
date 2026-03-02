@@ -79,6 +79,8 @@ public class GameManager : MonoBehaviour
         shot.currentGuest = currentGuest;
         shot.currentDrink = currentDrink;
         shot.orderActive = orderActive;
+        shot.lastResultSuccess = lastResultSuccess;
+        shot.reactDialogue = reactDialogue; 
 
         // 3. 인내심 저장
         isScenePausesd = true;
@@ -271,6 +273,8 @@ public class SnapShot
     public string currentOrderName;
     public GuestData currentGuest;
     public DrinkData currentDrink;
+    public bool lastResultSuccess;
+    public string reactDialogue;
 
     // 타이머/흐름 플래그
     public bool orderActive;
@@ -283,6 +287,7 @@ public class SnapShot
 public class IngredientData
 {
     public string ingredientName;
+    public int ingredientCount; // 재료 갯수 변수 설정
     public int unlockLevel;
     public Sprite icon;
     public AudioClip soundEffect;

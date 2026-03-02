@@ -91,6 +91,7 @@ public class MakeManager : MonoBehaviour
         foreach (var data in GameManager.instance.allIngredients)
         {
             int count = GameManager.instance.playerInventory.GetItemCount(data.ingredientName);
+            data.ingredientCount = count; // 재료 갯수 변수 설정
             Debug.Log($"[재료 연동 테스트] 카페 재료 이름: {data.ingredientName} / 인벤토리에서 찾은 개수: {count}개");
             //if (myLevel >= data.unlockLevel && count > 0)
             // count 값 0 이어도 카드는 생성
@@ -116,7 +117,6 @@ public class MakeManager : MonoBehaviour
                     foreach (var img in images)
                     {
                         img.color = emptyColor;
-                        //img.raycastTarget = false;   // ← 이게 “완전 차단”에 꽤 중요함
                     }
 
                 }
