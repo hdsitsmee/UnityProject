@@ -1,20 +1,24 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 
 public class IngredientButton : MonoBehaviour
 {
     public Image targetImage;
     public Button btn;//버튼 컴포넌트
+    //public Image targetCountPanel; // 재료 갯수 표시
+    public TMP_Text targetCount; // 재료 갯수 표시
 
     private string myName;//내 재료 이름 (MakeManager에게 알려줄 용도)
+    private string myCount;
     private Coroutine animRoutine;
 
     //생성될 때 데이터를 받아서 세팅하는 함수
     public void Setup(IngredientData data)
     {
         myName = data.ingredientName;
-
+        myCount = data.ingredientCount.ToString();
         // 아이콘 설정
         if (data.icon != null) 
         {
@@ -23,6 +27,10 @@ public class IngredientButton : MonoBehaviour
             // (중요) 이미지 비율 원본대로 맞추기 (찌그러짐 방지)
             targetImage.preserveAspect = true; 
         }
+
+        // 재료 갯수 설정
+        if (myCount != null)
+            targetCount.text = myCount;
 
         // 버튼 클릭 이벤트 연결
         btn.onClick.RemoveAllListeners();
