@@ -149,7 +149,7 @@ public class GuestManager : MonoBehaviour
         if (OrderBullon != null) OrderBullon.SetActive(true);
 
         // Spawn -> Order 
-        if (currentOrderName == "")
+        if (GameManager.instance.currentGuest && GameManager.instance.currentDrink == null)
         {
             GameManager.instance.isScenePausesd = false;
             BeginOrder();
@@ -197,7 +197,7 @@ public class GuestManager : MonoBehaviour
     }
     void Update()
     {
-        if (GameManager.instance != null && GameManager.instance.isPaused) return;
+        if (GameManager.instance != null && (GameManager.instance.isPaused || GameManager.instance.isScenePausesd)) return;
         // 🥨 [추가] Order 중 메인,제조 두 씬에서 인내심 표시 갱신
         if (patienceSlider != null && GameManager.instance != null)
         {
@@ -441,7 +441,7 @@ public class GuestManager : MonoBehaviour
                 if (GameManager.instance.lastResultSuccess)
                     gv.ShowFace(GhostVisual.Face.Happy);
                 else gv.ShowFace(GhostVisual.Face.Angry);
-                GameManager.instance.lastResultSuccess = false;
+                //GameManager.instance.lastResultSuccess = false;
             }
         }
         if (OrderBullon != null) OrderBullon.gameObject.SetActive(true); // 말풍선 UI 활성화

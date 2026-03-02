@@ -49,7 +49,9 @@ public class Weapon : MonoBehaviour
     {
         if (info == null)
         {
+            Debug.Log($"[WeaponLoader] Awake id={GetInstanceID()} scene={gameObject.scene.name} frame={Time.frameCount}");
             info = Resources.Load<WeaponInfo>("WeaponData");
+            Debug.Log($"[WeaponLoader] Loaded={(info ? info.name : "NULL")}");
             
             if (info != null)
                 Debug.Log("무기 데이터를 코드로 강제 복구했습니다!");
