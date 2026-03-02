@@ -84,17 +84,11 @@ public class GameManager : MonoBehaviour
 
         // 3. 인내심 저장
         isScenePausesd = true;
-        shot.patienceRemaining = GetPatienceRemaining();
+        shot.patienceRemaining = patienceRemaining;
         shot.patienceTotal = patienceTotal;
         // 4. 모든 데이터 저장
         snapshot = shot;
         hasSnapshot = true;
-    }
-
-    // 남은 인내심 복원
-    float GetPatienceRemaining()
-    {
-        return patienceRemaining;
     }
 
     // 데이터 리턴 + 기존 데이터 shot 비우기
