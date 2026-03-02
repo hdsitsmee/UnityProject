@@ -91,18 +91,18 @@ public class WeaponUI : MonoBehaviour
         int idx = lv - 1;          // 0부터
 
         // 2) 텍스트 갱신
-        currentWeaponText.text = $"현재 무기: Lv.{lv} / 데미지 : {weapon.Damage}";
+        currentWeaponText.text = $"Weapon : Lv.{lv}   Damage : {weapon.Damage}";
 
         if (!weapon.HasNext)
         {
-            nextWeaponText.text = "다음 무기: MAX";
-            nextCostText.text = "필요 금액: -";
+            nextWeaponText.text = "Next Weapon : MAX";
+            nextCostText.text = " Cost : -";
             if (buyButton != null) buyButton.interactable = false;
         }
         else
         {
-            nextWeaponText.text = $"다음 무기: Lv.{lv + 1}";
-            nextCostText.text = $"필요 금액: {weapon.NextPrice}";
+            nextWeaponText.text = $"Next Weapon : Lv.{lv + 1}";
+            nextCostText.text = $" Cost: {weapon.NextPrice}";
             if (buyButton != null) buyButton.interactable = (GameManager.money >= weapon.NextPrice);
         }
 

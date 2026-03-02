@@ -62,6 +62,21 @@ public class Weapon : MonoBehaviour
         if (weaponRenderer == null)
             weaponRenderer = GetComponent<SpriteRenderer>();
 
+        Debug.Log($"[Weapon Awake] scene={UnityEngine.SceneManagement.SceneManager.GetActiveScene().name}, obj={name}");
+
+        if (info == null)
+        {
+            // ✅ Resources 내 전부 검색해서 출력 (경로/이름 문제를 한 방에 잡음)
+            var all = Resources.LoadAll<WeaponInfo>("");
+            Debug.Log($"[Weapon Awake] WeaponInfo assets found: {all.Length}");
+            foreach (var a in all) Debug.Log($" - {a.name}");
+
+            info = Resources.Load<WeaponInfo>("WeaponData");
+            Debug.Log($"[Weapon Awake] Load('WeaponData') => {(info ? info.name : "NULL")}");
+        }
+
+        if (weaponRenderer == null)
+            weaponRenderer = GetComponent<SpriteRenderer>();
     }
     private void Start()
     {
