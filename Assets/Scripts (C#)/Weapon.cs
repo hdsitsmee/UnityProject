@@ -82,7 +82,7 @@ public class Weapon : MonoBehaviour
     {
        
         Recalculate();
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

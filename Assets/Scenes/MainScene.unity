@@ -1615,30 +1615,37 @@ MonoBehaviour:
   maxExp: 100
   allIngredients:
   - ingredientName: Neon Lime
+    ingredientCount: 0
     unlockLevel: 1
     icon: {fileID: 530383844, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
     soundEffect: {fileID: 8300000, guid: 8866908ad8135e943804c8eaa80cb2f2, type: 3}
   - ingredientName: Shine Mint
+    ingredientCount: 0
     unlockLevel: 1
     icon: {fileID: -1047059572, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
     soundEffect: {fileID: 8300000, guid: 8866908ad8135e943804c8eaa80cb2f2, type: 3}
   - ingredientName: Everforst Cubes
+    ingredientCount: 0
     unlockLevel: 2
     icon: {fileID: -3671793498807880231, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
     soundEffect: {fileID: 8300000, guid: 8866908ad8135e943804c8eaa80cb2f2, type: 3}
   - ingredientName: Lunar Candy
+    ingredientCount: 0
     unlockLevel: 3
     icon: {fileID: -926637460, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
     soundEffect: {fileID: 8300000, guid: 8866908ad8135e943804c8eaa80cb2f2, type: 3}
   - ingredientName: Dreaming Cloud
+    ingredientCount: 0
     unlockLevel: 3
     icon: {fileID: -1132889399, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
     soundEffect: {fileID: 8300000, guid: 8866908ad8135e943804c8eaa80cb2f2, type: 3}
   - ingredientName: Star Essence
+    ingredientCount: 0
     unlockLevel: 4
     icon: {fileID: 25098223, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
     soundEffect: {fileID: 8300000, guid: 8866908ad8135e943804c8eaa80cb2f2, type: 3}
   - ingredientName: Star Essence
+    ingredientCount: 0
     unlockLevel: 5
     icon: {fileID: 25098223, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
     soundEffect: {fileID: 8300000, guid: 8866908ad8135e943804c8eaa80cb2f2, type: 3}
@@ -1660,10 +1667,23 @@ MonoBehaviour:
   patienceRemaining: 0
   isGamePaused: 0
   isPaused: 0
+  isScenePausesd: 0
   reactPending: 0
   lastResultSuccess: 0
   isAscendMode: 0
   isLevelUpPending: 0
+  snapshot:
+    state: 0
+    currentOrderName: 
+    currentGuest: {fileID: 0}
+    currentDrink: {fileID: 0}
+    lastResultSuccess: 0
+    reactDialogue: 
+    orderActive: 0
+    patienceRemaining: 0
+    patienceTotal: 0
+  hasSnapshot: 0
+  weaponInfo: {fileID: 11400000, guid: 56ae5934047faa9479a124c198f6adf7, type: 2}
 --- !u!4 &479382597
 Transform:
   m_ObjectHideFlags: 0

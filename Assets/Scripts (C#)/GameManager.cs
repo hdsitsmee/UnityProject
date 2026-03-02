@@ -48,6 +48,9 @@ public class GameManager : MonoBehaviour
     public SnapShot snapshot; // 메인 씬 저장고
     public bool hasSnapshot = false;
 
+    [Header("#던전 데이터")]
+    
+    public WeaponInfo weaponInfo;
 
     void Awake()
     {
