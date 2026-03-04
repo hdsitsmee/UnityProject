@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Star Essence
   level: 4
-  description: item 4
+  description: Concentrated starlight captured in a tiny jar. It radiates a mysterious,
+    cosmic power.
   icon: {fileID: 25098223, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}

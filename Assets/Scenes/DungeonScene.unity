@@ -2706,7 +2706,6 @@ GameObject:
   - component: {fileID: 419878793}
   - component: {fileID: 419878796}
   - component: {fileID: 419878795}
-  - component: {fileID: 419878794}
   m_Layer: 0
   m_Name: Monsters
   m_TagString: Monster
@@ -2734,29 +2733,6 @@ Transform:
   - {fileID: 1598610411}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &419878794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 419878792}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7e0bcbbb47dfc44dba8e1854f3d0a79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  level: 0
-  maxHealth: 0
-  monsterDamage: 0
-  health: 0
-  floorTilemap: {fileID: 0}
-  itemDatabase: {fileID: 0}
-  playerInventory: {fileID: 0}
-  spawner: {fileID: 0}
-  speed: 0
-  changeDirIntervalMin: 0
-  changeDirIntervalMax: 0
 --- !u!50 &419878795
 Rigidbody2D:
   serializedVersion: 5
@@ -32933,7 +32909,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -50}
+  m_AnchoredPosition: {x: 80, y: -50}
   m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1868404336

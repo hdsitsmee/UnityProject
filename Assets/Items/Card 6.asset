@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Aurora Scent
   level: 5
-  description: item 4
+  description: A shimmering fluid that smells like the dancing lights of the sky.
+    The ultimate ingredient for a miracle.
   icon: {fileID: -1115866445, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
