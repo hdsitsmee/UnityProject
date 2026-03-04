@@ -1,144 +1,131 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class WeaponUI : MonoBehaviour
 {
-    
-    [Header("ÂüÁ¶(¾À ¿ÀºêÁ§Æ®)")]
-    [SerializeField] private Weapon weapon;              // Weapon.cs ºÙÀº ¿ÀºêÁ§Æ®
-    [SerializeField] private WeaponInfo weaponInfo;      // WeaponInfo.asset (Å×ÀÌºí)
+    [Header("Refs")]
+    [SerializeField] private Weapon weapon;
+    [SerializeField] private WeaponInfo weaponInfo;
     [SerializeField] private Image currentWeaponIcon;
     [SerializeField] private Image nextWeaponIcon;
-    
 
-    [Header("ÆÐ³Î")]
+    [Header("Panel")]
     [SerializeField] private GameObject upgradePanel;
-    [SerializeField] private Button openBtn;
 
-    [Header("UI ÅØ½ºÆ®")]
+    [Header("Buttons")]
+    [SerializeField] private Button openBtn;   // ì—´ê¸° ë²„íŠ¼(WeaponUpBtn)
+    [SerializeField] private Button buyButton; // êµ¬ë§¤ ë²„íŠ¼(WeaponPanel ì•ˆ)
+
+    [Header("Texts")]
     [SerializeField] private TextMeshProUGUI currentWeaponText;
     [SerializeField] private TextMeshProUGUI nextWeaponText;
     [SerializeField] private TextMeshProUGUI nextCostText;
 
-    [Header("±¸¸Å ¹öÆ°")]
-    [SerializeField] private Button buyButton;
-    
-
-    [Header("¿­¸± ¶§ °ÔÀÓ ¸ØÃâÁö")]
+    [Header("Pause")]
     [SerializeField] private bool pauseGame = true;
 
     private bool isOpen;
 
     private void Awake()
     {
-        
         if (upgradePanel != null)
             upgradePanel.SetActive(false);
+
+        if (openBtn != null)
+            openBtn.onClick.AddListener(Open);
     }
 
     public void Open()
     {
-        
+        if (isOpen) return;
         if (upgradePanel == null) return;
 
         isOpen = true;
         upgradePanel.SetActive(true);
-        //if (openBtn != null) openBtn.interactable = false;
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.OpenInventory);
         Refresh();
 
-        if (pauseGame) Time.timeScale = 0f;
+        /*
+        // í•µì‹¬: UIë¥¼ í•œ í”„ë ˆìž„ ë¨¼ì € ê·¸ë¦¬ê²Œ í•œ ë’¤ ë©ˆì¶¤
+        if (pauseGame)
+            StartCoroutine(PauseNextFrame());
+        */
+    }
 
-        
+    private IEnumerator PauseNextFrame()
+    {
+        yield return null;            // ë‹¤ìŒ í”„ë ˆìž„
+        Time.timeScale = 0f;
     }
 
     public void Close()
     {
-        
+        if (!isOpen) return;
         if (upgradePanel == null) return;
 
-        //if (openBtn != null) openBtn.interactable = true;
         isOpen = false;
-
-        
-
-        if (pauseGame) Time.timeScale = 1f;
-
-
         upgradePanel.SetActive(false);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.OpenInventory);
+        if (pauseGame) Time.timeScale = 1f;
     }
 
     public void Refresh()
     {
-        //// 1) ÇÊ¼ö ÂüÁ¶ null Ã¼Å© (°¡Àå ¸ÕÀú)
-        //if (weapon == null)
-        //{
-        //    Debug.LogError("[WeaponUI] weaponÀÌ Inspector¿¡¼­ NoneÀÓ");
-        //    return;
-        //}
-        //if (weaponInfo == null)
-        //{
-        //    Debug.LogError("[WeaponUI] weaponInfo°¡ Inspector¿¡¼­ NoneÀÓ");
-        //    return;
-        //}
-        //if (currentWeaponText == null || nextWeaponText == null || nextCostText == null)
-        //{
-        //    Debug.LogError("[WeaponUI] TMP ÅØ½ºÆ® ¿¬°áÀÌ NoneÀÓ (Current/Next/Cost Áß ÇÏ³ª)");
-        //    return;
-        //}
+        // âœ… null ì²´í¬ë¥¼ ë§¨ ìœ„ë¡œ
+        if (weapon == null || weaponInfo == null)
+        {
+            Debug.LogError("[WeaponUI] weapon/weaponInfoê°€ ë¹„ì–´ìžˆìŒ");
+            return;
+        }
+        if (currentWeaponText == null || nextWeaponText == null || nextCostText == null)
+        {
+            Debug.LogError("[WeaponUI] TMP í…ìŠ¤íŠ¸ê°€ ë¹„ì–´ìžˆìŒ");
+            return;
+        }
 
-        int lv = weapon.Level;     // 1ºÎÅÍ
-        int idx = lv - 1;          // 0ºÎÅÍ
+        int lv = weapon.Level;
+        int idx = lv - 1;
 
-        // 2) ÅØ½ºÆ® °»½Å
-        currentWeaponText.text = $"Weapon : Lv.{lv}   Damage : {weapon.Damage}";
+        if (currentWeaponIcon != null && weaponInfo.weaponIcons != null &&
+            idx >= 0 && idx < weaponInfo.weaponIcons.Length)
+        {
+            currentWeaponIcon.sprite = weaponInfo.weaponIcons[idx];
+            currentWeaponIcon.enabled = (currentWeaponIcon.sprite != null);
+        }
+
+        if (nextWeaponIcon != null)
+        {
+            if (weapon.HasNext && weaponInfo.weaponIcons != null &&
+                (idx + 1) >= 0 && (idx + 1) < weaponInfo.weaponIcons.Length)
+            {
+                nextWeaponIcon.sprite = weaponInfo.weaponIcons[idx + 1];
+                nextWeaponIcon.enabled = (nextWeaponIcon.sprite != null);
+            }
+            else
+            {
+                nextWeaponIcon.sprite = null;
+                nextWeaponIcon.enabled = false;
+            }
+        }
+
+        currentWeaponText.text = $"Current: Lv.{weapon.Level} Damage: {weapon.Damage}";
 
         if (!weapon.HasNext)
         {
-            nextWeaponText.text = "Next Weapon : MAX";
-            nextCostText.text = " Cost : -";
+            nextWeaponText.text = "Next: MAX";
+            nextCostText.text = "Cost: -";
             if (buyButton != null) buyButton.interactable = false;
-        }
-        else
-        {
-            nextWeaponText.text = $"Next Weapon : Lv.{lv + 1}";
-            nextCostText.text = $" Cost: {weapon.NextPrice}";
-            if (buyButton != null) buyButton.interactable = (GameManager.money >= weapon.NextPrice);
+            return;
         }
 
-        // 3) ¾ÆÀÌÄÜ °»½Å
-        var icons = weaponInfo.weaponIcons; // ÁÙ¿©¾²±â
-        if (icons != null && icons.Length > 0)
-        {
-            // ÇöÀç ¾ÆÀÌÄÜ
-            if (currentWeaponIcon != null && idx >= 0 && idx < icons.Length)
-            {
-                currentWeaponIcon.sprite = icons[idx];
-                currentWeaponIcon.enabled = (currentWeaponIcon.sprite != null);
-                currentWeaponIcon.preserveAspect = true;
-            }
+        nextWeaponText.text = $"Next: Lv.{weapon.Level + 1} Damage: ??";
+        nextCostText.text = $"Cost: {weapon.NextPrice}";
 
-            // ´ÙÀ½ ¾ÆÀÌÄÜ
-            if (nextWeaponIcon != null)
-            {
-                int nextIdx = idx + 1;
-                if (weapon.HasNext && nextIdx >= 0 && nextIdx < icons.Length)
-                {
-                    nextWeaponIcon.sprite = icons[nextIdx];
-                    nextWeaponIcon.enabled = (nextWeaponIcon.sprite != null);
-                    nextWeaponIcon.preserveAspect = true;
-                }
-                else
-                {
-                    nextWeaponIcon.sprite = null;
-                    nextWeaponIcon.enabled = false;
-                }
-            }
-        }
-
-        
+        if (buyButton != null)
+            buyButton.interactable = (GameManager.money >= weapon.NextPrice);
     }
-
 
     public void OnClickBuy()
     {
@@ -146,4 +133,3 @@ public class WeaponUI : MonoBehaviour
         Refresh();
     }
 }
-
