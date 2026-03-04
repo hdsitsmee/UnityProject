@@ -7,8 +7,9 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class GameManager : MonoBehaviour
 {
-    public static int level = 1; // 초기 레벨
-    public static int money = 2500; // 초기 돈
+    // 게임매니저에서 레벨, 돈 고정 x -> 데이터 로드 방식으로 변경
+    public int level; // 초기 레벨
+    public int money; // 초기 돈
     public int currentExp = 0;
     public int maxExp = 100;
 
@@ -63,6 +64,9 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        Data data = MainData.Load(); // 레벨, 돈 데이터 load
+        money = data.money;
+        level = data.level;
     }
     // 🥨 [중요] 게스트 매니저 데이터 보존
     public void CaptureMainFlow()
@@ -105,7 +109,8 @@ public class GameManager : MonoBehaviour
     // 돈 더하는 함수
     public static void AddMoney(int amount)
     {
-        money += amount;
+        GameManager.instance.money += amount;
+        MainData.Save(GameManager.instance.money, GameManager.instance.level); // 데이터 저장
     }
 
     //[변경]
@@ -245,6 +250,7 @@ public class GameManager : MonoBehaviour
             currentExp -= maxExp;
             level++;
             maxExp += 100;
+            MainData.Save(GameManager.instance.money, GameManager.instance.level);
             isLevelUp = true; // 레벨업 발생!
         }
 
@@ -257,8 +263,16 @@ public class GameManager : MonoBehaviour
     }
     private Dictionary<string, int> memoryCounts = new Dictionary<string, int>();
 
-    
+    // 데이터 초기화 버튼 연결
+    public void ResetGameData()
+    {
+        MainData.Reset();
+        level = 1;
+        money = 2500;
+        MainData.Save(GameManager.instance.money,GameManager.instance.level);
+    }
 }
+
 // 🥨 [중요] 게스트매니저 데이터 저장소
 [System.Serializable]
 public class SnapShot

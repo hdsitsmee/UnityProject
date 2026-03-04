@@ -19,6 +19,10 @@ public class AscendManager : MonoBehaviour
     public float ascendAnimDuration = 2.7f; 
     bool isFlowRunning;
 
+    [Header("#Set_Button")]
+    public Button dunjeon;
+    public Button collect;
+
     static public AscendManager instance;
     private void Awake()
     {
@@ -38,9 +42,11 @@ public class AscendManager : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(0.2f);
         isFlowRunning = true;
-        Debug.Log($"[StartAscend][UI] before popup active | ascendPopup={(ascendPopup != null)} storyUI={(storyUI != null)}");
         if (ascendPopup != null) ascendPopup.SetActive(true);
-        Debug.Log($"[StartAscend][UI] after popup active | popupActive={(ascendPopup != null ? ascendPopup.activeInHierarchy : false)}");
+        // 버튼들 비활
+        dunjeon.interactable = false;
+        collect.interactable = false;
+
         //애니메이터 가져오기
         var cg = GameManager.instance.currentGuest; 
         GameObject targetObj = null; 
@@ -65,6 +71,9 @@ public class AscendManager : MonoBehaviour
         if (ascendPopup != null) ascendPopup.SetActive(false);
         isFlowRunning = false;
         GameManager.instance.isAscendMode = false; // 성불 모드 종료 플래그
+        // 버튼들  활성화
+        dunjeon.interactable = true;
+        collect.interactable = true;
     }
 
     // 팝업의 "성불하기/확인" 버튼 OnClick에 연결
@@ -134,7 +143,7 @@ public class AscendManager : MonoBehaviour
         isFlowRunning = false;
         GameManager.instance.isAscendMode = false; // 성불 모드 종료 플래그
 
-        // 다음 로직
-        // 예: GuestManager.instance.SpawnNextGuest();
+        dunjeon.interactable = true;
+        collect.interactable = true;
     }
 }

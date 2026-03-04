@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-        playerMoney = GameManager.money; //카페씬에서 번 돈 가져옴
+        playerMoney = GameManager.instance.money; //카페씬에서 번 돈 가져옴
         if (Time.timeScale == 0f) return;
         UpdateMoveByLastPressedKey();   // ★ 이걸로 moveDir 갱신
     }

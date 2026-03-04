@@ -49,9 +49,9 @@ public class MainUI : MonoBehaviour
     public void UpdateUI()
     {
         if (levelText != null)
-            levelText.text = "LV." + GameManager.level;
+            levelText.text = "LV." + GameManager.instance.level;
         if (moneyText != null)
-            moneyText.text = "Money: " + GameManager.money;
+            moneyText.text = "Money: " + GameManager.instance.money;
         if (expSlider != null && GameManager.instance != null)
         {
             // 슬라이더의 최대값을 '다음 레벨업에 필요한 경험치'로 설정
@@ -85,7 +85,7 @@ public class MainUI : MonoBehaviour
 
             if (unlockedItemsText != null && GameManager.instance != null)
             {
-                int currentLevel = GameManager.level;
+                int currentLevel = GameManager.instance.level;
                 
                 // 1. 새로 해금된 손님 이름 찾기
                 List<string> newGuests = new List<string>();

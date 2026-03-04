@@ -124,7 +124,7 @@ public class WeaponUI : MonoBehaviour
         nextCostText.text = $"Cost: {weapon.NextPrice}";
 
         if (buyButton != null)
-            buyButton.interactable = (GameManager.money >= weapon.NextPrice);
+            buyButton.interactable = (GameManager.instance.money >= weapon.NextPrice);
     }
 
     public void OnClickBuy()
