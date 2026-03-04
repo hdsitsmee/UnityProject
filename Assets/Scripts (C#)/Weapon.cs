@@ -144,12 +144,12 @@ public class Weapon : MonoBehaviour
     {
         if (!CanUpgrade) return false;
 
-        if (GameManager.money < nextWeaponPrice)
+        if (GameManager.instance.money < nextWeaponPrice)
         {
             return false;
         }
 
-        GameManager.money -= nextWeaponPrice;
+        GameManager.instance.money -= nextWeaponPrice;
         weaponLevel += 1;
         AudioManager.instance.PlaySfx(AudioManager.Sfx.SwordUpgrade);
 

@@ -13,7 +13,7 @@ public class PlayerInfo : ScriptableObject
 
     [Header("플레이어 스탯")]
 
-    public int level = GameManager.level; // 그냥 표시용 
+    //public int level = GameManager.instance.level; // 기존 레벨 변수의 static을 제거해서 부를 수 없음
     public float maxHealth = 10f;
     public float playerDamage = 0; // 나중에 무기시스템 완성되면 없애든지, 레벨에 따른 데미지 가산점 처리해도될듯
 

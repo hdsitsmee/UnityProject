@@ -85,7 +85,7 @@ public class MakeManager : MonoBehaviour
         }
         spawnedButtons.Clear();
 
-        int myLevel = GameManager.level;
+        int myLevel = GameManager.instance.level;
 
         // 게임매니저에 등록된 모든 재료를 검사
         foreach (var data in GameManager.instance.allIngredients)
@@ -108,7 +108,7 @@ public class MakeManager : MonoBehaviour
 
                 if (isEmpty)
                 {
-                    // 카드 잠급 = 클릭 차단
+                    // 카드 잠금 = 클릭 차단
                     Button uiBtn = go.GetComponent<Button>();
                     if (uiBtn != null) uiBtn.interactable = false;
 
@@ -168,7 +168,7 @@ public class MakeManager : MonoBehaviour
         if (moneyText != null)
         {
             // GameManager의 정적 변수 money를 가져와서 표시
-            moneyText.text = "Money: " + GameManager.money;
+            moneyText.text = "Money: " + GameManager.instance.money;
         }
     }
 

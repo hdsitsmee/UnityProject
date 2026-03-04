@@ -296,7 +296,7 @@ public class GuestManager : MonoBehaviour
 
         // 1. 현재 레벨에 등장 가능한 'GuestData' 후보군 뽑기
         List<GuestData> candidates = new List<GuestData>();
-        int myLevel = GameManager.level;
+        int myLevel = GameManager.instance.level;
         foreach (var guest in GameManager.instance.allGuests)
         {
             if (guest.unlockLevel <= myLevel)
@@ -359,7 +359,7 @@ public class GuestManager : MonoBehaviour
         state = State.Order;
         // 1. 현재 레벨에 주문 가능한 'DrinkData' 후보군 뽑기
         List<DrinkData> possibleDrinks = new List<DrinkData>();
-        int myLevel = GameManager.level;
+        int myLevel = GameManager.instance.level;
 
         foreach (var drink in GameManager.instance.recipebook.allRecipes)
         {
