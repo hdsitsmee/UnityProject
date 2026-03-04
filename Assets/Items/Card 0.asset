@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Neon Lime
   level: 1
-  description: item 0
+  description: A citrus slice that glows with a faint neon light. It adds a zesty,
+    magical kick to any drink.
   icon: {fileID: 530383844, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}

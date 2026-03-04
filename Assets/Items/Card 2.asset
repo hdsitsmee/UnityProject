@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Everforst Cubes
   level: 2
-  description: item 2
+  description: Ice cubes carved from the eternal glaciers of the North. They never
+    melt, keeping the aura forever chilled.
   icon: {fileID: -3671793498807880231, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}

@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Dreaming Cloud
   level: 3
-  description: item 4
+  description: "A fluffy fragment of a sweet dream. It\u2019s so light that it might
+    just float away if you don't hold on."
   icon: {fileID: -1132889399, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
