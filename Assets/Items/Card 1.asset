@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Shine Mint
   level: 1
-  description: item 1
+  description: Leaves that never lose their sparkle. Its cooling sensation can calm
+    even the most restless ghost
   icon: {fileID: -1047059572, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}

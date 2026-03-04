@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Lunar Candy
   level: 3
-  description: item 3
+  description: Hard candy infused with pure moonlight. A celestial treat that tastes
+    like a quiet, starry night.
   icon: {fileID: -926637460, guid: 375ecb39b648d4e4faf5ceeef4a208d2, type: 3}
