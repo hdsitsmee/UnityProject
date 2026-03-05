@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 [CreateAssetMenu(fileName = "InventoryData", menuName = "Inventory/Data")]
 public class InventoryData : ScriptableObject
@@ -18,14 +19,12 @@ public class InventoryData : ScriptableObject
         public int count; 
     }
 
-    // �����۵��� ��� ����Ʈ
     public List<InventoryEntry> items = new List<InventoryEntry>();
 
     public List<MemoryEntry> memories = new List<MemoryEntry>();
 
     public void AddItem(Item newItem)
     {
-        // �̹� �ִ� ���̸� ���ڸ� �ø���, ������ ���� �߰�
         InventoryEntry entry = items.Find(x => x.item == newItem);
         if (entry != null) entry.count++;
         else items.Add(new InventoryEntry { item = newItem, count = 1 });
@@ -59,5 +58,24 @@ public class InventoryData : ScriptableObject
                 items.Remove(entry); //0개가 되면 리스트에서 삭제한다
             }
         }
+    }
+
+    private string SavePath => Path.Combine(Application.persistentDataPath, "inventory.json");
+
+    public void SaveToDisk()
+    {
+        string json = JsonUtility.ToJson(this);
+        File.WriteAllText(SavePath, json);
+        Debug.Log("데이터 저장 완료!");
+}
+
+    public void LoadFromDisk()
+    {
+        if (File.Exists(SavePath))
+        {
+            string json = File.ReadAllText(SavePath);
+            JsonUtility.FromJsonOverwrite(json, this);
+            Debug.Log("데이터 복구 완료!");
+    }
     }
 }
