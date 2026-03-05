@@ -66,17 +66,6 @@ public class MainUI : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(LevelUpPopupRoutine());
     }
-    public void GoToDungeon()
-    {
-        // 기존 메인씬 데이터 보존
-        GameManager.instance.CaptureMainFlow();
-
-        if (GuestManager.instance != null)
-        {
-            GuestManager.instance.StopAllCoroutines();
-        }
-        SceneManager.LoadScene("DungeonScene"); 
-    }
     IEnumerator LevelUpPopupRoutine()
     {
         if (levelUpPopup != null)
