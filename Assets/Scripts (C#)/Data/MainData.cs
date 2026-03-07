@@ -37,5 +37,6 @@ public static class MainData
     {
         PlayerPrefs.DeleteKey(SAVE_KEY);
         PlayerPrefs.Save();
+        Debug.Log("메인:level,money 데이터 초기화 완료!");
     }
 }

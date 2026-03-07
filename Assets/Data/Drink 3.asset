@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c75c003cd879f44682c977616a5fdd2, type: 3}
   m_Name: Drink 3
   m_EditorClassIdentifier: 
+  drinkId: drink3
   drinkName: Cosmic Power Potion
   requiredIngredients:
   - Neon Lime

@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9526bf2f83800c64f8b1a0c6f4eef495, type: 3}
   m_Name: Guest 1
   m_EditorClassIdentifier: 
+  guestId: guest1
   ghostPrefab: {fileID: 5243576223765091966, guid: e6a5b7f48ec1c264ead77596d4a9eda0, type: 3}
   guestName: Limey
   guestIcon: {fileID: -8453001098941420945, guid: f9ede6bfc1abd8d48848ed3e92414eeb, type: 3}
-  currentSatisfaction: 100
+  currentSatisfaction: 0
   maxSatisfaction: 100
   orderDrinkName: 
   unlockLevel: 1

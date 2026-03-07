@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9526bf2f83800c64f8b1a0c6f4eef495, type: 3}
   m_Name: Guest 4
   m_EditorClassIdentifier: 
+  guestId: guest4
   ghostPrefab: {fileID: 8820346056753260566, guid: dda77f04876332347be9cd07bb18baa6, type: 3}
   guestName: Guardy
   guestIcon: {fileID: -4353064570290481379, guid: a5ce2fc593a1a4e419aa3553787691eb, type: 3}

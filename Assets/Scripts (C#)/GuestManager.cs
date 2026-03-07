@@ -348,6 +348,7 @@ public class GuestManager : MonoBehaviour
         if (!selectedData.hasMet)
         {
             selectedData.hasMet = true;
+            ProgressManager.instance.SaveGuestProgress(selectedData);
             Debug.Log($"📖 새로운 손님 발견: {selectedData.guestName}");
         }
         BeginOrder();

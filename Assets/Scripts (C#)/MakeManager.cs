@@ -270,7 +270,8 @@ public class MakeManager : MonoBehaviour
 
             if (GameManager.instance != null) GameManager.instance.GainExp(100);
             
-            recipe.hasMade = true; 
+            recipe.hasMade = true;
+            ProgressManager.instance.SaveDrinkProgress(recipe);
             foreach (string usedIng in currentIngredients)
             {
                 GameManager.instance.playerInventory.ConsumeItem(usedIng, 1);

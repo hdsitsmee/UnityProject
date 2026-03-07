@@ -215,6 +215,7 @@ public class GameManager : MonoBehaviour
             guest.guestName = name;
             guest.currentSatisfaction = 0; // 초기화
             guest.isAscended = false;
+            ProgressManager.instance.SaveGuestProgress(guest);
             allGuests.Add(guest);
         }
 
@@ -222,7 +223,7 @@ public class GameManager : MonoBehaviour
         guest.currentSatisfaction += amount;
         // 🥨 [추가] 현 만족도를 최소 0, 최대 100 으로 조정 연산
         guest.currentSatisfaction = Mathf.Clamp(guest.currentSatisfaction, 0, guest.maxSatisfaction);
-
+        ProgressManager.instance.SaveGuestProgress(guest);
         Debug.Log($"[{name}] 현재 만족도: {guest.currentSatisfaction} / {guest.maxSatisfaction}");
 
         // 목표 점수(100) 넘으면 성불
@@ -232,6 +233,7 @@ public class GameManager : MonoBehaviour
 
             // 도감 해금 시점 미룰까
             guest.isAscended = true;
+            ProgressManager.instance.SaveGuestProgress(guest);
             Debug.Log($"✨ [{name}] 성불 완료! 도감 해금!");
         }
     }
