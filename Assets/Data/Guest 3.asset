@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9526bf2f83800c64f8b1a0c6f4eef495, type: 3}
   m_Name: Guest 3
   m_EditorClassIdentifier: 
+  guestId: guest3
   ghostPrefab: {fileID: 3422300774198077495, guid: 81e6d27aacd57b7439395495b5c56fe1, type: 3}
   guestName: Soda
   guestIcon: {fileID: 8031793678534222083, guid: cdf04bd1e92abd844b7d7b88ce9ba599, type: 3}

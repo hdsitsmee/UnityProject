@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
+using UnityEngine;
+
 
 [CreateAssetMenu(fileName = "InventoryData", menuName = "Inventory/Data")]
 public class InventoryData : ScriptableObject
@@ -59,7 +60,7 @@ public class InventoryData : ScriptableObject
             }
         }
     }
-
+  
     private string SavePath => Path.Combine(Application.persistentDataPath, "inventory.json");
 
     public void SaveToDisk()
@@ -76,6 +77,19 @@ public class InventoryData : ScriptableObject
             string json = File.ReadAllText(SavePath);
             JsonUtility.FromJsonOverwrite(json, this);
             Debug.Log("데이터 복구 완료!");
+        }
     }
+    // 데이터 리셋 용도로 추가했습니다
+    public void ResetInventoryData()
+    {
+        items.Clear();
+        memories.Clear();
+
+        if (File.Exists(SavePath))
+        {
+            File.Delete(SavePath);
+        }
+
+        Debug.Log("인벤토리 데이터 초기화 완료!");
     }
 }

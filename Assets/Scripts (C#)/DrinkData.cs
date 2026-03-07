@@ -3,6 +3,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DrinkData", menuName = "Data_Cafe/DrinkData")]
 public class DrinkData : ScriptableObject
 {
+    [Header("# Save Info")]
+    public string drinkId;
+
     [Header("# Main Info")]
     public string drinkName;
     public string[] requiredIngredients;

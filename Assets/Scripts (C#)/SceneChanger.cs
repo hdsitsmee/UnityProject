@@ -22,6 +22,9 @@ public class SceneChanger : MonoBehaviour
     // 던전 화면으로 이동
     public void ChangeToDungeon()
     {
+        // [중요, 삭제 xx] 기존 메인씬 데이터 보존
+        GameManager.instance.CaptureMainFlow();
+
         if (GuestManager.instance != null)
         {
             GuestManager.instance.StopAllCoroutines();
