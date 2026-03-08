@@ -50,9 +50,7 @@ public class GameManager : MonoBehaviour
     public bool hasSnapshot = false;
 
     [Header("#던전 데이터")]
-    
     public WeaponInfo weaponInfo;
-
     void Awake()
     {
         if (instance == null)
