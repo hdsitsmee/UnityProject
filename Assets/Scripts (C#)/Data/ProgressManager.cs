@@ -73,6 +73,12 @@ public class ProgressManager : MonoBehaviour
         }
         Debug.Log("손님,음료 데이터 초기화 완료!");
     }
+    // 무기 레벨 초기화
+    public void ResetWeaponLevel()
+    {
+        PlayerPrefs.DeleteKey("WeaponLevel");
+        Debug.Log("Weapon Level 데이터 초기화 완료!");
+    }
     /*
     public void ClearAllPlayerPrefs()
     {
